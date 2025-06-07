@@ -2,12 +2,11 @@ import { NextFunction, Request, Response } from "express";
 
 export const mcpErrorHandler = (
   error: Error,
-  _req: Request,
+  req: Request,
   res: Response,
-  _next: NextFunction
+  next: NextFunction
 ): void => {
-  console.error("Error handling MCP request:", error);
-
+  console.error("Error handling MCP request:", error.message);
   if (!res.headersSent) {
     res.status(500).json({
       jsonrpc: "2.0",
@@ -15,7 +14,8 @@ export const mcpErrorHandler = (
         code: -32603,
         message: "Internal server error",
       },
-      id: null,
+      id: req.query.sessionId,
     });
   }
+  next(error);
 };

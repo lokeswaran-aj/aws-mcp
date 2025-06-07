@@ -1,28 +1,18 @@
-import { config } from "dotenv";
+import { appConfig } from "@/config/app";
+import { mcpErrorHandler } from "@/middleware/errorHandler";
+import { healthRoutes } from "@/routes/health.route";
+import { mcpRoutes } from "@/routes/mcp.route";
 import express from "express";
-import { handleMcpRequest } from "./controllers/mcpController";
-import { mcpErrorHandler } from "./middleware/errorHandler";
-
-config();
 
 const app = express();
-const port = process.env.PORT || 8081;
 
 app.use(express.json());
 app.use(mcpErrorHandler);
 
-app.get("/", (_req, res) => {
-  res.sendStatus(200);
-});
+// Routes
+app.use("/health", healthRoutes);
+app.use("/", mcpRoutes);
 
-app.post("/mcp", async (req, res, next) => {
-  try {
-    await handleMcpRequest(req, res);
-  } catch (error) {
-    next(error);
-  }
-});
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(appConfig.port, () => {
+  console.log(`Server is running on port ${appConfig.port}`);
 });
