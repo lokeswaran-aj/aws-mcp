@@ -1,12 +1,15 @@
 import { getRdsClient } from "@/aws-clients";
-import { RdsListInstancesArgs } from "@/types/rds";
-import { DescribeDBInstancesCommand } from "@aws-sdk/client-rds";
+import { CreateDBInstanceArgs, ListDBInstancesArgs } from "@/schema/rds";
+import {
+  CreateDBInstanceCommand,
+  DescribeDBInstancesCommand,
+} from "@aws-sdk/client-rds";
 
 export const listAllDbInstances = async (
-  args: RdsListInstancesArgs
+  args: ListDBInstancesArgs
 ): Promise<{ content: { type: "text"; text: string }[] }> => {
   const rdsClient = getRdsClient({ region: args.region });
-  const command = new DescribeDBInstancesCommand();
+  const command = new DescribeDBInstancesCommand(args.DBInstanceArgs);
   const response = await rdsClient.send(command);
   return {
     content: [
@@ -19,6 +22,22 @@ export const listAllDbInstances = async (
               ).join("\n\n")}`
             : "No RDS DB instances found"
         }`,
+      },
+    ],
+  };
+};
+
+export const createDbInstance = async (
+  args: CreateDBInstanceArgs
+): Promise<{ content: { type: "text"; text: string }[] }> => {
+  const rdsClient = getRdsClient({ region: args.region });
+  const command = new CreateDBInstanceCommand(args.DBInstanceArgs);
+  const response = await rdsClient.send(command);
+  return {
+    content: [
+      {
+        type: "text" as const,
+        text: `DB instance created: ${response.DBInstance?.DBInstanceIdentifier}`,
       },
     ],
   };
