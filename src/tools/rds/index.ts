@@ -1,6 +1,14 @@
-import { createDBInstanceSchema, listDBInstancesSchema } from "@/schema/rds";
+import {
+  createDBInstanceSchema,
+  deleteDBInstanceSchema,
+  listDBInstancesSchema,
+} from "@/schema/rds";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { createDbInstance, listAllDbInstances } from "./handlers";
+import {
+  createDbInstance,
+  deleteDbInstance,
+  listAllDbInstances,
+} from "./handlers";
 
 export const registerRdsTools = (server: McpServer): void => {
   server.tool(
@@ -28,5 +36,18 @@ export const registerRdsTools = (server: McpServer): void => {
       title: "Create a new RDS DB instance",
     },
     async (args) => await createDbInstance(args)
+  );
+  server.tool(
+    "rds-delete-db-instance",
+    "Delete a given RDS DB instance",
+    deleteDBInstanceSchema,
+    {
+      destructiveHint: true,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: false,
+      title: "Delete a given RDS DB instance",
+    },
+    async (args) => await deleteDbInstance(args)
   );
 };

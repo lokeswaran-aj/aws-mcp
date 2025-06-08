@@ -1,5 +1,6 @@
 import {
   CreateDBInstanceCommandInput,
+  DeleteDBInstanceCommandInput,
   DescribeDBInstancesCommandInput,
 } from "@aws-sdk/client-rds";
 import { z } from "zod";
@@ -108,4 +109,43 @@ export const createDBInstanceSchema = {
 
 export type CreateDBInstanceArgs = z.infer<
   ReturnType<typeof z.object<typeof createDBInstanceSchema>>
+>;
+
+// Schema for deleting a DB instance
+const deleteDBInstanceBaseSchema = z.object({
+  DBInstanceIdentifier: z
+    .string()
+    .min(1)
+    .max(63)
+    .regex(/^[a-z][a-z0-9-]*[a-z0-9]$/)
+    .describe("The DB instance identifier"),
+  DeleteAutomatedBackups: z
+    .boolean()
+    .default(true)
+    .optional()
+    .describe(
+      "Whether to delete automated backups. The default value is true."
+    ),
+  SkipFinalSnapshot: z
+    .boolean()
+    .default(true)
+    .optional()
+    .describe(
+      "Determines whether a final DB snapshot is created before the DB instance is deleted"
+    ),
+  FinalDBSnapshotIdentifier: z
+    .string()
+    .optional()
+    .describe(
+      "The DBSnapshotIdentifier of the new DBSnapshot created when SkipFinalSnapshot is false"
+    ),
+}) satisfies z.ZodType<DeleteDBInstanceCommandInput>;
+
+export const deleteDBInstanceSchema = {
+  region: regionSchema,
+  DBInstanceArgs: deleteDBInstanceBaseSchema,
+};
+
+export type DeleteDBInstanceArgs = z.infer<
+  ReturnType<typeof z.object<typeof deleteDBInstanceSchema>>
 >;

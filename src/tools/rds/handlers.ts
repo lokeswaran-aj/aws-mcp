@@ -1,7 +1,12 @@
 import { getRdsClient } from "@/aws-clients";
-import { CreateDBInstanceArgs, ListDBInstancesArgs } from "@/schema/rds";
+import {
+  CreateDBInstanceArgs,
+  DeleteDBInstanceArgs,
+  ListDBInstancesArgs,
+} from "@/schema/rds";
 import {
   CreateDBInstanceCommand,
+  DeleteDBInstanceCommand,
   DescribeDBInstancesCommand,
 } from "@aws-sdk/client-rds";
 
@@ -38,6 +43,22 @@ export const createDbInstance = async (
       {
         type: "text" as const,
         text: `DB instance created: ${response.DBInstance?.DBInstanceIdentifier}`,
+      },
+    ],
+  };
+};
+
+export const deleteDbInstance = async (
+  args: DeleteDBInstanceArgs
+): Promise<{ content: { type: "text"; text: string }[] }> => {
+  const rdsClient = getRdsClient({ region: args.region });
+  const command = new DeleteDBInstanceCommand(args.DBInstanceArgs);
+  const response = await rdsClient.send(command);
+  return {
+    content: [
+      {
+        type: "text" as const,
+        text: JSON.stringify(response, null, 2),
       },
     ],
   };
