@@ -9,6 +9,7 @@
     "experimentalDecorators": true,
     "baseUrl": ".",
     "rootDir": "src",
+    "strict": true,
     "strictNullChecks": true,
     "paths": {
       "@/*": ["src/*"]
