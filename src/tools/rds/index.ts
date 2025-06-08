@@ -26,9 +26,10 @@ export const registerRdsTools = (server: McpServer): void => {
     },
     async (args) => await listAllDbInstances(args)
   );
+
   server.tool(
     "rds-create-db-instance",
-    "Create a new RDS DB instance",
+    "Create a new RDS DB instance in the given region",
     createDBInstanceSchema,
     {
       destructiveHint: true,
@@ -39,9 +40,10 @@ export const registerRdsTools = (server: McpServer): void => {
     },
     async (args) => await createDbInstance(args)
   );
+
   server.tool(
     "rds-delete-db-instance",
-    "Delete a given RDS DB instance",
+    "Delete a given RDS DB instance in the given region",
     deleteDBInstanceSchema,
     {
       destructiveHint: true,
@@ -52,9 +54,10 @@ export const registerRdsTools = (server: McpServer): void => {
     },
     async (args) => await deleteDbInstance(args)
   );
+
   server.tool(
     "rds-update-db-instance",
-    "Update a given RDS DB instance",
+    "Update a given RDS DB instance in the given region",
     updateDBInstanceSchema,
     {
       destructiveHint: true,

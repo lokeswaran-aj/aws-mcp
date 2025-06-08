@@ -251,17 +251,22 @@ export type ListDBInstancesArgs = z.infer<
 export type CreateDBInstanceArgs = z.infer<
   ReturnType<typeof z.object<typeof createDBInstanceSchema>>
 >;
-export type UpdateDBInstanceArgs = z.infer<
-  ReturnType<typeof z.object<typeof updateDBInstanceSchema>>
->;
 export type DeleteDBInstanceArgs = z.infer<
   ReturnType<typeof z.object<typeof deleteDBInstanceSchema>>
+>;
+export type UpdateDBInstanceArgs = z.infer<
+  ReturnType<typeof z.object<typeof updateDBInstanceSchema>>
 >;
 
 // Export schemas
 export const listDBInstancesSchema = {
   region: regionSchema,
   DBInstanceArgs: describeDBInstancesBaseSchema,
+};
+
+export const createDBInstanceSchema = {
+  region: regionSchema,
+  DBInstanceArgs: createDBInstanceBaseSchema,
 };
 
 export const deleteDBInstanceSchema = {
@@ -272,9 +277,4 @@ export const deleteDBInstanceSchema = {
 export const updateDBInstanceSchema = {
   region: regionSchema,
   DBInstanceArgs: updateDBInstanceBaseSchema,
-};
-
-export const createDBInstanceSchema = {
-  region: regionSchema,
-  DBInstanceArgs: createDBInstanceBaseSchema,
 };

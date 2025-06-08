@@ -6,6 +6,7 @@ import {
   UpdateDBInstanceArgs,
 } from "@/schema/rds";
 import { HandlerReturnType } from "@/types/common";
+import { formatResponse } from "@/utils/format-response";
 import {
   CreateDBInstanceCommand,
   DeleteDBInstanceCommand,
@@ -19,14 +20,7 @@ export const listAllDbInstances = async (
   const rdsClient = getRdsClient({ region: args.region });
   const command = new DescribeDBInstancesCommand(args.DBInstanceArgs);
   const response = await rdsClient.send(command);
-  return {
-    content: [
-      {
-        type: "text" as const,
-        text: JSON.stringify(response, null, 2),
-      },
-    ],
-  };
+  return formatResponse(response);
 };
 
 export const createDbInstance = async (
@@ -35,14 +29,7 @@ export const createDbInstance = async (
   const rdsClient = getRdsClient({ region: args.region });
   const command = new CreateDBInstanceCommand(args.DBInstanceArgs);
   const response = await rdsClient.send(command);
-  return {
-    content: [
-      {
-        type: "text" as const,
-        text: JSON.stringify(response, null, 2),
-      },
-    ],
-  };
+  return formatResponse(response);
 };
 
 export const deleteDbInstance = async (
@@ -51,14 +38,7 @@ export const deleteDbInstance = async (
   const rdsClient = getRdsClient({ region: args.region });
   const command = new DeleteDBInstanceCommand(args.DBInstanceArgs);
   const response = await rdsClient.send(command);
-  return {
-    content: [
-      {
-        type: "text" as const,
-        text: JSON.stringify(response, null, 2),
-      },
-    ],
-  };
+  return formatResponse(response);
 };
 
 export const updateDbInstance = async (
@@ -67,12 +47,5 @@ export const updateDbInstance = async (
   const rdsClient = getRdsClient({ region: args.region });
   const command = new ModifyDBInstanceCommand(args.DBInstanceArgs);
   const response = await rdsClient.send(command);
-  return {
-    content: [
-      {
-        type: "text" as const,
-        text: JSON.stringify(response, null, 2),
-      },
-    ],
-  };
+  return formatResponse(response);
 };
