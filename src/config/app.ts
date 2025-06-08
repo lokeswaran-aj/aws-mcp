@@ -14,9 +14,9 @@ export const appConfig = {
     origin: process.env.CORS_ORIGIN || "*",
   },
   awsCredentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    sessionToken: process.env.AWS_SESSION_TOKEN,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID ?? "",
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ?? "",
+    sessionToken: process.env.AWS_SESSION_TOKEN ?? "",
   },
   defaultRegion: process.env.DEFAULT_REGION || "ap-south-1",
 };
