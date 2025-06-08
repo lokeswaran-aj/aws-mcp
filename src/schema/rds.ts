@@ -113,7 +113,7 @@ const dbInstanceCommonSchema = z.object({
     .optional()
     .describe("The Provisioned IOPS (I/O operations per second) value"),
   StorageType: z
-    .enum(["standard", "gp2", "gp3", "io1"])
+    .enum(["standard", "gp2", "gp3", "io1", "io2"])
     .optional()
     .describe(
       "Specifies the storage type to be associated with the DB instance"
