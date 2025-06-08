@@ -20,15 +20,6 @@ const describeDBInstancesBaseSchema = z.object({
     ),
 }) satisfies z.ZodType<DescribeDBInstancesCommandInput>;
 
-export const listDBInstancesSchema = {
-  region: regionSchema,
-  DBInstanceArgs: describeDBInstancesBaseSchema,
-};
-
-export type ListDBInstancesArgs = z.infer<
-  ReturnType<typeof z.object<typeof listDBInstancesSchema>>
->;
-
 // Schema for deleting a DB instance
 const deleteDBInstanceBaseSchema = z.object({
   DBInstanceIdentifier: z
@@ -58,15 +49,6 @@ const deleteDBInstanceBaseSchema = z.object({
       "The DBSnapshotIdentifier of the new DBSnapshot created when SkipFinalSnapshot is false"
     ),
 }) satisfies z.ZodType<DeleteDBInstanceCommandInput>;
-
-export const deleteDBInstanceSchema = {
-  region: regionSchema,
-  DBInstanceArgs: deleteDBInstanceBaseSchema,
-};
-
-export type DeleteDBInstanceArgs = z.infer<
-  ReturnType<typeof z.object<typeof deleteDBInstanceSchema>>
->;
 
 // Base schema with common fields for both create and update operations
 const dbInstanceCommonSchema = z.object({
@@ -235,15 +217,6 @@ const createDBInstanceBaseSchema = dbInstanceCommonSchema.extend({
     .describe("A DB subnet group to associate with this DB instance"),
 }) satisfies z.ZodType<CreateDBInstanceCommandInput>;
 
-export const createDBInstanceSchema = {
-  region: regionSchema,
-  DBInstanceArgs: createDBInstanceBaseSchema,
-};
-
-export type CreateDBInstanceArgs = z.infer<
-  ReturnType<typeof z.object<typeof createDBInstanceSchema>>
->;
-
 // Schema for updating a DB instance
 const updateDBInstanceBaseSchema = dbInstanceCommonSchema.extend({
   MonitoringInterval: z
@@ -271,11 +244,37 @@ const updateDBInstanceBaseSchema = dbInstanceCommonSchema.extend({
     ),
 }) satisfies z.ZodType<ModifyDBInstanceCommandInput>;
 
+// Export types for the schemas
+export type ListDBInstancesArgs = z.infer<
+  ReturnType<typeof z.object<typeof listDBInstancesSchema>>
+>;
+export type CreateDBInstanceArgs = z.infer<
+  ReturnType<typeof z.object<typeof createDBInstanceSchema>>
+>;
+export type UpdateDBInstanceArgs = z.infer<
+  ReturnType<typeof z.object<typeof updateDBInstanceSchema>>
+>;
+export type DeleteDBInstanceArgs = z.infer<
+  ReturnType<typeof z.object<typeof deleteDBInstanceSchema>>
+>;
+
+// Export schemas
+export const listDBInstancesSchema = {
+  region: regionSchema,
+  DBInstanceArgs: describeDBInstancesBaseSchema,
+};
+
+export const deleteDBInstanceSchema = {
+  region: regionSchema,
+  DBInstanceArgs: deleteDBInstanceBaseSchema,
+};
+
 export const updateDBInstanceSchema = {
   region: regionSchema,
   DBInstanceArgs: updateDBInstanceBaseSchema,
 };
 
-export type UpdateDBInstanceArgs = z.infer<
-  ReturnType<typeof z.object<typeof updateDBInstanceSchema>>
->;
+export const createDBInstanceSchema = {
+  region: regionSchema,
+  DBInstanceArgs: createDBInstanceBaseSchema,
+};
