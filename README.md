@@ -9,7 +9,7 @@ An **MCP (Model Context Protocol)** server for managing AWS resources like RDS, 
 See it in action! Here's how easy it is to create an RDS database using natural language:
 
 <div align="center" style="margin-top:20px;margin-bottom:20px;">
-<img src="https://github.com/user-attachments/assets/d1920a61-ad84-41f4-8017-5b10bdf9f86b" width="1200" alt="demo"/>
+<img src="https://github.com/user-attachments/assets/508ab998-aed9-481f-b4bf-015597cefbc2" width="1200" alt="demo"/>
 </div>
 
 > 💡 **Pro tip**: The video shows creating a database through chat - no AWS console needed!
