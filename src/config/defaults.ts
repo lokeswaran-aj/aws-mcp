@@ -1,3 +1,5 @@
+import { appConfig } from "./app";
+
 export const DEFAULT_CONFIG = {
-  REGION: "ap-south-1",
+  REGION: appConfig.defaultRegion,
 } as const;
