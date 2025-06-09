@@ -8,6 +8,10 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
+  // Global ignores
+  {
+    ignores: [".github/**/*", "node_modules/**/*", "dist/**/*", "build/**/*"],
+  },
   // Base config for all JavaScript and TypeScript files
   {
     files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
