@@ -1,6 +1,10 @@
-import { createSubnetSchema, listSubnetsSchema } from "@/schema/subnet";
+import {
+  createSubnetSchema,
+  listSubnetsSchema,
+  updateSubnetAttributeSchema,
+} from "@/schema/subnet";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { createSubnet, listSubnets } from "./handler";
+import { createSubnet, listSubnets, updateSubnetAttribute } from "./handler";
 
 export const registerSubnetTools = async (server: McpServer): Promise<void> => {
   server.tool(
@@ -28,5 +32,18 @@ export const registerSubnetTools = async (server: McpServer): Promise<void> => {
       idempotentHint: true,
     },
     async (args) => await createSubnet(args)
+  );
+  server.tool(
+    "subnet-update-subnet-attribute",
+    "Update a subnet attributes by subnet ID in the given region",
+    updateSubnetAttributeSchema,
+    {
+      title: "Update a subnet attribute",
+      destructiveHint: false,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+    },
+    async (args) => await updateSubnetAttribute(args)
   );
 };
