@@ -27,7 +27,7 @@ export const registerS3Tools = async (server: McpServer): Promise<void> => {
     {
       destructiveHint: false,
       openWorldHint: true,
-      readOnlyHint: true,
+      readOnlyHint: false,
       idempotentHint: true,
       title: "Create a new S3 bucket",
     },
@@ -40,7 +40,7 @@ export const registerS3Tools = async (server: McpServer): Promise<void> => {
     {
       destructiveHint: true,
       openWorldHint: true,
-      readOnlyHint: true,
+      readOnlyHint: false,
       idempotentHint: true,
       title: "Delete an S3 bucket",
     },
