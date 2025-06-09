@@ -1,6 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { registerRdsTools } from "./tools/rds";
 import { registerS3Tools } from "./tools/s3";
+import { registerSubnetTools } from "./tools/subnet";
 import { registerVpcTools } from "./tools/vpc";
 
 export const server = new McpServer(
@@ -20,3 +21,4 @@ export const server = new McpServer(
 void registerRdsTools(server);
 void registerS3Tools(server);
 void registerVpcTools(server);
+void registerSubnetTools(server);
