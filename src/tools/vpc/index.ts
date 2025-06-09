@@ -1,6 +1,6 @@
-import { createVpcSchema, listVpcsSchema } from "@/schema/vpc";
+import { createVpcSchema, deleteVpcSchema, listVpcsSchema } from "@/schema/vpc";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { createVpc, listVpcs } from "./handler";
+import { createVpc, deleteVpc, listVpcs } from "./handler";
 
 export const registerVpcTools = async (server: McpServer): Promise<void> => {
   server.tool(
@@ -28,5 +28,18 @@ export const registerVpcTools = async (server: McpServer): Promise<void> => {
       title: "Create a new VPC",
     },
     async (args) => await createVpc(args)
+  );
+  server.tool(
+    "vpc-delete-vpc",
+    "Delete a VPC by VPC ID in the given region",
+    deleteVpcSchema,
+    {
+      destructiveHint: true,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+      title: "Delete a VPC",
+    },
+    async (args) => await deleteVpc(args)
   );
 };

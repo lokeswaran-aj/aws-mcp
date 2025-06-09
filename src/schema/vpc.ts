@@ -1,11 +1,13 @@
 import {
   CreateVpcCommandInput,
+  DeleteVpcCommandInput,
   DescribeVpcsCommandInput,
   ResourceType,
 } from "@aws-sdk/client-ec2";
 import { z } from "zod";
 import { regionSchema } from "./common";
 
+// List VPCs
 const listVpcsBaseSchema = z.object({
   VpcIds: z.array(z.string()).optional().describe("The IDs of the VPCs"),
   MaxResults: z
@@ -19,24 +21,8 @@ const listVpcsBaseSchema = z.object({
   Filters: z
     .array(
       z.object({
-        Name: z.enum([
-          "cidr",
-          "cidr-block-association.cidr-block",
-          "cidr-block-association.association-id",
-          "cidr-block-association.state",
-          "dhcp-options-id",
-          "ipv6-cidr-block-association.ipv6-cidr-block",
-          "ipv6-cidr-block-association.ipv6-pool",
-          "ipv6-cidr-block-association.association-id",
-          "ipv6-cidr-block-association.state",
-          "is-default",
-          "owner-id",
-          "state",
-          "tag",
-          "tag-key",
-          "vpc-id",
-        ]),
-        Values: z.array(z.string()),
+        Name: z.string().describe("The name of the filter"),
+        Values: z.array(z.string()).describe("The values of the filter"),
       })
     )
     .optional()
@@ -49,6 +35,7 @@ const listVpcsBaseSchema = z.object({
     ),
 }) satisfies z.ZodType<DescribeVpcsCommandInput>;
 
+// Create VPC
 const createVpcBaseSchema = z.object({
   CidrBlock: z
     .string()
@@ -134,20 +121,42 @@ const createVpcBaseSchema = z.object({
     ),
 }) satisfies z.ZodType<CreateVpcCommandInput>;
 
+// Delete VPC
+const deleteVpcBaseSchema = z.object({
+  VpcId: z.string().describe("The ID of the VPC to delete"),
+  DryRun: z
+    .boolean()
+    .optional()
+    .describe(
+      "Checks whether you have the required permissions for the action, without actually making the request"
+    ),
+}) satisfies z.ZodType<DeleteVpcCommandInput>;
+
+// Schemas
 export const listVpcsSchema = {
   region: regionSchema,
   VpcArgs: listVpcsBaseSchema,
 };
-
-export type ListVpcsArgs = z.infer<
-  ReturnType<typeof z.object<typeof listVpcsSchema>>
->;
 
 export const createVpcSchema = {
   region: regionSchema,
   VpcArgs: createVpcBaseSchema,
 };
 
+export const deleteVpcSchema = {
+  region: regionSchema,
+  VpcArgs: deleteVpcBaseSchema,
+};
+
+// Types
+export type ListVpcsArgs = z.infer<
+  ReturnType<typeof z.object<typeof listVpcsSchema>>
+>;
+
 export type CreateVpcArgs = z.infer<
   ReturnType<typeof z.object<typeof createVpcSchema>>
+>;
+
+export type DeleteVpcArgs = z.infer<
+  ReturnType<typeof z.object<typeof deleteVpcSchema>>
 >;
