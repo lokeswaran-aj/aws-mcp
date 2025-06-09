@@ -1,4 +1,8 @@
-import { ListBucketsCommandInput } from "@aws-sdk/client-s3";
+import {
+  BucketLocationConstraint,
+  CreateBucketCommandInput,
+  ListBucketsCommandInput,
+} from "@aws-sdk/client-s3";
 import { z } from "zod";
 import { regionSchema } from "./common";
 
@@ -30,13 +34,52 @@ const listBucketsBaseSchema = z.object({
     ),
 }) satisfies z.ZodType<ListBucketsCommandInput>;
 
-// Export types for the schemas
-export type ListBucketsArgs = z.infer<
-  ReturnType<typeof z.object<typeof listBucketsSchema>>
->;
+// Schema for creating a bucket
+const createBucketBaseSchema = z.object({
+  Bucket: z
+    .string()
+    .min(3)
+    .max(63)
+    .regex(
+      /^[a-z0-9.-]+$/,
+      "Bucket name must contain only lowercase letters, numbers, hyphens, and dots"
+    )
+    .regex(/^[a-z0-9]/, "Bucket name must start with a letter or number")
+    .regex(/[a-z0-9]$/, "Bucket name must end with a letter or number")
+    .describe("The name of the bucket to create"),
+  CreateBucketConfiguration: z
+    .object({
+      LocationConstraint: z
+        .nativeEnum(BucketLocationConstraint)
+        .optional()
+        .describe("Specifies the Region where the bucket will be created"),
+    })
+    .optional()
+    .describe("The configuration information for the bucket"),
+  ObjectLockEnabledForBucket: z
+    .boolean()
+    .optional()
+    .describe(
+      "Specifies whether you want S3 Object Lock to be enabled for the new bucket"
+    ),
+}) satisfies z.ZodType<CreateBucketCommandInput>;
 
 // Export schemas
 export const listBucketsSchema = {
   region: regionSchema,
   S3Args: listBucketsBaseSchema,
 };
+
+export const createBucketSchema = {
+  region: regionSchema,
+  S3Args: createBucketBaseSchema,
+};
+
+// Export types for the schemas
+export type ListBucketsArgs = z.infer<
+  ReturnType<typeof z.object<typeof listBucketsSchema>>
+>;
+
+export type CreateBucketArgs = z.infer<
+  ReturnType<typeof z.object<typeof createBucketSchema>>
+>;

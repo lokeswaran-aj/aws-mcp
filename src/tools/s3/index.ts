@@ -1,6 +1,6 @@
-import { listBucketsSchema } from "@/schema/s3";
+import { createBucketSchema, listBucketsSchema } from "@/schema/s3";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { listAllBuckets } from "./handler";
+import { createBucket, listAllBuckets } from "./handler";
 
 export const registerS3Tools = async (server: McpServer): Promise<void> => {
   server.tool(
@@ -15,5 +15,18 @@ export const registerS3Tools = async (server: McpServer): Promise<void> => {
       title: "List all the S3 buckets",
     },
     async (args) => await listAllBuckets(args)
+  );
+  server.tool(
+    "s3-create-bucket",
+    "Create a new S3 bucket in the given region",
+    createBucketSchema,
+    {
+      destructiveHint: false,
+      openWorldHint: true,
+      readOnlyHint: true,
+      idempotentHint: true,
+      title: "Create a new S3 bucket",
+    },
+    async (args) => await createBucket(args)
   );
 };
