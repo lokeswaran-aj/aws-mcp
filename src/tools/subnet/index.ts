@@ -1,6 +1,6 @@
-import { listSubnetsSchema } from "@/schema/subnet";
+import { createSubnetSchema, listSubnetsSchema } from "@/schema/subnet";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { listSubnets } from "./handler";
+import { createSubnet, listSubnets } from "./handler";
 
 export const registerSubnetTools = async (server: McpServer): Promise<void> => {
   server.tool(
@@ -15,5 +15,18 @@ export const registerSubnetTools = async (server: McpServer): Promise<void> => {
       idempotentHint: true,
     },
     async (args) => await listSubnets(args)
+  );
+  server.tool(
+    "subnet-create-subnet",
+    "Create a subnet in the given region",
+    createSubnetSchema,
+    {
+      title: "Create a subnet",
+      destructiveHint: false,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+    },
+    async (args) => await createSubnet(args)
   );
 };
