@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { registerRdsTools } from "./tools/rds";
+import { registerS3Tools } from "./tools/s3";
 
 export const server = new McpServer(
   {
@@ -15,4 +16,5 @@ export const server = new McpServer(
 );
 
 // Register all tools
-registerRdsTools(server);
+void registerRdsTools(server);
+void registerS3Tools(server);
