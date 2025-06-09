@@ -2,7 +2,7 @@
 name: 🚀 Feature Request
 about: Suggest a new feature or enhancement for the AWS MCP project
 title: "[FEATURE] "
-labels: ["feature-request"]
+labels: ["feature"]
 assignees: ""
 ---
 
