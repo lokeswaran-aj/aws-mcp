@@ -2,7 +2,10 @@ import {
   CreateVpcCommandInput,
   DeleteVpcCommandInput,
   DescribeVpcsCommandInput,
+  DnsRecordIpType,
+  IpAddressType,
   ModifyVpcAttributeCommandInput,
+  ModifyVpcEndpointCommandInput,
   ResourceType,
 } from "@aws-sdk/client-ec2";
 import { z } from "zod";
@@ -158,6 +161,105 @@ const updateVpcAttributeBaseSchema = z.object({
     ),
 }) satisfies z.ZodType<ModifyVpcAttributeCommandInput>;
 
+// Update VPC Endpoint
+const updateVpcEndpointBaseSchema = z.object({
+  VpcEndpointId: z.string().describe("The ID of the VPC endpoint to update"),
+  DryRun: z
+    .boolean()
+    .optional()
+    .describe(
+      "Checks whether you have the required permissions for the action, without actually making the request"
+    ),
+  ResetPolicy: z
+    .boolean()
+    .optional()
+    .describe(
+      "(Gateway endpoint) Specify true to reset the policy document to the default policy"
+    ),
+  PolicyDocument: z
+    .string()
+    .optional()
+    .describe(
+      "(Interface and gateway endpoints) A policy to attach to the endpoint that controls access to the service"
+    ),
+  AddRouteTableIds: z
+    .array(z.string())
+    .optional()
+    .describe(
+      "(Gateway endpoint) The IDs of the route tables to associate with the endpoint"
+    ),
+  RemoveRouteTableIds: z
+    .array(z.string())
+    .optional()
+    .describe(
+      "(Gateway endpoint) The IDs of the route tables to disassociate from the endpoint"
+    ),
+  AddSubnetIds: z
+    .array(z.string())
+    .optional()
+    .describe(
+      "(Interface and Gateway Load Balancer endpoints) The IDs of the subnets in which to serve the endpoint"
+    ),
+  RemoveSubnetIds: z
+    .array(z.string())
+    .optional()
+    .describe(
+      "(Interface endpoint) The IDs of the subnets from which to remove the endpoint"
+    ),
+  AddSecurityGroupIds: z
+    .array(z.string())
+    .optional()
+    .describe(
+      "(Interface endpoint) The IDs of the security groups to associate with the endpoint network interfaces"
+    ),
+  RemoveSecurityGroupIds: z
+    .array(z.string())
+    .optional()
+    .describe(
+      "(Interface endpoint) The IDs of the security groups to disassociate from the endpoint network interfaces"
+    ),
+  IpAddressType: z
+    .nativeEnum(IpAddressType)
+    .optional()
+    .describe("The IP address type for the endpoint"),
+  DnsOptions: z
+    .object({
+      DnsRecordIpType: z
+        .nativeEnum(DnsRecordIpType)
+        .optional()
+        .describe("The DNS record IP type for the endpoint"),
+      PrivateDnsOnlyForInboundResolverEndpoint: z
+        .boolean()
+        .optional()
+        .describe(
+          "Indicates whether to enable private DNS only for inbound endpoints"
+        ),
+    })
+    .optional()
+    .describe("The DNS options for the endpoint"),
+  PrivateDnsEnabled: z
+    .boolean()
+    .optional()
+    .describe(
+      "(Interface endpoint) Indicates whether a private hosted zone is associated with the VPC"
+    ),
+  SubnetConfigurations: z
+    .array(
+      z.object({
+        SubnetId: z.string().optional().describe("The ID of the subnet"),
+        Ipv4: z
+          .string()
+          .optional()
+          .describe("The IPv4 address to assign to the endpoint"),
+        Ipv6: z
+          .string()
+          .optional()
+          .describe("The IPv6 address to assign to the endpoint"),
+      })
+    )
+    .optional()
+    .describe("The subnet configurations for the endpoint"),
+}) satisfies z.ZodType<ModifyVpcEndpointCommandInput>;
 // Schemas
 export const listVpcsSchema = {
   region: regionSchema,
@@ -179,6 +281,11 @@ export const updateVpcAttributeSchema = {
   VpcArgs: updateVpcAttributeBaseSchema,
 };
 
+export const updateVpcEndpointSchema = {
+  region: regionSchema,
+  VpcArgs: updateVpcEndpointBaseSchema,
+};
+
 // Types
 export type ListVpcsArgs = z.infer<
   ReturnType<typeof z.object<typeof listVpcsSchema>>
@@ -194,4 +301,8 @@ export type DeleteVpcArgs = z.infer<
 
 export type UpdateVpcAttributeArgs = z.infer<
   ReturnType<typeof z.object<typeof updateVpcAttributeSchema>>
+>;
+
+export type UpdateVpcEndpointArgs = z.infer<
+  ReturnType<typeof z.object<typeof updateVpcEndpointSchema>>
 >;

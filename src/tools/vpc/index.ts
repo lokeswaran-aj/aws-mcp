@@ -3,9 +3,16 @@ import {
   deleteVpcSchema,
   listVpcsSchema,
   updateVpcAttributeSchema,
+  updateVpcEndpointSchema,
 } from "@/schema/vpc";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { createVpc, deleteVpc, listVpcs, updateVpcAttribute } from "./handler";
+import {
+  createVpc,
+  deleteVpc,
+  listVpcs,
+  updateVpcAttribute,
+  updateVpcEndpoint,
+} from "./handler";
 
 export const registerVpcTools = async (server: McpServer): Promise<void> => {
   server.tool(
@@ -59,5 +66,18 @@ export const registerVpcTools = async (server: McpServer): Promise<void> => {
       title: "Update a VPC attribute",
     },
     async (args) => await updateVpcAttribute(args)
+  );
+  server.tool(
+    "vpc-update-vpc-endpoint",
+    "Update a VPC endpoint(Gateway endpoint, Interface endpoint) by VPC endpoint ID in the given region",
+    updateVpcEndpointSchema,
+    {
+      destructiveHint: false,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+      title: "Update a VPC endpoint",
+    },
+    async (args) => await updateVpcEndpoint(args)
   );
 };
