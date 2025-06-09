@@ -1,5 +1,6 @@
 import {
   CreateSubnetCommandInput,
+  DeleteSubnetCommandInput,
   DescribeSubnetsCommandInput,
   HostnameType,
   ModifySubnetAttributeCommandInput,
@@ -178,6 +179,17 @@ const updateSubnetAttributeBaseSchema = z.object({
     ),
 }) satisfies z.ZodType<ModifySubnetAttributeCommandInput>;
 
+// Delete Subnet
+const deleteSubnetBaseSchema = z.object({
+  SubnetId: z.string().describe("The ID of the subnet to delete"),
+  DryRun: z
+    .boolean()
+    .optional()
+    .describe(
+      "Checks whether you have the required permissions for the action"
+    ),
+}) satisfies z.ZodType<DeleteSubnetCommandInput>;
+
 // Schemas
 export const listSubnetsSchema = {
   region: regionSchema,
@@ -194,6 +206,11 @@ export const updateSubnetAttributeSchema = {
   SubnetArgs: updateSubnetAttributeBaseSchema,
 };
 
+export const deleteSubnetSchema = {
+  region: regionSchema,
+  SubnetArgs: deleteSubnetBaseSchema,
+};
+
 // Types
 export type ListSubnetsArgs = z.infer<
   ReturnType<typeof z.object<typeof listSubnetsSchema>>
@@ -205,4 +222,8 @@ export type CreateSubnetArgs = z.infer<
 
 export type UpdateSubnetAttributeArgs = z.infer<
   ReturnType<typeof z.object<typeof updateSubnetAttributeSchema>>
+>;
+
+export type DeleteSubnetArgs = z.infer<
+  ReturnType<typeof z.object<typeof deleteSubnetSchema>>
 >;

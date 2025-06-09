@@ -1,10 +1,16 @@
 import {
   createSubnetSchema,
+  deleteSubnetSchema,
   listSubnetsSchema,
   updateSubnetAttributeSchema,
 } from "@/schema/subnet";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { createSubnet, listSubnets, updateSubnetAttribute } from "./handler";
+import {
+  createSubnet,
+  deleteSubnet,
+  listSubnets,
+  updateSubnetAttribute,
+} from "./handler";
 
 export const registerSubnetTools = async (server: McpServer): Promise<void> => {
   server.tool(
@@ -45,5 +51,18 @@ export const registerSubnetTools = async (server: McpServer): Promise<void> => {
       idempotentHint: true,
     },
     async (args) => await updateSubnetAttribute(args)
+  );
+  server.tool(
+    "subnet-delete-subnet",
+    "Delete a subnet by subnet ID in the given region",
+    deleteSubnetSchema,
+    {
+      title: "Delete a subnet",
+      destructiveHint: true,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+    },
+    async (args) => await deleteSubnet(args)
   );
 };
