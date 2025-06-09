@@ -15,6 +15,7 @@
   "license": "MIT",
   "packageManager": "pnpm@10.11.1",
   "dependencies": {
+    "@aws-sdk/client-ec2": "^3.826.0",
     "@aws-sdk/client-rds": "^3.826.0",
     "@aws-sdk/client-s3": "^3.826.0",
     "@modelcontextprotocol/sdk": "^1.12.1",
