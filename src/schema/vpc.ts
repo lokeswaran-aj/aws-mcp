@@ -2,6 +2,7 @@ import {
   CreateVpcCommandInput,
   DeleteVpcCommandInput,
   DescribeVpcsCommandInput,
+  ModifyVpcAttributeCommandInput,
   ResourceType,
 } from "@aws-sdk/client-ec2";
 import { z } from "zod";
@@ -132,6 +133,31 @@ const deleteVpcBaseSchema = z.object({
     ),
 }) satisfies z.ZodType<DeleteVpcCommandInput>;
 
+// Update VPC Attribute
+const updateVpcAttributeBaseSchema = z.object({
+  VpcId: z.string().describe("The ID of the VPC to update"),
+  EnableDnsHostnames: z
+    .object({
+      Value: z.boolean().describe("The value for the attribute"),
+    })
+    .optional()
+    .describe("Indicates whether DNS hostnames are enabled for the VPC"),
+  EnableDnsSupport: z
+    .object({
+      Value: z.boolean().describe("The value for the attribute"),
+    })
+    .optional()
+    .describe("Indicates whether DNS support is enabled for the VPC"),
+  EnableNetworkAddressUsageMetrics: z
+    .object({
+      Value: z.boolean().describe("The value for the attribute"),
+    })
+    .optional()
+    .describe(
+      "Indicates whether Network Address Usage metrics are enabled for your VPC"
+    ),
+}) satisfies z.ZodType<ModifyVpcAttributeCommandInput>;
+
 // Schemas
 export const listVpcsSchema = {
   region: regionSchema,
@@ -148,6 +174,11 @@ export const deleteVpcSchema = {
   VpcArgs: deleteVpcBaseSchema,
 };
 
+export const updateVpcAttributeSchema = {
+  region: regionSchema,
+  VpcArgs: updateVpcAttributeBaseSchema,
+};
+
 // Types
 export type ListVpcsArgs = z.infer<
   ReturnType<typeof z.object<typeof listVpcsSchema>>
@@ -159,4 +190,8 @@ export type CreateVpcArgs = z.infer<
 
 export type DeleteVpcArgs = z.infer<
   ReturnType<typeof z.object<typeof deleteVpcSchema>>
+>;
+
+export type UpdateVpcAttributeArgs = z.infer<
+  ReturnType<typeof z.object<typeof updateVpcAttributeSchema>>
 >;

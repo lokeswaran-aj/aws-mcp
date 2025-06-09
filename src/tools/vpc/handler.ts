@@ -1,11 +1,17 @@
 import { getEC2Client } from "@/aws-clients";
-import { CreateVpcArgs, DeleteVpcArgs, ListVpcsArgs } from "@/schema/vpc";
+import {
+  CreateVpcArgs,
+  DeleteVpcArgs,
+  ListVpcsArgs,
+  UpdateVpcAttributeArgs,
+} from "@/schema/vpc";
 import { HandlerReturnType } from "@/types/common";
 import { formatResponse } from "@/utils/format-response";
 import {
   CreateVpcCommand,
   DeleteVpcCommand,
   DescribeVpcsCommand,
+  ModifyVpcAttributeCommand,
 } from "@aws-sdk/client-ec2";
 
 export const listVpcs = async (
@@ -31,6 +37,15 @@ export const deleteVpc = async (
 ): Promise<HandlerReturnType> => {
   const ec2Client = getEC2Client({ region: input.region });
   const command = new DeleteVpcCommand(input.VpcArgs);
+  const response = await ec2Client.send(command);
+  return formatResponse(response);
+};
+
+export const updateVpcAttribute = async (
+  input: UpdateVpcAttributeArgs
+): Promise<HandlerReturnType> => {
+  const ec2Client = getEC2Client({ region: input.region });
+  const command = new ModifyVpcAttributeCommand(input.VpcArgs);
   const response = await ec2Client.send(command);
   return formatResponse(response);
 };

@@ -1,6 +1,11 @@
-import { createVpcSchema, deleteVpcSchema, listVpcsSchema } from "@/schema/vpc";
+import {
+  createVpcSchema,
+  deleteVpcSchema,
+  listVpcsSchema,
+  updateVpcAttributeSchema,
+} from "@/schema/vpc";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { createVpc, deleteVpc, listVpcs } from "./handler";
+import { createVpc, deleteVpc, listVpcs, updateVpcAttribute } from "./handler";
 
 export const registerVpcTools = async (server: McpServer): Promise<void> => {
   server.tool(
@@ -41,5 +46,18 @@ export const registerVpcTools = async (server: McpServer): Promise<void> => {
       title: "Delete a VPC",
     },
     async (args) => await deleteVpc(args)
+  );
+  server.tool(
+    "vpc-update-vpc-attribute",
+    "Update a VPC attribute(EnableDnsHostnames, EnableDnsSupport, EnableNetworkAddressUsageMetrics) by VPC ID in the given region",
+    updateVpcAttributeSchema,
+    {
+      destructiveHint: false,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+      title: "Update a VPC attribute",
+    },
+    async (args) => await updateVpcAttribute(args)
   );
 };
