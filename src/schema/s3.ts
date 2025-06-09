@@ -1,6 +1,7 @@
 import {
   BucketLocationConstraint,
   CreateBucketCommandInput,
+  DeleteBucketCommandInput,
   ListBucketsCommandInput,
 } from "@aws-sdk/client-s3";
 import { z } from "zod";
@@ -64,6 +65,11 @@ const createBucketBaseSchema = z.object({
     ),
 }) satisfies z.ZodType<CreateBucketCommandInput>;
 
+// Schema for deleting a bucket
+const deleteBucketBaseSchema = z.object({
+  Bucket: z.string().describe("The name of the bucket to delete"),
+}) satisfies z.ZodType<DeleteBucketCommandInput>;
+
 // Export schemas
 export const listBucketsSchema = {
   region: regionSchema,
@@ -75,6 +81,11 @@ export const createBucketSchema = {
   S3Args: createBucketBaseSchema,
 };
 
+export const deleteBucketSchema = {
+  region: regionSchema,
+  S3Args: deleteBucketBaseSchema,
+};
+
 // Export types for the schemas
 export type ListBucketsArgs = z.infer<
   ReturnType<typeof z.object<typeof listBucketsSchema>>
@@ -82,4 +93,8 @@ export type ListBucketsArgs = z.infer<
 
 export type CreateBucketArgs = z.infer<
   ReturnType<typeof z.object<typeof createBucketSchema>>
+>;
+
+export type DeleteBucketArgs = z.infer<
+  ReturnType<typeof z.object<typeof deleteBucketSchema>>
 >;

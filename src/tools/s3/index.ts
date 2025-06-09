@@ -1,6 +1,10 @@
-import { createBucketSchema, listBucketsSchema } from "@/schema/s3";
+import {
+  createBucketSchema,
+  deleteBucketSchema,
+  listBucketsSchema,
+} from "@/schema/s3";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { createBucket, listAllBuckets } from "./handler";
+import { createBucket, deleteBucket, listAllBuckets } from "./handler";
 
 export const registerS3Tools = async (server: McpServer): Promise<void> => {
   server.tool(
@@ -28,5 +32,18 @@ export const registerS3Tools = async (server: McpServer): Promise<void> => {
       title: "Create a new S3 bucket",
     },
     async (args) => await createBucket(args)
+  );
+  server.tool(
+    "s3-delete-bucket",
+    "Delete an S3 bucket in the given region",
+    deleteBucketSchema,
+    {
+      destructiveHint: true,
+      openWorldHint: true,
+      readOnlyHint: true,
+      idempotentHint: true,
+      title: "Delete an S3 bucket",
+    },
+    async (args) => await deleteBucket(args)
   );
 };
