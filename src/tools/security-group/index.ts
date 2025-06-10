@@ -4,6 +4,7 @@ import {
   createSecurityGroupSchema,
   listSecurityGroupRulesSchema,
   listSecurityGroupsSchema,
+  modifySecurityGroupRulesSchema,
 } from "@/schema/security-group";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
 import {
@@ -12,6 +13,7 @@ import {
   createSecurityGroup,
   listSecurityGroupRules,
   listSecurityGroups,
+  modifySecurityGroupRules,
 } from "./handler";
 
 export const registerSecurityGroupTools = (server: McpServer): void => {
@@ -83,5 +85,19 @@ export const registerSecurityGroupTools = (server: McpServer): void => {
       title: "Authorize Security Group Egress",
     },
     async (args) => await authorizeSecurityGroupEgress(args)
+  );
+
+  server.tool(
+    "security-group-modify-security-group-rules",
+    "Modify a security group rule in the given region",
+    modifySecurityGroupRulesSchema,
+    {
+      destructiveHint: false,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+      title: "Modify Security Group Rules",
+    },
+    async (args) => await modifySecurityGroupRules(args)
   );
 };

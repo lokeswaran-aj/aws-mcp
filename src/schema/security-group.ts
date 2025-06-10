@@ -5,6 +5,8 @@ import {
   DescribeSecurityGroupRulesCommandInput,
   DescribeSecurityGroupsCommandInput,
   IpPermission,
+  ModifySecurityGroupRulesCommandInput,
+  SecurityGroupRuleUpdate,
 } from "@aws-sdk/client-ec2";
 import z from "zod";
 import {
@@ -15,24 +17,39 @@ import {
   tagSpecificationSchema,
 } from "./common";
 
+// Base Schema Components
+const descriptionSchema = z
+  .string()
+  .optional()
+  .describe("A description for the security group rule");
+const fromPortSchema = z
+  .number()
+  .optional()
+  .describe("The start of port range for the TCP and UDP protocols");
+const toPortSchema = z
+  .number()
+  .optional()
+  .describe("The end of port range for the TCP and UDP protocols");
+const ipProtocolSchema = z
+  .string()
+  .optional()
+  .describe("The IP protocol name or number");
+
+// IP Range Schema
 const ipRangeSchema = z.object({
-  CidrIp: z.string().describe("The IPv4 CIDR range"),
-  Description: z.string().optional().describe("A description for the IP range"),
+  CidrIp: z.string().optional().describe("The IPv4 CIDR range"),
+  Description: descriptionSchema,
 });
 
+// IPv6 Range Schema
 const ipv6RangeSchema = z.object({
-  CidrIpv6: z.string().describe("The IPv6 CIDR range"),
-  Description: z
-    .string()
-    .optional()
-    .describe("A description for the IPv6 range"),
+  CidrIpv6: z.string().optional().describe("The IPv6 CIDR range"),
+  Description: descriptionSchema,
 });
 
+// User ID Group Pair Schema
 const userIdGroupPairSchema = z.object({
-  Description: z
-    .string()
-    .optional()
-    .describe("A description for the security group rule"),
+  Description: descriptionSchema,
   GroupId: z.string().optional().describe("The ID of the security group"),
   GroupName: z.string().optional().describe("The name of the security group"),
   UserId: z.string().optional().describe("The ID of the AWS account"),
@@ -47,53 +64,59 @@ const userIdGroupPairSchema = z.object({
     .describe("The status of the VPC peering connection"),
 });
 
+// IP Permission Schema
 const ipPermissionSchema = z.object({
-  FromPort: z
-    .number()
-    .optional()
-    .describe("The start of port range for the TCP and UDP protocols"),
-  IpProtocol: z.string().optional().describe("The IP protocol name or number"),
+  FromPort: fromPortSchema,
+  IpProtocol: ipProtocolSchema,
   IpRanges: z.array(ipRangeSchema).optional().describe("IPv4 CIDR ranges"),
   Ipv6Ranges: z.array(ipv6RangeSchema).optional().describe("IPv6 CIDR ranges"),
   PrefixListIds: z
     .array(
       z.object({
-        Description: z
-          .string()
-          .optional()
-          .describe("A description for the prefix list ID"),
+        Description: descriptionSchema,
         PrefixListId: z.string().describe("The ID of the prefix list"),
       })
     )
     .optional()
     .describe("Prefix list IDs for an AWS service"),
-  ToPort: z
-    .number()
-    .optional()
-    .describe("The end of port range for the TCP and UDP protocols"),
+  ToPort: toPortSchema,
   UserIdGroupPairs: z
     .array(userIdGroupPairSchema)
     .optional()
     .describe("Security group and AWS account ID pairs"),
 }) satisfies z.ZodType<IpPermission>;
 
+// Security Group Rule Update Schema
+const securityGroupRuleUpdateSchema = z.object({
+  SecurityGroupRuleId: z.string().describe("The ID of the security group rule"),
+  SecurityGroupRule: z
+    .object({
+      CidrIpv4: z.string().optional().describe("The IPv4 CIDR range"),
+      CidrIpv6: z.string().optional().describe("The IPv6 CIDR range"),
+      Description: descriptionSchema,
+      FromPort: fromPortSchema,
+      IpProtocol: ipProtocolSchema,
+      PrefixListId: z.string().optional().describe("The ID of the prefix list"),
+      ReferencedGroupId: z
+        .string()
+        .optional()
+        .describe("The ID of the referenced security group"),
+      ToPort: toPortSchema,
+    })
+    .describe("The security group rule properties to update"),
+}) satisfies z.ZodType<SecurityGroupRuleUpdate>;
+
 // Common Security Group Rule Schema
 const commonSecurityGroupRuleSchema = {
   CidrIp: z.string().optional().describe("The CIDR IPv4 address range"),
-  FromPort: z
-    .number()
-    .optional()
-    .describe("The start of port range for the TCP and UDP protocols"),
+  FromPort: fromPortSchema,
   GroupName: z.string().optional().describe("The name of the security group"),
   IpPermissions: z
     .array(ipPermissionSchema)
     .optional()
     .describe("Sets of IP permissions"),
-  IpProtocol: z.string().optional().describe("The IP protocol name or number"),
-  ToPort: z
-    .number()
-    .optional()
-    .describe("The end of port range for the TCP and UDP protocols"),
+  IpProtocol: ipProtocolSchema,
+  ToPort: toPortSchema,
   TagSpecifications: tagSpecificationSchema,
   DryRun: dryRunSchema,
 };
@@ -158,6 +181,15 @@ const authorizeSecurityGroupEgressBaseSchema = z.object({
     .describe("The ID of the destination security group"),
 }) satisfies z.ZodType<AuthorizeSecurityGroupEgressCommandInput>;
 
+// Modify Security Group Rules
+const modifySecurityGroupRulesBaseSchema = z.object({
+  GroupId: z.string().describe("The ID of the security group"),
+  SecurityGroupRules: z
+    .array(securityGroupRuleUpdateSchema)
+    .describe("The rules to modify"),
+  DryRun: dryRunSchema,
+}) satisfies z.ZodType<ModifySecurityGroupRulesCommandInput>;
+
 // Export the schemas
 export const listSecurityGroupsSchema = {
   region: regionSchema,
@@ -184,6 +216,11 @@ export const authorizeSecurityGroupEgressSchema = {
   SecurityGroupArgs: authorizeSecurityGroupEgressBaseSchema,
 };
 
+export const modifySecurityGroupRulesSchema = {
+  region: regionSchema,
+  SecurityGroupArgs: modifySecurityGroupRulesBaseSchema,
+};
+
 // Export the types
 export type ListSecurityGroupsArgs = z.infer<
   ReturnType<typeof z.object<typeof listSecurityGroupsSchema>>
@@ -203,4 +240,8 @@ export type AuthorizeSecurityGroupIngressArgs = z.infer<
 
 export type AuthorizeSecurityGroupEgressArgs = z.infer<
   ReturnType<typeof z.object<typeof authorizeSecurityGroupEgressSchema>>
+>;
+
+export type ModifySecurityGroupRulesArgs = z.infer<
+  ReturnType<typeof z.object<typeof modifySecurityGroupRulesSchema>>
 >;
