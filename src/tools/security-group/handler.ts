@@ -6,6 +6,7 @@ import {
   ListSecurityGroupRulesArgs,
   ListSecurityGroupsArgs,
   ModifySecurityGroupRulesArgs,
+  UpdateSecurityGroupRuleDescriptionsEgressArgs,
   UpdateSecurityGroupRuleDescriptionsIngressArgs,
 } from "@/schema/security-group";
 import { HandlerReturnType } from "@/types/common";
@@ -17,6 +18,7 @@ import {
   DescribeSecurityGroupRulesCommand,
   DescribeSecurityGroupsCommand,
   ModifySecurityGroupRulesCommand,
+  UpdateSecurityGroupRuleDescriptionsEgressCommand,
   UpdateSecurityGroupRuleDescriptionsIngressCommand,
 } from "@aws-sdk/client-ec2";
 
@@ -86,6 +88,18 @@ export const updateSecurityGroupRuleDescriptionsIngress = async (
   const { region, SecurityGroupArgs } = args;
   const ec2Client = getEC2Client({ region });
   const command = new UpdateSecurityGroupRuleDescriptionsIngressCommand(
+    SecurityGroupArgs
+  );
+  const response = await ec2Client.send(command);
+  return formatResponse(response);
+};
+
+export const updateSecurityGroupRuleDescriptionsEgress = async (
+  args: UpdateSecurityGroupRuleDescriptionsEgressArgs
+): Promise<HandlerReturnType> => {
+  const { region, SecurityGroupArgs } = args;
+  const ec2Client = getEC2Client({ region });
+  const command = new UpdateSecurityGroupRuleDescriptionsEgressCommand(
     SecurityGroupArgs
   );
   const response = await ec2Client.send(command);

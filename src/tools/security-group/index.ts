@@ -5,6 +5,7 @@ import {
   listSecurityGroupRulesSchema,
   listSecurityGroupsSchema,
   modifySecurityGroupRulesSchema,
+  updateSecurityGroupRuleDescriptionsEgressSchema,
   updateSecurityGroupRuleDescriptionsIngressSchema,
 } from "@/schema/security-group";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
@@ -15,6 +16,7 @@ import {
   listSecurityGroupRules,
   listSecurityGroups,
   modifySecurityGroupRules,
+  updateSecurityGroupRuleDescriptionsEgress,
   updateSecurityGroupRuleDescriptionsIngress,
 } from "./handler";
 
@@ -115,5 +117,19 @@ export const registerSecurityGroupTools = (server: McpServer): void => {
       title: "Update Security Group Rule Descriptions Ingress",
     },
     async (args) => await updateSecurityGroupRuleDescriptionsIngress(args)
+  );
+
+  server.tool(
+    "security-group-update-security-group-rule-descriptions-egress",
+    "Update the description of a security group rule egress in the given region",
+    updateSecurityGroupRuleDescriptionsEgressSchema,
+    {
+      destructiveHint: false,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+      title: "Update Security Group Rule Descriptions Egress",
+    },
+    async (args) => await updateSecurityGroupRuleDescriptionsEgress(args)
   );
 };

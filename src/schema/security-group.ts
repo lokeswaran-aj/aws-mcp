@@ -7,6 +7,7 @@ import {
   IpPermission,
   ModifySecurityGroupRulesCommandInput,
   SecurityGroupRuleUpdate,
+  UpdateSecurityGroupRuleDescriptionsEgressCommandInput,
   UpdateSecurityGroupRuleDescriptionsIngressCommandInput,
 } from "@aws-sdk/client-ec2";
 import z from "zod";
@@ -86,6 +87,19 @@ const ipPermissionSchema = z.object({
     .optional()
     .describe("Security group and AWS account ID pairs"),
 }) satisfies z.ZodType<IpPermission>;
+
+const securityGroupRuleDescriptionSchema = z
+  .array(
+    z.object({
+      SecurityGroupRuleId: z
+        .string()
+        .optional()
+        .describe("The ID of the security group rule"),
+      Description: descriptionSchema,
+    })
+  )
+  .optional()
+  .describe("The security group rule descriptions to update");
 
 // Security Group Rule Update Schema
 const securityGroupRuleUpdateSchema = z.object({
@@ -193,23 +207,27 @@ const modifySecurityGroupRulesBaseSchema = z.object({
 
 // Update Security Group Rule Descriptions Ingress
 const updateSecurityGroupRuleDescriptionsIngressBaseSchema = z.object({
-  GroupId: z.string().describe("The ID of the security group"),
+  GroupId: z.string().optional().describe("The ID of the security group"),
   GroupName: z.string().optional().describe("The name of the security group"),
   IpPermissions: z
     .array(ipPermissionSchema)
+    .optional()
     .describe("The IP permissions with the updated descriptions"),
-  SecurityGroupRuleDescriptions: z
-    .array(
-      z.object({
-        SecurityGroupRuleId: z
-          .string()
-          .describe("The ID of the security group rule"),
-        Description: descriptionSchema,
-      })
-    )
-    .describe("The security group rule descriptions to update"),
+  SecurityGroupRuleDescriptions: securityGroupRuleDescriptionSchema,
   DryRun: dryRunSchema,
 }) satisfies z.ZodType<UpdateSecurityGroupRuleDescriptionsIngressCommandInput>;
+
+// Update Security Group Rule Descriptions Egress
+const updateSecurityGroupRuleDescriptionsEgressBaseSchema = z.object({
+  DryRun: dryRunSchema,
+  GroupId: z.string().optional().describe("The ID of the security group"),
+  GroupName: z.string().optional().describe("The name of the security group"),
+  IpPermissions: z
+    .array(ipPermissionSchema)
+    .optional()
+    .describe("The IP permissions with the updated descriptions"),
+  SecurityGroupRuleDescriptions: securityGroupRuleDescriptionSchema,
+}) satisfies z.ZodType<UpdateSecurityGroupRuleDescriptionsEgressCommandInput>;
 
 // Export the schemas
 export const listSecurityGroupsSchema = {
@@ -247,6 +265,11 @@ export const updateSecurityGroupRuleDescriptionsIngressSchema = {
   SecurityGroupArgs: updateSecurityGroupRuleDescriptionsIngressBaseSchema,
 };
 
+export const updateSecurityGroupRuleDescriptionsEgressSchema = {
+  region: regionSchema,
+  SecurityGroupArgs: updateSecurityGroupRuleDescriptionsEgressBaseSchema,
+};
+
 // Export the types
 export type ListSecurityGroupsArgs = z.infer<
   ReturnType<typeof z.object<typeof listSecurityGroupsSchema>>
@@ -275,5 +298,11 @@ export type ModifySecurityGroupRulesArgs = z.infer<
 export type UpdateSecurityGroupRuleDescriptionsIngressArgs = z.infer<
   ReturnType<
     typeof z.object<typeof updateSecurityGroupRuleDescriptionsIngressSchema>
+  >
+>;
+
+export type UpdateSecurityGroupRuleDescriptionsEgressArgs = z.infer<
+  ReturnType<
+    typeof z.object<typeof updateSecurityGroupRuleDescriptionsEgressSchema>
   >
 >;
