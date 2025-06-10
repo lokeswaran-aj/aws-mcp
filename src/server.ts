@@ -3,6 +3,7 @@ import { registerInternetGatewayTools } from "./tools/internet-gateway";
 import { registerRdsTools } from "./tools/rds";
 import { registerRouteTableTools } from "./tools/route-table";
 import { registerS3Tools } from "./tools/s3";
+import { registerSecurityGroupTools } from "./tools/security-group";
 import { registerSubnetTools } from "./tools/subnet";
 import { registerVpcTools } from "./tools/vpc";
 
@@ -26,3 +27,4 @@ void registerVpcTools(server);
 void registerSubnetTools(server);
 void registerInternetGatewayTools(server);
 void registerRouteTableTools(server);
+void registerSecurityGroupTools(server);
