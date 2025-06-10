@@ -1,5 +1,7 @@
 import { getEC2Client } from "@/aws-clients";
 import {
+  AuthorizeSecurityGroupEgressArgs,
+  AuthorizeSecurityGroupIngressArgs,
   CreateSecurityGroupArgs,
   ListSecurityGroupRulesArgs,
   ListSecurityGroupsArgs,
@@ -7,6 +9,8 @@ import {
 import { HandlerReturnType } from "@/types/common";
 import { formatResponse } from "@/utils/format-response";
 import {
+  AuthorizeSecurityGroupEgressCommand,
+  AuthorizeSecurityGroupIngressCommand,
   CreateSecurityGroupCommand,
   DescribeSecurityGroupRulesCommand,
   DescribeSecurityGroupsCommand,
@@ -38,6 +42,26 @@ export const createSecurityGroup = async (
   const { region, SecurityGroupArgs } = args;
   const ec2Client = getEC2Client({ region });
   const command = new CreateSecurityGroupCommand(SecurityGroupArgs);
+  const response = await ec2Client.send(command);
+  return formatResponse(response);
+};
+
+export const authorizeSecurityGroupIngress = async (
+  args: AuthorizeSecurityGroupIngressArgs
+): Promise<HandlerReturnType> => {
+  const { region, SecurityGroupArgs } = args;
+  const ec2Client = getEC2Client({ region });
+  const command = new AuthorizeSecurityGroupIngressCommand(SecurityGroupArgs);
+  const response = await ec2Client.send(command);
+  return formatResponse(response);
+};
+
+export const authorizeSecurityGroupEgress = async (
+  args: AuthorizeSecurityGroupEgressArgs
+): Promise<HandlerReturnType> => {
+  const { region, SecurityGroupArgs } = args;
+  const ec2Client = getEC2Client({ region });
+  const command = new AuthorizeSecurityGroupEgressCommand(SecurityGroupArgs);
   const response = await ec2Client.send(command);
   return formatResponse(response);
 };
