@@ -18,33 +18,14 @@ See it in action! Here's how easy it is to create a VPC with 2 subnets and delet
 
 Currently supports
 
-1. **RDS**:
-
-- ✅ List all RDS DB instances in the given region
-- ✅ Create a new RDS DB instance
-- ✅ Delete an existing RDS DB instance
-- ✅ Update an RDS DB instance
-
-2. **S3**:
-
-- ✅ List all S3 buckets in the given region
-- ✅ Create a new S3 bucket
-- ✅ Delete an existing S3 bucket
-
-3. **VPC**:
-
-- ✅ List all VPCs in the given region
-- ✅ Create a new VPC
-- ✅ Delete an existing VPC
-- ✅ Update an VPC attributes
-- ✅ Update an VPC endpoint
-
-4. **Subnet**:
-
-- ✅ List all subnets in the given VPC
-- ✅ Create a new subnet
-- ✅ Delete an existing subnet
-- ✅ Update an subnet attributes
+1. RDS
+2. S3
+3. VPC
+4. Subnet
+5. Internet Gateway
+6. Route Table
+7. Security Group
+8. Key Pair
 
 More AWS services (like EC2, Lambda, etc.) coming soon! Contributions welcome 🚀
 
@@ -145,7 +126,7 @@ To use this server with [Windsurf IDE](https://windsurf.com), add the following 
 
 - [x] Support RDS (Create, List, Update, Delete)
 - [x] Add S3 tools
-- [ ] Add Network tools
+- [x] Add Network tools
 - [ ] Add EC2 tools
 - [ ] Add Lambda tools
 - [ ] Add IAM tools
