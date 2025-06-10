@@ -5,6 +5,8 @@ import {
   listSecurityGroupRulesSchema,
   listSecurityGroupsSchema,
   modifySecurityGroupRulesSchema,
+  revokeSecurityGroupEgressSchema,
+  revokeSecurityGroupIngressSchema,
   updateSecurityGroupRuleDescriptionsEgressSchema,
   updateSecurityGroupRuleDescriptionsIngressSchema,
 } from "@/schema/security-group";
@@ -16,6 +18,8 @@ import {
   listSecurityGroupRules,
   listSecurityGroups,
   modifySecurityGroupRules,
+  revokeSecurityGroupEgress,
+  revokeSecurityGroupIngress,
   updateSecurityGroupRuleDescriptionsEgress,
   updateSecurityGroupRuleDescriptionsIngress,
 } from "./handler";
@@ -131,5 +135,33 @@ export const registerSecurityGroupTools = (server: McpServer): void => {
       title: "Update Security Group Rule Descriptions Egress",
     },
     async (args) => await updateSecurityGroupRuleDescriptionsEgress(args)
+  );
+
+  server.tool(
+    "security-group-revoke-security-group-ingress",
+    "Revoke a security group ingress in the given region",
+    revokeSecurityGroupIngressSchema,
+    {
+      destructiveHint: true,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+      title: "Revoke Security Group Ingress",
+    },
+    async (args) => await revokeSecurityGroupIngress(args)
+  );
+
+  server.tool(
+    "security-group-revoke-security-group-egress",
+    "Revoke a security group egress in the given region",
+    revokeSecurityGroupEgressSchema,
+    {
+      destructiveHint: true,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+      title: "Revoke Security Group Egress",
+    },
+    async (args) => await revokeSecurityGroupEgress(args)
   );
 };

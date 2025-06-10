@@ -6,6 +6,8 @@ import {
   DescribeSecurityGroupsCommandInput,
   IpPermission,
   ModifySecurityGroupRulesCommandInput,
+  RevokeSecurityGroupEgressCommandInput,
+  RevokeSecurityGroupIngressCommandInput,
   SecurityGroupRuleUpdate,
   UpdateSecurityGroupRuleDescriptionsEgressCommandInput,
   UpdateSecurityGroupRuleDescriptionsIngressCommandInput,
@@ -229,6 +231,27 @@ const updateSecurityGroupRuleDescriptionsEgressBaseSchema = z.object({
   SecurityGroupRuleDescriptions: securityGroupRuleDescriptionSchema,
 }) satisfies z.ZodType<UpdateSecurityGroupRuleDescriptionsEgressCommandInput>;
 
+// Revoke Security Group Ingress
+const revokeSecurityGroupIngressBaseSchema = z.object({
+  ...commonSecurityGroupRuleSchema,
+  GroupId: z.string().optional().describe("The ID of the security group"),
+  GroupName: z.string().optional().describe("The name of the security group"),
+  SecurityGroupRuleIds: z
+    .array(z.string())
+    .optional()
+    .describe("The IDs of the security group rules"),
+}) satisfies z.ZodType<RevokeSecurityGroupIngressCommandInput>;
+
+// Revoke Security Group Egress
+const revokeSecurityGroupEgressBaseSchema = z.object({
+  ...commonSecurityGroupRuleSchema,
+  GroupId: z.string().describe("The ID of the security group"),
+  SecurityGroupRuleIds: z
+    .array(z.string())
+    .optional()
+    .describe("The IDs of the security group rules"),
+}) satisfies z.ZodType<RevokeSecurityGroupEgressCommandInput>;
+
 // Export the schemas
 export const listSecurityGroupsSchema = {
   region: regionSchema,
@@ -270,6 +293,16 @@ export const updateSecurityGroupRuleDescriptionsEgressSchema = {
   SecurityGroupArgs: updateSecurityGroupRuleDescriptionsEgressBaseSchema,
 };
 
+export const revokeSecurityGroupIngressSchema = {
+  region: regionSchema,
+  SecurityGroupArgs: revokeSecurityGroupIngressBaseSchema,
+};
+
+export const revokeSecurityGroupEgressSchema = {
+  region: regionSchema,
+  SecurityGroupArgs: revokeSecurityGroupEgressBaseSchema,
+};
+
 // Export the types
 export type ListSecurityGroupsArgs = z.infer<
   ReturnType<typeof z.object<typeof listSecurityGroupsSchema>>
@@ -305,4 +338,12 @@ export type UpdateSecurityGroupRuleDescriptionsEgressArgs = z.infer<
   ReturnType<
     typeof z.object<typeof updateSecurityGroupRuleDescriptionsEgressSchema>
   >
+>;
+
+export type RevokeSecurityGroupIngressArgs = z.infer<
+  ReturnType<typeof z.object<typeof revokeSecurityGroupIngressSchema>>
+>;
+
+export type RevokeSecurityGroupEgressArgs = z.infer<
+  ReturnType<typeof z.object<typeof revokeSecurityGroupEgressSchema>>
 >;
