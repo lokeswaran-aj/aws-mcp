@@ -1,5 +1,6 @@
 import {
   CreateInternetGatewayCommandInput,
+  DeleteInternetGatewayCommandInput,
   DescribeInternetGatewaysCommandInput,
 } from "@aws-sdk/client-ec2";
 import z from "zod";
@@ -28,6 +29,12 @@ const createInternetGatewayBaseSchema = z.object({
   TagSpecifications: tagSpecificationSchema,
 }) satisfies z.ZodType<CreateInternetGatewayCommandInput>;
 
+// Delete Internet Gateway
+const deleteInternetGatewayBaseSchema = z.object({
+  InternetGatewayId: z.string().describe("The ID of the internet gateway"),
+  DryRun: dryRunSchema,
+}) satisfies z.ZodType<DeleteInternetGatewayCommandInput>;
+
 // Export the schemas
 export const listInternetGatewaysSchema = {
   region: regionSchema,
@@ -39,6 +46,11 @@ export const createInternetGatewaySchema = {
   InternetGatewayArgs: createInternetGatewayBaseSchema,
 };
 
+export const deleteInternetGatewaySchema = {
+  region: regionSchema,
+  InternetGatewayArgs: deleteInternetGatewayBaseSchema,
+};
+
 // Export the types
 export type ListInternetGatewaysArgs = z.infer<
   ReturnType<typeof z.object<typeof listInternetGatewaysSchema>>
@@ -46,4 +58,8 @@ export type ListInternetGatewaysArgs = z.infer<
 
 export type CreateInternetGatewayArgs = z.infer<
   ReturnType<typeof z.object<typeof createInternetGatewaySchema>>
+>;
+
+export type DeleteInternetGatewayArgs = z.infer<
+  ReturnType<typeof z.object<typeof deleteInternetGatewaySchema>>
 >;

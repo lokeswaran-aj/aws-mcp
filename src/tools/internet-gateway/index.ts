@@ -1,9 +1,14 @@
 import {
   createInternetGatewaySchema,
+  deleteInternetGatewaySchema,
   listInternetGatewaysSchema,
 } from "@/schema/internet-gateway";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { createInternetGateway, listInternetGateways } from "./handler";
+import {
+  createInternetGateway,
+  deleteInternetGateway,
+  listInternetGateways,
+} from "./handler";
 
 export const registerInternetGatewayTools = (server: McpServer): void => {
   server.tool(
@@ -32,5 +37,19 @@ export const registerInternetGatewayTools = (server: McpServer): void => {
       title: "Create a new internet gateway",
     },
     async (args) => await createInternetGateway(args)
+  );
+
+  server.tool(
+    "internet-gateway-delete-internet-gateway",
+    "Delete an internet gateway by ID in the given region",
+    deleteInternetGatewaySchema,
+    {
+      destructiveHint: true,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+      title: "Delete an internet gateway",
+    },
+    async (args) => await deleteInternetGateway(args)
   );
 };
