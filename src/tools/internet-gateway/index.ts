@@ -1,6 +1,9 @@
-import { listInternetGatewaysSchema } from "@/schema/internet-gateway";
+import {
+  createInternetGatewaySchema,
+  listInternetGatewaysSchema,
+} from "@/schema/internet-gateway";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { listInternetGateways } from "./handler";
+import { createInternetGateway, listInternetGateways } from "./handler";
 
 export const registerInternetGatewayTools = (server: McpServer): void => {
   server.tool(
@@ -15,5 +18,19 @@ export const registerInternetGatewayTools = (server: McpServer): void => {
       title: "List all internet gateways",
     },
     async (args) => await listInternetGateways(args)
+  );
+
+  server.tool(
+    "internet-gateway-create-internet-gateway",
+    "Create a new internet gateway in the given region",
+    createInternetGatewaySchema,
+    {
+      destructiveHint: false,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: false,
+      title: "Create a new internet gateway",
+    },
+    async (args) => await createInternetGateway(args)
   );
 };
