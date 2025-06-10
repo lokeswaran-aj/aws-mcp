@@ -54,4 +54,4 @@ export const tagSpecificationSchema = z
     })
   )
   .optional()
-  .describe("The tags to assign to the VPC");
+  .describe("The tags to assign to the resource");
