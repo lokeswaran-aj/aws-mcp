@@ -1,6 +1,7 @@
 import {
   AssociateRouteTableCommandInput,
   CreateRouteTableCommandInput,
+  DeleteRouteTableCommandInput,
   DescribeRouteTablesCommandInput,
   DisassociateRouteTableCommandInput,
   ReplaceRouteTableAssociationCommandInput,
@@ -60,6 +61,12 @@ const replaceRouteTableAssociationBaseSchema = z.object({
   DryRun: dryRunSchema,
 }) satisfies z.ZodType<ReplaceRouteTableAssociationCommandInput>;
 
+// Delete Route Table
+const deleteRouteTableBaseSchema = z.object({
+  RouteTableId: z.string().describe("The ID of the route table"),
+  DryRun: dryRunSchema,
+}) satisfies z.ZodType<DeleteRouteTableCommandInput>;
+
 // Export the schemas
 export const listRouteTablesSchema = {
   region: regionSchema,
@@ -86,6 +93,11 @@ export const replaceRouteTableAssociationSchema = {
   RouteTableArgs: replaceRouteTableAssociationBaseSchema,
 };
 
+export const deleteRouteTableSchema = {
+  region: regionSchema,
+  RouteTableArgs: deleteRouteTableBaseSchema,
+};
+
 // Export the types
 export type ListRouteTablesArgs = z.infer<
   ReturnType<typeof z.object<typeof listRouteTablesSchema>>
@@ -105,4 +117,8 @@ export type DisassociateRouteTableArgs = z.infer<
 
 export type ReplaceRouteTableAssociationArgs = z.infer<
   ReturnType<typeof z.object<typeof replaceRouteTableAssociationSchema>>
+>;
+
+export type DeleteRouteTableArgs = z.infer<
+  ReturnType<typeof z.object<typeof deleteRouteTableSchema>>
 >;

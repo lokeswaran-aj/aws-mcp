@@ -1,6 +1,7 @@
 import {
   associateRouteTableSchema,
   createRouteTableSchema,
+  deleteRouteTableSchema,
   disassociateRouteTableSchema,
   listRouteTablesSchema,
   replaceRouteTableAssociationSchema,
@@ -9,6 +10,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {
   associateRouteTable,
   createRouteTable,
+  deleteRouteTable,
   disassociateRouteTable,
   listRouteTables,
   replaceRouteTableAssociation,
@@ -83,5 +85,19 @@ export const registerRouteTableTools = (server: McpServer): void => {
       title: "Replace the route table association for a subnet or gateway",
     },
     async (args) => await replaceRouteTableAssociation(args)
+  );
+
+  server.tool(
+    "route-table-delete-route-table",
+    "Delete a route table in the given region",
+    deleteRouteTableSchema,
+    {
+      destructiveHint: true,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+      title: "Delete a route table",
+    },
+    async (args) => await deleteRouteTable(args)
   );
 };

@@ -1,6 +1,7 @@
 import {
   AssociateRouteTableArgs,
   CreateRouteTablesArgs,
+  DeleteRouteTableArgs,
   DisassociateRouteTableArgs,
   ListRouteTablesArgs,
   ReplaceRouteTableAssociationArgs,
@@ -10,6 +11,7 @@ import { formatResponse } from "@/utils/format-response";
 import {
   AssociateRouteTableCommand,
   CreateRouteTableCommand,
+  DeleteRouteTableCommand,
   DescribeRouteTablesCommand,
   DisassociateRouteTableCommand,
   EC2Client,
@@ -62,6 +64,16 @@ export const replaceRouteTableAssociation = async (
   const { region, RouteTableArgs } = args;
   const ec2Client = new EC2Client({ region });
   const command = new ReplaceRouteTableAssociationCommand(RouteTableArgs);
+  const response = await ec2Client.send(command);
+  return formatResponse(response);
+};
+
+export const deleteRouteTable = async (
+  args: DeleteRouteTableArgs
+): Promise<HandlerReturnType> => {
+  const { region, RouteTableArgs } = args;
+  const ec2Client = new EC2Client({ region });
+  const command = new DeleteRouteTableCommand(RouteTableArgs);
   const response = await ec2Client.send(command);
   return formatResponse(response);
 };
