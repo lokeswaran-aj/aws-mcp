@@ -1,40 +1,60 @@
-# 🛠️ AWS MCP Server
-
-An **MCP (Model Context Protocol)** server for managing AWS resources like RDS, using a simple chat interface.
-
-**Manage your AWS infrastructure using natural language!** Instead of remembering complex AWS CLI commands or navigating the console, simply chat with your infrastructure: _"Create a MySQL database for my app"_ or _"List all my RDS instances"_.
+<div align="center">
+  <img src="assets/banner.svg" width="1200" alt="demo"/>
+</div>
 
 ## 🎬 Demo
 
-See it in action! Here's how easy it is to create an RDS database using natural language:
+See it in action! Here's how easy it is to create a VPC with 2 subnets and delete them using natural language:
 
 <div align="center" style="margin-top:20px;margin-bottom:20px;">
-<img src="https://github.com/user-attachments/assets/508ab998-aed9-481f-b4bf-015597cefbc2" width="1200" alt="demo"/>
+<img src="assets/demo.gif" width="1200" alt="demo"/>
 </div>
 
-> 💡 **Pro tip**: The video shows creating a database through chat - no AWS console needed!
+> 💡 **Pro tip**: The video shows creating a VPC with 2 subnets and deleting them through chat - no AWS console needed!
 
 ---
 
 ## ✨ Features
 
-Currently supports **Amazon RDS** operations:
+Currently supports
+
+1. **RDS**:
 
 - ✅ List all RDS DB instances in the given region
 - ✅ Create a new RDS DB instance
 - ✅ Delete an existing RDS DB instance
 - ✅ Update an RDS DB instance
 
-More AWS services (like EC2, VPC, S3, etc.) coming soon! Contributions welcome 🚀
+2. **S3**:
+
+- ✅ List all S3 buckets in the given region
+- ✅ Create a new S3 bucket
+- ✅ Delete an existing S3 bucket
+
+3. **VPC**:
+
+- ✅ List all VPCs in the given region
+- ✅ Create a new VPC
+- ✅ Delete an existing VPC
+- ✅ Update an VPC attributes
+- ✅ Update an VPC endpoint
+
+4. **Subnet**:
+
+- ✅ List all subnets in the given VPC
+- ✅ Create a new subnet
+- ✅ Delete an existing subnet
+- ✅ Update an subnet attributes
+
+More AWS services (like EC2, Lambda, etc.) coming soon! Contributions welcome 🚀
 
 ---
 
 ## 📋 Prerequisites
 
 - **Node.js** >= 18.0.0
-- **pnpm** >= 8.0.0
-- **AWS Account** with programmatic access
-- **AWS CLI** configured (optional, but recommended)
+- **pnpm** >= 10.0.0
+- **AWS Account** with AWS credentials(Access Key ID and Secret Access Key)
 
 ---
 
@@ -124,9 +144,10 @@ To use this server with [Windsurf IDE](https://windsurf.com), add the following 
 ## 📌 Roadmap
 
 - [x] Support RDS (Create, List, Update, Delete)
-- [ ] Add S3 tools
-- [ ] Add EC2 tools
+- [x] Add S3 tools
 - [ ] Add Network tools
+- [ ] Add EC2 tools
+- [ ] Add Lambda tools
 - [ ] Add IAM tools
 - [ ] Add ECS tools
 
