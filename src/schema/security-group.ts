@@ -1,4 +1,5 @@
 import {
+  CreateSecurityGroupCommandInput,
   DescribeSecurityGroupRulesCommandInput,
   DescribeSecurityGroupsCommandInput,
 } from "@aws-sdk/client-ec2";
@@ -8,6 +9,7 @@ import {
   filterSchema,
   paginationSchema,
   regionSchema,
+  tagSpecificationSchema,
 } from "./common";
 
 // List Security Groups
@@ -37,6 +39,15 @@ const listSecurityGroupRulesBaseSchema = z.object({
   ...paginationSchema,
 }) satisfies z.ZodType<DescribeSecurityGroupRulesCommandInput>;
 
+// Create Security Group
+const createSecurityGroupBaseSchema = z.object({
+  Description: z.string().describe("A description of the security group"),
+  GroupName: z.string().describe("The name of the security group"),
+  TagSpecifications: tagSpecificationSchema,
+  VpcId: z.string().describe("The ID of the VPC"),
+  DryRun: dryRunSchema,
+}) satisfies z.ZodType<CreateSecurityGroupCommandInput>;
+
 // Export the schemas
 export const listSecurityGroupsSchema = {
   region: regionSchema,
@@ -48,6 +59,11 @@ export const listSecurityGroupRulesSchema = {
   SecurityGroupRuleArgs: listSecurityGroupRulesBaseSchema,
 };
 
+export const createSecurityGroupSchema = {
+  region: regionSchema,
+  SecurityGroupArgs: createSecurityGroupBaseSchema,
+};
+
 // Export the types
 export type ListSecurityGroupsArgs = z.infer<
   ReturnType<typeof z.object<typeof listSecurityGroupsSchema>>
@@ -55,4 +71,8 @@ export type ListSecurityGroupsArgs = z.infer<
 
 export type ListSecurityGroupRulesArgs = z.infer<
   ReturnType<typeof z.object<typeof listSecurityGroupRulesSchema>>
+>;
+
+export type CreateSecurityGroupArgs = z.infer<
+  ReturnType<typeof z.object<typeof createSecurityGroupSchema>>
 >;
