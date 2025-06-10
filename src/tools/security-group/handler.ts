@@ -1,8 +1,14 @@
 import { getEC2Client } from "@/aws-clients";
-import { ListSecurityGroupsArgs } from "@/schema/security-group";
+import {
+  ListSecurityGroupRulesArgs,
+  ListSecurityGroupsArgs,
+} from "@/schema/security-group";
 import { HandlerReturnType } from "@/types/common";
 import { formatResponse } from "@/utils/format-response";
-import { DescribeSecurityGroupsCommand } from "@aws-sdk/client-ec2";
+import {
+  DescribeSecurityGroupRulesCommand,
+  DescribeSecurityGroupsCommand,
+} from "@aws-sdk/client-ec2";
 
 export const listSecurityGroups = async (
   args: ListSecurityGroupsArgs
@@ -10,6 +16,16 @@ export const listSecurityGroups = async (
   const { region, SecurityGroupArgs } = args;
   const ec2Client = getEC2Client({ region });
   const command = new DescribeSecurityGroupsCommand(SecurityGroupArgs);
+  const response = await ec2Client.send(command);
+  return formatResponse(response);
+};
+
+export const listSecurityGroupRules = async (
+  args: ListSecurityGroupRulesArgs
+): Promise<HandlerReturnType> => {
+  const { region, SecurityGroupRuleArgs } = args;
+  const ec2Client = getEC2Client({ region });
+  const command = new DescribeSecurityGroupRulesCommand(SecurityGroupRuleArgs);
   const response = await ec2Client.send(command);
   return formatResponse(response);
 };

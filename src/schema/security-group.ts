@@ -1,4 +1,7 @@
-import { DescribeSecurityGroupsCommandInput } from "@aws-sdk/client-ec2";
+import {
+  DescribeSecurityGroupRulesCommandInput,
+  DescribeSecurityGroupsCommandInput,
+} from "@aws-sdk/client-ec2";
 import z from "zod";
 import {
   dryRunSchema,
@@ -22,13 +25,34 @@ const listSecurityGroupsBaseSchema = z.object({
   ...paginationSchema,
 }) satisfies z.ZodType<DescribeSecurityGroupsCommandInput>;
 
+// List Security Groups Rules
+const listSecurityGroupRulesBaseSchema = z.object({
+  SecurityGroupRuleIds: z
+    .array(z.string())
+    .optional()
+    .describe("The IDs of the security group rules"),
+  DryRun: dryRunSchema,
+  Filters: filterSchema,
+  GroupId: z.string().describe("The ID of the security group"),
+  ...paginationSchema,
+}) satisfies z.ZodType<DescribeSecurityGroupRulesCommandInput>;
+
 // Export the schemas
 export const listSecurityGroupsSchema = {
   region: regionSchema,
   SecurityGroupArgs: listSecurityGroupsBaseSchema,
 };
 
+export const listSecurityGroupRulesSchema = {
+  region: regionSchema,
+  SecurityGroupRuleArgs: listSecurityGroupRulesBaseSchema,
+};
+
 // Export the types
 export type ListSecurityGroupsArgs = z.infer<
   ReturnType<typeof z.object<typeof listSecurityGroupsSchema>>
+>;
+
+export type ListSecurityGroupRulesArgs = z.infer<
+  ReturnType<typeof z.object<typeof listSecurityGroupRulesSchema>>
 >;
