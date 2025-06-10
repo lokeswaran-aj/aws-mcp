@@ -3,6 +3,7 @@ import {
   AuthorizeSecurityGroupEgressArgs,
   AuthorizeSecurityGroupIngressArgs,
   CreateSecurityGroupArgs,
+  DeleteSecurityGroupArgs,
   ListSecurityGroupRulesArgs,
   ListSecurityGroupsArgs,
   ModifySecurityGroupRulesArgs,
@@ -17,6 +18,7 @@ import {
   AuthorizeSecurityGroupEgressCommand,
   AuthorizeSecurityGroupIngressCommand,
   CreateSecurityGroupCommand,
+  DeleteSecurityGroupCommand,
   DescribeSecurityGroupRulesCommand,
   DescribeSecurityGroupsCommand,
   ModifySecurityGroupRulesCommand,
@@ -126,6 +128,16 @@ export const revokeSecurityGroupEgress = async (
   const { region, SecurityGroupArgs } = args;
   const ec2Client = getEC2Client({ region });
   const command = new RevokeSecurityGroupEgressCommand(SecurityGroupArgs);
+  const response = await ec2Client.send(command);
+  return formatResponse(response);
+};
+
+export const deleteSecurityGroup = async (
+  args: DeleteSecurityGroupArgs
+): Promise<HandlerReturnType> => {
+  const { region, SecurityGroupArgs } = args;
+  const ec2Client = getEC2Client({ region });
+  const command = new DeleteSecurityGroupCommand(SecurityGroupArgs);
   const response = await ec2Client.send(command);
   return formatResponse(response);
 };

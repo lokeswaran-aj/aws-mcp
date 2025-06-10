@@ -2,6 +2,7 @@ import {
   authorizeSecurityGroupEgressSchema,
   authorizeSecurityGroupIngressSchema,
   createSecurityGroupSchema,
+  deleteSecurityGroupSchema,
   listSecurityGroupRulesSchema,
   listSecurityGroupsSchema,
   modifySecurityGroupRulesSchema,
@@ -15,6 +16,7 @@ import {
   authorizeSecurityGroupEgress,
   authorizeSecurityGroupIngress,
   createSecurityGroup,
+  deleteSecurityGroup,
   listSecurityGroupRules,
   listSecurityGroups,
   modifySecurityGroupRules,
@@ -163,5 +165,19 @@ export const registerSecurityGroupTools = (server: McpServer): void => {
       title: "Revoke Security Group Egress",
     },
     async (args) => await revokeSecurityGroupEgress(args)
+  );
+
+  server.tool(
+    "security-group-delete-security-group",
+    "Delete a security group in the given region",
+    deleteSecurityGroupSchema,
+    {
+      destructiveHint: true,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+      title: "Delete Security Group",
+    },
+    async (args) => await deleteSecurityGroup(args)
   );
 };

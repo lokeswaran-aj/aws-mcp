@@ -2,6 +2,7 @@ import {
   AuthorizeSecurityGroupEgressCommandInput,
   AuthorizeSecurityGroupIngressCommandInput,
   CreateSecurityGroupCommandInput,
+  DeleteSecurityGroupCommandInput,
   DescribeSecurityGroupRulesCommandInput,
   DescribeSecurityGroupsCommandInput,
   IpPermission,
@@ -252,6 +253,13 @@ const revokeSecurityGroupEgressBaseSchema = z.object({
     .describe("The IDs of the security group rules"),
 }) satisfies z.ZodType<RevokeSecurityGroupEgressCommandInput>;
 
+// Delete Security Group
+const deleteSecurityGroupBaseSchema = z.object({
+  GroupId: z.string().optional().describe("The ID of the security group"),
+  GroupName: z.string().optional().describe("The name of the security group"),
+  DryRun: dryRunSchema,
+}) satisfies z.ZodType<DeleteSecurityGroupCommandInput>;
+
 // Export the schemas
 export const listSecurityGroupsSchema = {
   region: regionSchema,
@@ -303,6 +311,11 @@ export const revokeSecurityGroupEgressSchema = {
   SecurityGroupArgs: revokeSecurityGroupEgressBaseSchema,
 };
 
+export const deleteSecurityGroupSchema = {
+  region: regionSchema,
+  SecurityGroupArgs: deleteSecurityGroupBaseSchema,
+};
+
 // Export the types
 export type ListSecurityGroupsArgs = z.infer<
   ReturnType<typeof z.object<typeof listSecurityGroupsSchema>>
@@ -346,4 +359,8 @@ export type RevokeSecurityGroupIngressArgs = z.infer<
 
 export type RevokeSecurityGroupEgressArgs = z.infer<
   ReturnType<typeof z.object<typeof revokeSecurityGroupEgressSchema>>
+>;
+
+export type DeleteSecurityGroupArgs = z.infer<
+  ReturnType<typeof z.object<typeof deleteSecurityGroupSchema>>
 >;
