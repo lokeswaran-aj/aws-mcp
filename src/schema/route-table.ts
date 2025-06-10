@@ -3,6 +3,7 @@ import {
   CreateRouteTableCommandInput,
   DescribeRouteTablesCommandInput,
   DisassociateRouteTableCommandInput,
+  ReplaceRouteTableAssociationCommandInput,
 } from "@aws-sdk/client-ec2";
 import z from "zod";
 import {
@@ -52,6 +53,13 @@ const disassociateRouteTableBaseSchema = z.object({
   DryRun: dryRunSchema,
 }) satisfies z.ZodType<DisassociateRouteTableCommandInput>;
 
+// Replace Route Table Association
+const replaceRouteTableAssociationBaseSchema = z.object({
+  AssociationId: z.string().describe("The ID of the association"),
+  RouteTableId: z.string().describe("The ID of the route table"),
+  DryRun: dryRunSchema,
+}) satisfies z.ZodType<ReplaceRouteTableAssociationCommandInput>;
+
 // Export the schemas
 export const listRouteTablesSchema = {
   region: regionSchema,
@@ -73,6 +81,11 @@ export const disassociateRouteTableSchema = {
   RouteTableArgs: disassociateRouteTableBaseSchema,
 };
 
+export const replaceRouteTableAssociationSchema = {
+  region: regionSchema,
+  RouteTableArgs: replaceRouteTableAssociationBaseSchema,
+};
+
 // Export the types
 export type ListRouteTablesArgs = z.infer<
   ReturnType<typeof z.object<typeof listRouteTablesSchema>>
@@ -88,4 +101,8 @@ export type AssociateRouteTableArgs = z.infer<
 
 export type DisassociateRouteTableArgs = z.infer<
   ReturnType<typeof z.object<typeof disassociateRouteTableSchema>>
+>;
+
+export type ReplaceRouteTableAssociationArgs = z.infer<
+  ReturnType<typeof z.object<typeof replaceRouteTableAssociationSchema>>
 >;

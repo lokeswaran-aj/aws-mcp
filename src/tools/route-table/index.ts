@@ -3,6 +3,7 @@ import {
   createRouteTableSchema,
   disassociateRouteTableSchema,
   listRouteTablesSchema,
+  replaceRouteTableAssociationSchema,
 } from "@/schema/route-table";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {
@@ -10,6 +11,7 @@ import {
   createRouteTable,
   disassociateRouteTable,
   listRouteTables,
+  replaceRouteTableAssociation,
 } from "./handler";
 
 export const registerRouteTableTools = (server: McpServer): void => {
@@ -67,5 +69,19 @@ export const registerRouteTableTools = (server: McpServer): void => {
       title: "Disassociate a route table from a subnet or gateway",
     },
     async (args) => await disassociateRouteTable(args)
+  );
+
+  server.tool(
+    "route-table-replace-route-table-association",
+    "Replace the route table association for a subnet or internet gateway or virtual private gateway",
+    replaceRouteTableAssociationSchema,
+    {
+      destructiveHint: false,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+      title: "Replace the route table association for a subnet or gateway",
+    },
+    async (args) => await replaceRouteTableAssociation(args)
   );
 };
