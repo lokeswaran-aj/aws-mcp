@@ -1,6 +1,6 @@
-import { listKeyPairsSchema } from "@/schema/key-pair";
+import { createKeyPairSchema, listKeyPairsSchema } from "@/schema/key-pair";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
-import { listKeyPairs } from "./handler";
+import { createKeyPair, listKeyPairs } from "./handler";
 
 export const registerKeyPairTools = (server: McpServer): void => {
   server.tool(
@@ -15,5 +15,19 @@ export const registerKeyPairTools = (server: McpServer): void => {
       title: "List Key Pairs",
     },
     async (args) => await listKeyPairs(args)
+  );
+
+  server.tool(
+    "key-pair-create-key-pair",
+    "Create a key pair in the given region",
+    createKeyPairSchema,
+    {
+      destructiveHint: false,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: false,
+      title: "Create Key Pair",
+    },
+    async (args) => await createKeyPair(args)
   );
 };
