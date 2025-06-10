@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { registerInternetGatewayTools } from "./tools/internet-gateway";
+import { registerKeyPairTools } from "./tools/key-pair";
 import { registerRdsTools } from "./tools/rds";
 import { registerRouteTableTools } from "./tools/route-table";
 import { registerS3Tools } from "./tools/s3";
@@ -28,3 +29,4 @@ void registerSubnetTools(server);
 void registerInternetGatewayTools(server);
 void registerRouteTableTools(server);
 void registerSecurityGroupTools(server);
+void registerKeyPairTools(server);
