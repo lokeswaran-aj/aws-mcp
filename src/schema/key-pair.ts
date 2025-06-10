@@ -1,6 +1,7 @@
 import {
   CreateKeyPairCommandInput,
   DescribeKeyPairsCommandInput,
+  ImportKeyPairCommandInput,
   KeyFormat,
   KeyType,
 } from "@aws-sdk/client-ec2";
@@ -45,6 +46,14 @@ const createKeyPairBaseSchema = z.object({
   TagSpecifications: tagSpecificationSchema,
 }) satisfies z.ZodType<CreateKeyPairCommandInput>;
 
+// Import Key Pair
+const importKeyPairBaseSchema = z.object({
+  KeyName: z.string().describe("The name of the key pair"),
+  PublicKeyMaterial: z.string().describe("The public key material"),
+  TagSpecifications: tagSpecificationSchema,
+  DryRun: dryRunSchema,
+}) as unknown as z.ZodType<ImportKeyPairCommandInput>;
+
 // Export Schemas
 export const listKeyPairsSchema = {
   region: regionSchema,
@@ -56,6 +65,11 @@ export const createKeyPairSchema = {
   KeyPairArgs: createKeyPairBaseSchema,
 };
 
+export const importKeyPairSchema = {
+  region: regionSchema,
+  KeyPairArgs: importKeyPairBaseSchema,
+};
+
 // Export Types
 export type ListKeyPairsArgs = z.infer<
   ReturnType<typeof z.object<typeof listKeyPairsSchema>>
@@ -63,4 +77,8 @@ export type ListKeyPairsArgs = z.infer<
 
 export type CreateKeyPairArgs = z.infer<
   ReturnType<typeof z.object<typeof createKeyPairSchema>>
+>;
+
+export type ImportKeyPairArgs = z.infer<
+  ReturnType<typeof z.object<typeof importKeyPairSchema>>
 >;
