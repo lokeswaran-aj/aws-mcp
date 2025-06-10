@@ -1,12 +1,16 @@
 import {
+  attachInternetGatewaySchema,
   createInternetGatewaySchema,
   deleteInternetGatewaySchema,
+  detachInternetGatewaySchema,
   listInternetGatewaysSchema,
 } from "@/schema/internet-gateway";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {
+  attachInternetGateway,
   createInternetGateway,
   deleteInternetGateway,
+  detachInternetGateway,
   listInternetGateways,
 } from "./handler";
 
@@ -51,5 +55,33 @@ export const registerInternetGatewayTools = (server: McpServer): void => {
       title: "Delete an internet gateway",
     },
     async (args) => await deleteInternetGateway(args)
+  );
+
+  server.tool(
+    "internet-gateway-attach-internet-gateway",
+    "Attach an internet gateway to a VPC",
+    attachInternetGatewaySchema,
+    {
+      destructiveHint: false,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+      title: "Attach an internet gateway to a VPC",
+    },
+    async (args) => await attachInternetGateway(args)
+  );
+
+  server.tool(
+    "internet-gateway-detach-internet-gateway",
+    "Detach an internet gateway from a VPC",
+    detachInternetGatewaySchema,
+    {
+      destructiveHint: false,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+      title: "Detach an internet gateway from a VPC",
+    },
+    async (args) => await detachInternetGateway(args)
   );
 };

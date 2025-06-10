@@ -1,7 +1,9 @@
 import {
+  AttachInternetGatewayCommandInput,
   CreateInternetGatewayCommandInput,
   DeleteInternetGatewayCommandInput,
   DescribeInternetGatewaysCommandInput,
+  DetachInternetGatewayCommandInput,
 } from "@aws-sdk/client-ec2";
 import z from "zod";
 import {
@@ -35,6 +37,20 @@ const deleteInternetGatewayBaseSchema = z.object({
   DryRun: dryRunSchema,
 }) satisfies z.ZodType<DeleteInternetGatewayCommandInput>;
 
+// Attach Internet Gateway
+const attachInternetGatewayBaseSchema = z.object({
+  InternetGatewayId: z.string().describe("The ID of the internet gateway"),
+  VpcId: z.string().describe("The ID of the VPC"),
+  DryRun: dryRunSchema,
+}) satisfies z.ZodType<AttachInternetGatewayCommandInput>;
+
+// Detach Internet Gateway
+const detachInternetGatewayBaseSchema = z.object({
+  InternetGatewayId: z.string().describe("The ID of the internet gateway"),
+  VpcId: z.string().describe("The ID of the VPC"),
+  DryRun: dryRunSchema,
+}) satisfies z.ZodType<DetachInternetGatewayCommandInput>;
+
 // Export the schemas
 export const listInternetGatewaysSchema = {
   region: regionSchema,
@@ -51,6 +67,16 @@ export const deleteInternetGatewaySchema = {
   InternetGatewayArgs: deleteInternetGatewayBaseSchema,
 };
 
+export const attachInternetGatewaySchema = {
+  region: regionSchema,
+  InternetGatewayArgs: attachInternetGatewayBaseSchema,
+};
+
+export const detachInternetGatewaySchema = {
+  region: regionSchema,
+  InternetGatewayArgs: detachInternetGatewayBaseSchema,
+};
+
 // Export the types
 export type ListInternetGatewaysArgs = z.infer<
   ReturnType<typeof z.object<typeof listInternetGatewaysSchema>>
@@ -62,4 +88,12 @@ export type CreateInternetGatewayArgs = z.infer<
 
 export type DeleteInternetGatewayArgs = z.infer<
   ReturnType<typeof z.object<typeof deleteInternetGatewaySchema>>
+>;
+
+export type AttachInternetGatewayArgs = z.infer<
+  ReturnType<typeof z.object<typeof attachInternetGatewaySchema>>
+>;
+
+export type DetachInternetGatewayArgs = z.infer<
+  ReturnType<typeof z.object<typeof detachInternetGatewaySchema>>
 >;
