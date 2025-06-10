@@ -7,6 +7,7 @@ import {
   IpPermission,
   ModifySecurityGroupRulesCommandInput,
   SecurityGroupRuleUpdate,
+  UpdateSecurityGroupRuleDescriptionsIngressCommandInput,
 } from "@aws-sdk/client-ec2";
 import z from "zod";
 import {
@@ -190,6 +191,26 @@ const modifySecurityGroupRulesBaseSchema = z.object({
   DryRun: dryRunSchema,
 }) satisfies z.ZodType<ModifySecurityGroupRulesCommandInput>;
 
+// Update Security Group Rule Descriptions Ingress
+const updateSecurityGroupRuleDescriptionsIngressBaseSchema = z.object({
+  GroupId: z.string().describe("The ID of the security group"),
+  GroupName: z.string().optional().describe("The name of the security group"),
+  IpPermissions: z
+    .array(ipPermissionSchema)
+    .describe("The IP permissions with the updated descriptions"),
+  SecurityGroupRuleDescriptions: z
+    .array(
+      z.object({
+        SecurityGroupRuleId: z
+          .string()
+          .describe("The ID of the security group rule"),
+        Description: descriptionSchema,
+      })
+    )
+    .describe("The security group rule descriptions to update"),
+  DryRun: dryRunSchema,
+}) satisfies z.ZodType<UpdateSecurityGroupRuleDescriptionsIngressCommandInput>;
+
 // Export the schemas
 export const listSecurityGroupsSchema = {
   region: regionSchema,
@@ -221,6 +242,11 @@ export const modifySecurityGroupRulesSchema = {
   SecurityGroupArgs: modifySecurityGroupRulesBaseSchema,
 };
 
+export const updateSecurityGroupRuleDescriptionsIngressSchema = {
+  region: regionSchema,
+  SecurityGroupArgs: updateSecurityGroupRuleDescriptionsIngressBaseSchema,
+};
+
 // Export the types
 export type ListSecurityGroupsArgs = z.infer<
   ReturnType<typeof z.object<typeof listSecurityGroupsSchema>>
@@ -244,4 +270,10 @@ export type AuthorizeSecurityGroupEgressArgs = z.infer<
 
 export type ModifySecurityGroupRulesArgs = z.infer<
   ReturnType<typeof z.object<typeof modifySecurityGroupRulesSchema>>
+>;
+
+export type UpdateSecurityGroupRuleDescriptionsIngressArgs = z.infer<
+  ReturnType<
+    typeof z.object<typeof updateSecurityGroupRuleDescriptionsIngressSchema>
+  >
 >;
