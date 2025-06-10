@@ -1,10 +1,16 @@
 import {
   createKeyPairSchema,
+  deleteKeyPairSchema,
   importKeyPairSchema,
   listKeyPairsSchema,
 } from "@/schema/key-pair";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
-import { createKeyPair, importKeyPair, listKeyPairs } from "./handler";
+import {
+  createKeyPair,
+  deleteKeyPair,
+  importKeyPair,
+  listKeyPairs,
+} from "./handler";
 
 export const registerKeyPairTools = (server: McpServer): void => {
   server.tool(
@@ -47,5 +53,19 @@ export const registerKeyPairTools = (server: McpServer): void => {
       title: "Import Key Pair",
     },
     async (args) => await importKeyPair(args)
+  );
+
+  server.tool(
+    "key-pair-delete-key-pair",
+    "Delete a key pair in the given region",
+    deleteKeyPairSchema,
+    {
+      destructiveHint: true,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+      title: "Delete Key Pair",
+    },
+    async (args) => await deleteKeyPair(args)
   );
 };

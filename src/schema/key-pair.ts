@@ -1,5 +1,6 @@
 import {
   CreateKeyPairCommandInput,
+  DeleteKeyPairCommandInput,
   DescribeKeyPairsCommandInput,
   ImportKeyPairCommandInput,
   KeyFormat,
@@ -19,7 +20,7 @@ const listKeyPairsBaseSchema = z.object({
     .array(z.string())
     .optional()
     .describe("The IDs of the key pairs"),
-  KeyPairNames: z
+  KeyNames: z
     .array(z.string())
     .optional()
     .describe("The names of the key pairs"),
@@ -54,6 +55,13 @@ const importKeyPairBaseSchema = z.object({
   DryRun: dryRunSchema,
 }) as unknown as z.ZodType<ImportKeyPairCommandInput>;
 
+// Delete Key Pair
+const deleteKeyPairBaseSchema = z.object({
+  KeyPairId: z.string().optional().describe("The ID of the key pair"),
+  KeyName: z.string().optional().describe("The name of the key pair"),
+  DryRun: dryRunSchema,
+}) satisfies z.ZodType<DeleteKeyPairCommandInput>;
+
 // Export Schemas
 export const listKeyPairsSchema = {
   region: regionSchema,
@@ -70,6 +78,11 @@ export const importKeyPairSchema = {
   KeyPairArgs: importKeyPairBaseSchema,
 };
 
+export const deleteKeyPairSchema = {
+  region: regionSchema,
+  KeyPairArgs: deleteKeyPairBaseSchema,
+};
+
 // Export Types
 export type ListKeyPairsArgs = z.infer<
   ReturnType<typeof z.object<typeof listKeyPairsSchema>>
@@ -81,4 +94,8 @@ export type CreateKeyPairArgs = z.infer<
 
 export type ImportKeyPairArgs = z.infer<
   ReturnType<typeof z.object<typeof importKeyPairSchema>>
+>;
+
+export type DeleteKeyPairArgs = z.infer<
+  ReturnType<typeof z.object<typeof deleteKeyPairSchema>>
 >;
