@@ -1,9 +1,16 @@
 import {
+  associateRouteTableSchema,
   createRouteTableSchema,
+  disassociateRouteTableSchema,
   listRouteTablesSchema,
 } from "@/schema/route-table";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { createRouteTable, listRouteTables } from "./handler";
+import {
+  associateRouteTable,
+  createRouteTable,
+  disassociateRouteTable,
+  listRouteTables,
+} from "./handler";
 
 export const registerRouteTableTools = (server: McpServer): void => {
   server.tool(
@@ -28,9 +35,37 @@ export const registerRouteTableTools = (server: McpServer): void => {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
-      idempotentHint: true,
+      idempotentHint: false,
       title: "Create a route table",
     },
     async (args) => await createRouteTable(args)
+  );
+
+  server.tool(
+    "route-table-associate-route-table",
+    "Associate a route table with a subnet or internet gateway or virtual private gateway",
+    associateRouteTableSchema,
+    {
+      destructiveHint: false,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+      title: "Associate a route table with a subnet or gateway",
+    },
+    async (args) => await associateRouteTable(args)
+  );
+
+  server.tool(
+    "route-table-disassociate-route-table",
+    "Disassociate a route table from a subnet or internet gateway or virtual private gateway",
+    disassociateRouteTableSchema,
+    {
+      destructiveHint: false,
+      openWorldHint: true,
+      readOnlyHint: false,
+      idempotentHint: true,
+      title: "Disassociate a route table from a subnet or gateway",
+    },
+    async (args) => await disassociateRouteTable(args)
   );
 };

@@ -1,6 +1,8 @@
 import {
+  AssociateRouteTableCommandInput,
   CreateRouteTableCommandInput,
   DescribeRouteTablesCommandInput,
+  DisassociateRouteTableCommandInput,
 } from "@aws-sdk/client-ec2";
 import z from "zod";
 import {
@@ -33,6 +35,23 @@ const createRouteTableBaseSchema = z.object({
     ),
 }) satisfies z.ZodType<CreateRouteTableCommandInput>;
 
+// Associate Route Table
+const associateRouteTableBaseSchema = z.object({
+  RouteTableId: z.string().describe("The ID of the route table"),
+  GatewayId: z
+    .string()
+    .describe("The ID of the internet gateway or virtual private gateway")
+    .optional(),
+  SubnetId: z.string().describe("The ID of the subnet").optional(),
+  DryRun: dryRunSchema,
+}) satisfies z.ZodType<AssociateRouteTableCommandInput>;
+
+// Disassociate Route Table
+const disassociateRouteTableBaseSchema = z.object({
+  AssociationId: z.string().describe("The ID of the association"),
+  DryRun: dryRunSchema,
+}) satisfies z.ZodType<DisassociateRouteTableCommandInput>;
+
 // Export the schemas
 export const listRouteTablesSchema = {
   region: regionSchema,
@@ -44,6 +63,16 @@ export const createRouteTableSchema = {
   RouteTableArgs: createRouteTableBaseSchema,
 };
 
+export const associateRouteTableSchema = {
+  region: regionSchema,
+  RouteTableArgs: associateRouteTableBaseSchema,
+};
+
+export const disassociateRouteTableSchema = {
+  region: regionSchema,
+  RouteTableArgs: disassociateRouteTableBaseSchema,
+};
+
 // Export the types
 export type ListRouteTablesArgs = z.infer<
   ReturnType<typeof z.object<typeof listRouteTablesSchema>>
@@ -51,4 +80,12 @@ export type ListRouteTablesArgs = z.infer<
 
 export type CreateRouteTablesArgs = z.infer<
   ReturnType<typeof z.object<typeof createRouteTableSchema>>
+>;
+
+export type AssociateRouteTableArgs = z.infer<
+  ReturnType<typeof z.object<typeof associateRouteTableSchema>>
+>;
+
+export type DisassociateRouteTableArgs = z.infer<
+  ReturnType<typeof z.object<typeof disassociateRouteTableSchema>>
 >;
