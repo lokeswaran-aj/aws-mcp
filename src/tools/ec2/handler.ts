@@ -4,11 +4,13 @@ import { formatResponse } from "@/utils/format-response";
 import {
   DescribeInstancesCommand,
   RunInstancesCommand,
+  StartInstancesCommand,
   StopInstancesCommand,
 } from "@aws-sdk/client-ec2";
 import {
   LaunchEc2InstanceArgs,
   ListEc2InstancesArgs,
+  StartEc2InstanceArgs,
   StopEc2InstanceArgs,
 } from "../../schema/ec2";
 
@@ -38,6 +40,16 @@ export const stopEc2Instance = async (
   const { region, Ec2Args } = args;
   const ec2 = getEC2Client({ region });
   const command = new StopInstancesCommand(Ec2Args);
+  const response = await ec2.send(command);
+  return formatResponse(response);
+};
+
+export const startEc2Instance = async (
+  args: StartEc2InstanceArgs
+): Promise<HandlerReturnType> => {
+  const { region, Ec2Args } = args;
+  const ec2 = getEC2Client({ region });
+  const command = new StartInstancesCommand(Ec2Args);
   const response = await ec2.send(command);
   return formatResponse(response);
 };
