@@ -7,10 +7,10 @@ import {
   StartInstancesCommandInput,
   StopInstancesCommandInput,
   TerminateInstancesCommandInput,
-  VolumeType,
 } from "@aws-sdk/client-ec2";
 import { z } from "zod";
 import {
+  blockDeviceMappingSchema,
   dryRunSchema,
   filterSchema,
   paginationSchema,
@@ -44,26 +44,7 @@ const launchEc2InstanceBaseSchema = z.object({
     .describe("The name of the key pair to use for the instance"),
   MaxCount: z.number().describe("The maximum number of instances to launch"),
   MinCount: z.number().describe("The minimum number of instances to launch"),
-  BlockDeviceMappings: z
-    .array(
-      z.object({
-        DeviceName: z.string(),
-        Ebs: z
-          .object({
-            DeleteOnTermination: z.boolean().optional(),
-            Iops: z.number().optional(),
-            SnapshotId: z.string().optional(),
-            VolumeSize: z.number().optional(),
-            VolumeType: z.nativeEnum(VolumeType).optional(),
-            Encrypted: z.boolean().optional(),
-          })
-          .optional(),
-        NoDevice: z.string().optional(),
-        VirtualName: z.string().optional(),
-      })
-    )
-    .optional()
-    .describe("The block device mapping entries"),
+  BlockDeviceMappings: blockDeviceMappingSchema,
   ClientToken: z
     .string()
     .optional()

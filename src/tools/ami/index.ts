@@ -1,6 +1,6 @@
-import { listAmisSchema } from "@/schema/ami";
+import { createAmiSchema, listAmisSchema } from "@/schema/ami";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
-import { listAmis } from "./handler";
+import { createAmi, listAmis } from "./handler";
 
 export const registerAmiTools = (server: McpServer): void => {
   server.tool(
@@ -14,5 +14,18 @@ export const registerAmiTools = (server: McpServer): void => {
       readOnlyHint: true,
     },
     async (args) => listAmis(args)
+  );
+
+  server.tool(
+    "ami-create-ami",
+    "Create an AMI",
+    createAmiSchema,
+    {
+      title: "Create AMI",
+      destructiveHint: false,
+      idempotentHint: false,
+      readOnlyHint: false,
+    },
+    async (args) => createAmi(args)
   );
 };
