@@ -1,6 +1,6 @@
-import { listEc2InstancesSchema } from "@/schema/ec2";
+import { launchEc2InstanceSchema, listEc2InstancesSchema } from "@/schema/ec2";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
-import { listEc2Instances } from "./handler";
+import { launchEc2Instance, listEc2Instances } from "./handler";
 
 export const registerEc2Tools = (server: McpServer): void => {
   server.tool(
@@ -15,5 +15,16 @@ export const registerEc2Tools = (server: McpServer): void => {
       title: "List EC2 instances",
     },
     async (args) => listEc2Instances(args)
+  );
+
+  server.tool(
+    "ec2-launch-ec2-instance",
+    "Launch an EC2 instance in a given region",
+    launchEc2InstanceSchema,
+    {
+      destructiveHint: false,
+      title: "Launch EC2 instance",
+    },
+    async (args) => launchEc2Instance(args)
   );
 };
