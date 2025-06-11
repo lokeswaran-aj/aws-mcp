@@ -14,7 +14,7 @@ import {
 
 export const registerSubnetTools = async (server: McpServer): Promise<void> => {
   server.tool(
-    "subnet-list-subnets",
+    "list-subnets",
     "List all the subnets in the given region",
     listSubnetsSchema,
     {
@@ -27,7 +27,7 @@ export const registerSubnetTools = async (server: McpServer): Promise<void> => {
     async (args) => await listSubnets(args)
   );
   server.tool(
-    "subnet-create-subnet",
+    "create-subnet",
     "Create a subnet in the given region",
     createSubnetSchema,
     {
@@ -40,7 +40,7 @@ export const registerSubnetTools = async (server: McpServer): Promise<void> => {
     async (args) => await createSubnet(args)
   );
   server.tool(
-    "subnet-update-subnet-attribute",
+    "update-subnet-attribute",
     "Update a subnet attributes by subnet ID in the given region",
     updateSubnetAttributeSchema,
     {
@@ -53,7 +53,7 @@ export const registerSubnetTools = async (server: McpServer): Promise<void> => {
     async (args) => await updateSubnetAttribute(args)
   );
   server.tool(
-    "subnet-delete-subnet",
+    "delete-subnet",
     "Delete a subnet by subnet ID in the given region",
     deleteSubnetSchema,
     {

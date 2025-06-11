@@ -14,7 +14,7 @@ import {
 
 export const registerRdsTools = (server: McpServer): void => {
   server.tool(
-    "rds-list-db-instances",
+    "list-db-instances",
     "List all the RDS DB instances in the given region",
     listDBInstancesSchema,
     {
@@ -28,7 +28,7 @@ export const registerRdsTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "rds-create-db-instance",
+    "create-db-instance",
     "Create a new RDS DB instance in the given region",
     createDBInstanceSchema,
     {
@@ -42,7 +42,7 @@ export const registerRdsTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "rds-delete-db-instance",
+    "delete-db-instance",
     "Delete a given RDS DB instance in the given region",
     deleteDBInstanceSchema,
     {
@@ -56,7 +56,7 @@ export const registerRdsTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "rds-update-db-instance",
+    "update-db-instance",
     "Update a given RDS DB instance in the given region",
     updateDBInstanceSchema,
     {

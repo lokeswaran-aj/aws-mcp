@@ -4,7 +4,7 @@ import { createAmi, deleteAmi, listAmis } from "./handler";
 
 export const registerAmiTools = (server: McpServer): void => {
   server.tool(
-    "ami-list-amis",
+    "list-amis",
     "List AMIs",
     listAmisSchema,
     {
@@ -17,7 +17,7 @@ export const registerAmiTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "ami-create-ami",
+    "create-ami",
     "Create an AMI",
     createAmiSchema,
     {
@@ -30,7 +30,7 @@ export const registerAmiTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "ami-delete-ami",
+    "delete-ami",
     "Delete an AMI",
     deleteAmiSchema,
     {

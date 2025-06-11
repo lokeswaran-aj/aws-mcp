@@ -14,7 +14,7 @@ import {
 
 export const registerKeyPairTools = (server: McpServer): void => {
   server.tool(
-    "key-pair-list-key-pairs",
+    "list-key-pairs",
     "List key pairs in the given region",
     listKeyPairsSchema,
     {
@@ -28,7 +28,7 @@ export const registerKeyPairTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "key-pair-create-key-pair",
+    "create-key-pair",
     "Create a key pair in the given region",
     createKeyPairSchema,
     {
@@ -42,7 +42,7 @@ export const registerKeyPairTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "key-pair-import-key-pair",
+    "import-key-pair",
     "Import a key pair in the given region",
     importKeyPairSchema,
     {
@@ -56,7 +56,7 @@ export const registerKeyPairTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "key-pair-delete-key-pair",
+    "delete-key-pair",
     "Delete a key pair in the given region",
     deleteKeyPairSchema,
     {

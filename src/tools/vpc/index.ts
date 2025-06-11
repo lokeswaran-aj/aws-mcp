@@ -16,7 +16,7 @@ import {
 
 export const registerVpcTools = async (server: McpServer): Promise<void> => {
   server.tool(
-    "vpc-list-vpcs",
+    "list-vpcs",
     "List all the VPCs in the given region",
     listVpcsSchema,
     {
@@ -29,7 +29,7 @@ export const registerVpcTools = async (server: McpServer): Promise<void> => {
     async (args) => await listVpcs(args)
   );
   server.tool(
-    "vpc-create-vpc",
+    "create-vpc",
     "Create a new VPC in the given region",
     createVpcSchema,
     {
@@ -42,7 +42,7 @@ export const registerVpcTools = async (server: McpServer): Promise<void> => {
     async (args) => await createVpc(args)
   );
   server.tool(
-    "vpc-delete-vpc",
+    "delete-vpc",
     "Delete a VPC by VPC ID in the given region",
     deleteVpcSchema,
     {
@@ -55,7 +55,7 @@ export const registerVpcTools = async (server: McpServer): Promise<void> => {
     async (args) => await deleteVpc(args)
   );
   server.tool(
-    "vpc-update-vpc-attribute",
+    "update-vpc-attribute",
     "Update a VPC attribute(EnableDnsHostnames, EnableDnsSupport, EnableNetworkAddressUsageMetrics) by VPC ID in the given region",
     updateVpcAttributeSchema,
     {
@@ -68,7 +68,7 @@ export const registerVpcTools = async (server: McpServer): Promise<void> => {
     async (args) => await updateVpcAttribute(args)
   );
   server.tool(
-    "vpc-update-vpc-endpoint",
+    "update-vpc-endpoint",
     "Update a VPC endpoint(Gateway endpoint, Interface endpoint) by VPC endpoint ID in the given region",
     updateVpcEndpointSchema,
     {

@@ -16,7 +16,7 @@ import {
 
 export const registerInternetGatewayTools = (server: McpServer): void => {
   server.tool(
-    "internet-gateway-list-internet-gateways",
+    "list-internet-gateways",
     "List all internet gateways in the given region",
     listInternetGatewaysSchema,
     {
@@ -30,7 +30,7 @@ export const registerInternetGatewayTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "internet-gateway-create-internet-gateway",
+    "create-internet-gateway",
     "Create a new internet gateway in the given region",
     createInternetGatewaySchema,
     {
@@ -44,7 +44,7 @@ export const registerInternetGatewayTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "internet-gateway-delete-internet-gateway",
+    "delete-internet-gateway",
     "Delete an internet gateway by ID in the given region",
     deleteInternetGatewaySchema,
     {
@@ -58,7 +58,7 @@ export const registerInternetGatewayTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "internet-gateway-attach-internet-gateway",
+    "attach-internet-gateway",
     "Attach an internet gateway to a VPC",
     attachInternetGatewaySchema,
     {
@@ -72,7 +72,7 @@ export const registerInternetGatewayTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "internet-gateway-detach-internet-gateway",
+    "detach-internet-gateway",
     "Detach an internet gateway from a VPC",
     detachInternetGatewaySchema,
     {

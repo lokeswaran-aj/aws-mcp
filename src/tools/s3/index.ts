@@ -8,7 +8,7 @@ import { createBucket, deleteBucket, listAllBuckets } from "./handler";
 
 export const registerS3Tools = async (server: McpServer): Promise<void> => {
   server.tool(
-    "s3-list-buckets",
+    "list-buckets",
     "List all the S3 buckets in the given region",
     listBucketsSchema,
     {
@@ -21,7 +21,7 @@ export const registerS3Tools = async (server: McpServer): Promise<void> => {
     async (args) => await listAllBuckets(args)
   );
   server.tool(
-    "s3-create-bucket",
+    "create-bucket",
     "Create a new S3 bucket in the given region",
     createBucketSchema,
     {
@@ -34,7 +34,7 @@ export const registerS3Tools = async (server: McpServer): Promise<void> => {
     async (args) => await createBucket(args)
   );
   server.tool(
-    "s3-delete-bucket",
+    "delete-bucket",
     "Delete an S3 bucket in the given region",
     deleteBucketSchema,
     {

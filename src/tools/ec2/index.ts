@@ -18,7 +18,7 @@ import {
 
 export const registerEc2Tools = (server: McpServer): void => {
   server.tool(
-    "ec2-list-ec2-instances",
+    "list-ec2-instances",
     "List EC2 instances in a given region",
     listEc2InstancesSchema,
     {
@@ -32,7 +32,7 @@ export const registerEc2Tools = (server: McpServer): void => {
   );
 
   server.tool(
-    "ec2-launch-ec2-instance",
+    "launch-ec2-instance",
     "Launch an EC2 instance in a given region",
     launchEc2InstanceSchema,
     {
@@ -43,7 +43,7 @@ export const registerEc2Tools = (server: McpServer): void => {
   );
 
   server.tool(
-    "ec2-stop-ec2-instance",
+    "stop-ec2-instance",
     "Stop an EC2 instance in a given region",
     stopEc2InstanceSchema,
     {
@@ -56,7 +56,7 @@ export const registerEc2Tools = (server: McpServer): void => {
   );
 
   server.tool(
-    "ec2-start-ec2-instance",
+    "start-ec2-instance",
     "Start an EC2 instance in a given region",
     startEc2InstanceSchema,
     {
@@ -69,7 +69,7 @@ export const registerEc2Tools = (server: McpServer): void => {
   );
 
   server.tool(
-    "ec2-reboot-ec2-instance",
+    "reboot-ec2-instance",
     "Reboot an EC2 instance in a given region",
     rebootEc2InstanceSchema,
     {
@@ -82,7 +82,7 @@ export const registerEc2Tools = (server: McpServer): void => {
   );
 
   server.tool(
-    "ec2-terminate-ec2-instance",
+    "terminate-ec2-instance",
     "Terminate an EC2 instance in a given region",
     terminateEc2InstanceSchema,
     {

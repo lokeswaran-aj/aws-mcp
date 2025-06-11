@@ -12,7 +12,7 @@ import {
 
 export const registerInstanceTagTools = (server: McpServer): void => {
   server.tool(
-    "instance-tag-list-instance-tags",
+    "list-instance-tags",
     "List instance tags",
     listInstanceTagsSchema,
     {
@@ -25,7 +25,7 @@ export const registerInstanceTagTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "instance-tag-create-instance-tag",
+    "create-instance-tag",
     "Create instance tag",
     createInstanceTagSchema,
     {
@@ -38,7 +38,7 @@ export const registerInstanceTagTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "instance-tag-delete-instance-tag",
+    "delete-instance-tag",
     "Delete instance tag",
     deleteInstanceTagSchema,
     {

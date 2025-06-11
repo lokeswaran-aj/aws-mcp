@@ -28,7 +28,7 @@ import {
 
 export const registerSecurityGroupTools = (server: McpServer): void => {
   server.tool(
-    "security-group-list-security-groups",
+    "list-security-groups",
     "List all security groups in the given region",
     listSecurityGroupsSchema,
     {
@@ -42,7 +42,7 @@ export const registerSecurityGroupTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "security-group-list-security-group-rules",
+    "list-security-group-rules",
     "List all security group rules in the given region",
     listSecurityGroupRulesSchema,
     {
@@ -56,7 +56,7 @@ export const registerSecurityGroupTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "security-group-create-security-group",
+    "create-security-group",
     "Create a security group in the given region",
     createSecurityGroupSchema,
     {
@@ -70,7 +70,7 @@ export const registerSecurityGroupTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "security-group-authorize-security-group-ingress",
+    "authorize-security-group-ingress",
     "Authorize a security group ingress in the given region",
     authorizeSecurityGroupIngressSchema,
     {
@@ -84,7 +84,7 @@ export const registerSecurityGroupTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "security-group-authorize-security-group-egress",
+    "authorize-security-group-egress",
     "Authorize a security group egress in the given region",
     authorizeSecurityGroupEgressSchema,
     {
@@ -98,7 +98,7 @@ export const registerSecurityGroupTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "security-group-modify-security-group-rules",
+    "modify-security-group-rules",
     "Modify a security group rule in the given region",
     modifySecurityGroupRulesSchema,
     {
@@ -112,7 +112,7 @@ export const registerSecurityGroupTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "security-group-update-security-group-rule-descriptions-ingress",
+    "update-security-group-rule-descriptions-ingress",
     "Update the description of a security group rule ingress in the given region",
     updateSecurityGroupRuleDescriptionsIngressSchema,
     {
@@ -126,7 +126,7 @@ export const registerSecurityGroupTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "security-group-update-security-group-rule-descriptions-egress",
+    "update-security-group-rule-descriptions-egress",
     "Update the description of a security group rule egress in the given region",
     updateSecurityGroupRuleDescriptionsEgressSchema,
     {
@@ -140,7 +140,7 @@ export const registerSecurityGroupTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "security-group-revoke-security-group-ingress",
+    "revoke-security-group-ingress",
     "Revoke a security group ingress in the given region",
     revokeSecurityGroupIngressSchema,
     {
@@ -154,7 +154,7 @@ export const registerSecurityGroupTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "security-group-revoke-security-group-egress",
+    "revoke-security-group-egress",
     "Revoke a security group egress in the given region",
     revokeSecurityGroupEgressSchema,
     {
@@ -168,7 +168,7 @@ export const registerSecurityGroupTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "security-group-delete-security-group",
+    "delete-security-group",
     "Delete a security group in the given region",
     deleteSecurityGroupSchema,
     {

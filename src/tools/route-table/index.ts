@@ -18,7 +18,7 @@ import {
 
 export const registerRouteTableTools = (server: McpServer): void => {
   server.tool(
-    "route-table-list-route-tables",
+    "list-route-tables",
     "List route tables in the given region",
     listRouteTablesSchema,
     {
@@ -32,7 +32,7 @@ export const registerRouteTableTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "route-table-create-route-table",
+    "create-route-table",
     "Create a route table in the given region",
     createRouteTableSchema,
     {
@@ -46,7 +46,7 @@ export const registerRouteTableTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "route-table-associate-route-table",
+    "associate-route-table",
     "Associate a route table with a subnet or internet gateway or virtual private gateway",
     associateRouteTableSchema,
     {
@@ -60,7 +60,7 @@ export const registerRouteTableTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "route-table-disassociate-route-table",
+    "disassociate-route-table",
     "Disassociate a route table from a subnet or internet gateway or virtual private gateway",
     disassociateRouteTableSchema,
     {
@@ -74,7 +74,7 @@ export const registerRouteTableTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "route-table-replace-route-table-association",
+    "replace-route-table-association",
     "Replace the route table association for a subnet or internet gateway or virtual private gateway",
     replaceRouteTableAssociationSchema,
     {
@@ -88,7 +88,7 @@ export const registerRouteTableTools = (server: McpServer): void => {
   );
 
   server.tool(
-    "route-table-delete-route-table",
+    "delete-route-table",
     "Delete a route table in the given region",
     deleteRouteTableSchema,
     {
