@@ -1,5 +1,5 @@
 import { DEFAULT_CONFIG } from "@/config/defaults";
-import { ResourceType } from "@aws-sdk/client-ec2";
+import { ResourceType, VolumeType } from "@aws-sdk/client-ec2";
 import { z } from "zod";
 
 export const regionSchema = z
@@ -55,3 +55,24 @@ export const tagSpecificationSchema = z
   )
   .optional()
   .describe("The tags to assign to the resource");
+
+export const blockDeviceMappingSchema = z
+  .array(
+    z.object({
+      DeviceName: z.string(),
+      Ebs: z
+        .object({
+          DeleteOnTermination: z.boolean().optional(),
+          Iops: z.number().optional(),
+          SnapshotId: z.string().optional(),
+          VolumeSize: z.number().optional(),
+          VolumeType: z.nativeEnum(VolumeType).optional(),
+          Encrypted: z.boolean().optional(),
+        })
+        .optional(),
+      NoDevice: z.string().optional(),
+      VirtualName: z.string().optional(),
+    })
+  )
+  .optional()
+  .describe("The block device mapping entries");
