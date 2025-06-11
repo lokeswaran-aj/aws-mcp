@@ -3,6 +3,7 @@ import {
   DescribeInstancesCommandInput,
   RunInstancesCommandInput,
   ShutdownBehavior,
+  StopInstancesCommandInput,
   VolumeType,
 } from "@aws-sdk/client-ec2";
 import { z } from "zod";
@@ -141,6 +142,14 @@ const launchEc2InstanceBaseSchema = z.object({
   DryRun: dryRunSchema,
 }) satisfies z.ZodType<RunInstancesCommandInput>;
 
+// Stop EC2 instance
+const stopEc2InstanceBaseSchema = z.object({
+  InstanceIds: z.array(z.string()).describe("The IDs of the instances to stop"),
+  Force: z.boolean().optional().describe("Forces the instances to stop"),
+  Hibernate: z.boolean().optional().describe("Hibernates the instances"),
+  DryRun: dryRunSchema,
+}) satisfies z.ZodType<StopInstancesCommandInput>;
+
 // Export the schemas
 export const listEc2InstancesSchema = {
   region: regionSchema,
@@ -152,6 +161,11 @@ export const launchEc2InstanceSchema = {
   Ec2Args: launchEc2InstanceBaseSchema,
 };
 
+export const stopEc2InstanceSchema = {
+  region: regionSchema,
+  Ec2Args: stopEc2InstanceBaseSchema,
+};
+
 // Export the types
 export type ListEc2InstancesArgs = z.infer<
   ReturnType<typeof z.object<typeof listEc2InstancesSchema>>
@@ -159,4 +173,8 @@ export type ListEc2InstancesArgs = z.infer<
 
 export type LaunchEc2InstanceArgs = z.infer<
   ReturnType<typeof z.object<typeof launchEc2InstanceSchema>>
+>;
+
+export type StopEc2InstanceArgs = z.infer<
+  ReturnType<typeof z.object<typeof stopEc2InstanceSchema>>
 >;

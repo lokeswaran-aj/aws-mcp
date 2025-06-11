@@ -1,6 +1,14 @@
-import { launchEc2InstanceSchema, listEc2InstancesSchema } from "@/schema/ec2";
+import {
+  launchEc2InstanceSchema,
+  listEc2InstancesSchema,
+  stopEc2InstanceSchema,
+} from "@/schema/ec2";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
-import { launchEc2Instance, listEc2Instances } from "./handler";
+import {
+  launchEc2Instance,
+  listEc2Instances,
+  stopEc2Instance,
+} from "./handler";
 
 export const registerEc2Tools = (server: McpServer): void => {
   server.tool(
@@ -26,5 +34,18 @@ export const registerEc2Tools = (server: McpServer): void => {
       title: "Launch EC2 instance",
     },
     async (args) => launchEc2Instance(args)
+  );
+
+  server.tool(
+    "ec2-stop-ec2-instance",
+    "Stop an EC2 instance in a given region",
+    stopEc2InstanceSchema,
+    {
+      title: "Stop EC2 instance",
+      destructiveHint: false,
+      idempotentHint: true,
+      readOnlyHint: false,
+    },
+    async (args) => stopEc2Instance(args)
   );
 };
