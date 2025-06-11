@@ -1,6 +1,6 @@
-import { createAmiSchema, listAmisSchema } from "@/schema/ami";
+import { createAmiSchema, deleteAmiSchema, listAmisSchema } from "@/schema/ami";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
-import { createAmi, listAmis } from "./handler";
+import { createAmi, deleteAmi, listAmis } from "./handler";
 
 export const registerAmiTools = (server: McpServer): void => {
   server.tool(
@@ -27,5 +27,18 @@ export const registerAmiTools = (server: McpServer): void => {
       readOnlyHint: false,
     },
     async (args) => createAmi(args)
+  );
+
+  server.tool(
+    "ami-delete-ami",
+    "Delete an AMI",
+    deleteAmiSchema,
+    {
+      title: "Delete AMI",
+      destructiveHint: true,
+      idempotentHint: true,
+      readOnlyHint: false,
+    },
+    async (args) => deleteAmi(args)
   );
 };

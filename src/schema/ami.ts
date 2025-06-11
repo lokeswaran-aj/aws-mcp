@@ -1,5 +1,6 @@
 import {
   CreateImageCommandInput,
+  DeregisterImageCommandInput,
   DescribeImagesCommandInput,
 } from "@aws-sdk/client-ec2";
 import { z } from "zod";
@@ -46,6 +47,16 @@ const createAmiBaseSchema = z.object({
   DryRun: dryRunSchema,
 }) satisfies z.ZodType<CreateImageCommandInput>;
 
+// Delete AMI
+const deleteAmiBaseSchema = z.object({
+  ImageId: z.string().describe("The ID of the AMI to delete"),
+  DeleteAssociatedSnapshots: z
+    .boolean()
+    .optional()
+    .describe("Whether to delete the associated snapshots"),
+  DryRun: dryRunSchema,
+}) satisfies z.ZodType<DeregisterImageCommandInput>;
+
 // Export the schemas
 export const listAmisSchema = {
   region: regionSchema,
@@ -57,6 +68,11 @@ export const createAmiSchema = {
   AmiArgs: createAmiBaseSchema,
 };
 
+export const deleteAmiSchema = {
+  region: regionSchema,
+  AmiArgs: deleteAmiBaseSchema,
+};
+
 // Export the types
 export type ListAmisArgs = z.infer<
   ReturnType<typeof z.object<typeof listAmisSchema>>
@@ -64,4 +80,8 @@ export type ListAmisArgs = z.infer<
 
 export type CreateAmiArgs = z.infer<
   ReturnType<typeof z.object<typeof createAmiSchema>>
+>;
+
+export type DeleteAmiArgs = z.infer<
+  ReturnType<typeof z.object<typeof deleteAmiSchema>>
 >;
