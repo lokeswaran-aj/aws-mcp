@@ -3,6 +3,7 @@ import { HandlerReturnType } from "@/types/common";
 import { formatResponse } from "@/utils/format-response";
 import {
   DescribeInstancesCommand,
+  RebootInstancesCommand,
   RunInstancesCommand,
   StartInstancesCommand,
   StopInstancesCommand,
@@ -10,6 +11,7 @@ import {
 import {
   LaunchEc2InstanceArgs,
   ListEc2InstancesArgs,
+  RebootEc2InstanceArgs,
   StartEc2InstanceArgs,
   StopEc2InstanceArgs,
 } from "../../schema/ec2";
@@ -50,6 +52,16 @@ export const startEc2Instance = async (
   const { region, Ec2Args } = args;
   const ec2 = getEC2Client({ region });
   const command = new StartInstancesCommand(Ec2Args);
+  const response = await ec2.send(command);
+  return formatResponse(response);
+};
+
+export const rebootEc2Instance = async (
+  args: RebootEc2InstanceArgs
+): Promise<HandlerReturnType> => {
+  const { region, Ec2Args } = args;
+  const ec2 = getEC2Client({ region });
+  const command = new RebootInstancesCommand(Ec2Args);
   const response = await ec2.send(command);
   return formatResponse(response);
 };

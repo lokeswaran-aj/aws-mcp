@@ -1,6 +1,7 @@
 import {
   launchEc2InstanceSchema,
   listEc2InstancesSchema,
+  rebootEc2InstanceSchema,
   startEc2InstanceSchema,
   stopEc2InstanceSchema,
 } from "@/schema/ec2";
@@ -8,6 +9,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
 import {
   launchEc2Instance,
   listEc2Instances,
+  rebootEc2Instance,
   startEc2Instance,
   stopEc2Instance,
 } from "./handler";
@@ -62,5 +64,18 @@ export const registerEc2Tools = (server: McpServer): void => {
       readOnlyHint: false,
     },
     async (args) => startEc2Instance(args)
+  );
+
+  server.tool(
+    "ec2-reboot-ec2-instance",
+    "Reboot an EC2 instance in a given region",
+    rebootEc2InstanceSchema,
+    {
+      title: "Reboot EC2 instance",
+      destructiveHint: false,
+      idempotentHint: true,
+      readOnlyHint: false,
+    },
+    async (args) => rebootEc2Instance(args)
   );
 };

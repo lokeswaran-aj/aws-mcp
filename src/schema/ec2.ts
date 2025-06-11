@@ -1,6 +1,7 @@
 import {
   _InstanceType,
   DescribeInstancesCommandInput,
+  RebootInstancesCommandInput,
   RunInstancesCommandInput,
   ShutdownBehavior,
   StartInstancesCommandInput,
@@ -159,6 +160,14 @@ const startEc2InstanceBaseSchema = z.object({
   DryRun: dryRunSchema,
 }) satisfies z.ZodType<StartInstancesCommandInput>;
 
+// Reboot EC2 instance
+const rebootEc2InstanceBaseSchema = z.object({
+  InstanceIds: z
+    .array(z.string())
+    .describe("The IDs of the instances to reboot"),
+  DryRun: dryRunSchema,
+}) satisfies z.ZodType<RebootInstancesCommandInput>;
+
 // Export the schemas
 export const listEc2InstancesSchema = {
   region: regionSchema,
@@ -180,6 +189,11 @@ export const startEc2InstanceSchema = {
   Ec2Args: startEc2InstanceBaseSchema,
 };
 
+export const rebootEc2InstanceSchema = {
+  region: regionSchema,
+  Ec2Args: rebootEc2InstanceBaseSchema,
+};
+
 // Export the types
 export type ListEc2InstancesArgs = z.infer<
   ReturnType<typeof z.object<typeof listEc2InstancesSchema>>
@@ -195,4 +209,8 @@ export type StopEc2InstanceArgs = z.infer<
 
 export type StartEc2InstanceArgs = z.infer<
   ReturnType<typeof z.object<typeof startEc2InstanceSchema>>
+>;
+
+export type RebootEc2InstanceArgs = z.infer<
+  ReturnType<typeof z.object<typeof rebootEc2InstanceSchema>>
 >;
