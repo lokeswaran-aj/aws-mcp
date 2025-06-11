@@ -4,6 +4,7 @@ import {
   rebootEc2InstanceSchema,
   startEc2InstanceSchema,
   stopEc2InstanceSchema,
+  terminateEc2InstanceSchema,
 } from "@/schema/ec2";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
 import {
@@ -12,6 +13,7 @@ import {
   rebootEc2Instance,
   startEc2Instance,
   stopEc2Instance,
+  terminateEc2Instance,
 } from "./handler";
 
 export const registerEc2Tools = (server: McpServer): void => {
@@ -77,5 +79,18 @@ export const registerEc2Tools = (server: McpServer): void => {
       readOnlyHint: false,
     },
     async (args) => rebootEc2Instance(args)
+  );
+
+  server.tool(
+    "ec2-terminate-ec2-instance",
+    "Terminate an EC2 instance in a given region",
+    terminateEc2InstanceSchema,
+    {
+      title: "Terminate EC2 instance",
+      destructiveHint: true,
+      idempotentHint: true,
+      readOnlyHint: false,
+    },
+    async (args) => terminateEc2Instance(args)
   );
 };

@@ -7,6 +7,7 @@ import {
   RunInstancesCommand,
   StartInstancesCommand,
   StopInstancesCommand,
+  TerminateInstancesCommand,
 } from "@aws-sdk/client-ec2";
 import {
   LaunchEc2InstanceArgs,
@@ -14,6 +15,7 @@ import {
   RebootEc2InstanceArgs,
   StartEc2InstanceArgs,
   StopEc2InstanceArgs,
+  TerminateEc2InstanceArgs,
 } from "../../schema/ec2";
 
 export const listEc2Instances = async (
@@ -62,6 +64,16 @@ export const rebootEc2Instance = async (
   const { region, Ec2Args } = args;
   const ec2 = getEC2Client({ region });
   const command = new RebootInstancesCommand(Ec2Args);
+  const response = await ec2.send(command);
+  return formatResponse(response);
+};
+
+export const terminateEc2Instance = async (
+  args: TerminateEc2InstanceArgs
+): Promise<HandlerReturnType> => {
+  const { region, Ec2Args } = args;
+  const ec2 = getEC2Client({ region });
+  const command = new TerminateInstancesCommand(Ec2Args);
   const response = await ec2.send(command);
   return formatResponse(response);
 };
