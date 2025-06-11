@@ -4,13 +4,11 @@
 
 ## 🎬 Demo
 
-See it in action! Here's how easy it is to create a VPC with 2 subnets and delete them using natural language:
+See it in action! Here's how easy it is to spin up a full-blown EC2 setup — VPC, subnets, security groups, this works — all through natural language prompts to an AI Model Context Protocol (MCP) server.
 
 <div align="center" style="margin-top:20px;margin-bottom:20px;">
 <img src="assets/demo.gif" width="1200" alt="demo"/>
 </div>
-
-> 💡 **Pro tip**: The video shows creating a VPC with 2 subnets and deleting them through chat - no AWS console needed!
 
 ---
 
@@ -20,12 +18,15 @@ Currently supports
 
 1. RDS
 2. S3
-3. VPC
-4. Subnet
-5. Internet Gateway
-6. Route Table
-7. Security Group
-8. Key Pair
+3. EC2
+4. VPC
+5. Subnet
+6. Internet Gateway
+7. Route Table
+8. Security Group
+9. Key Pair
+10. Instance Tag
+11. AMI
 
 More AWS services (like EC2, Lambda, etc.) coming soon! Contributions welcome 🚀
 
@@ -127,7 +128,7 @@ To use this server with [Windsurf IDE](https://windsurf.com), add the following 
 - [x] Support RDS (Create, List, Update, Delete)
 - [x] Add S3 tools
 - [x] Add Network tools
-- [ ] Add EC2 tools
+- [x] Add EC2 tools
 - [ ] Add Lambda tools
 - [ ] Add IAM tools
 - [ ] Add ECS tools
