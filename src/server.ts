@@ -1,6 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { registerAmiTools } from "./tools/ami";
 import { registerEc2Tools } from "./tools/ec2";
+import { registerInstanceTagTools } from "./tools/instance-tag";
 import { registerInternetGatewayTools } from "./tools/internet-gateway";
 import { registerKeyPairTools } from "./tools/key-pair";
 import { registerRdsTools } from "./tools/rds";
@@ -34,3 +35,4 @@ void registerSecurityGroupTools(server);
 void registerKeyPairTools(server);
 void registerEc2Tools(server);
 void registerAmiTools(server);
+void registerInstanceTagTools(server);
