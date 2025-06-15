@@ -71,30 +71,24 @@ const deleteBucketBaseSchema = z.object({
 }) satisfies z.ZodType<DeleteBucketCommandInput>;
 
 // Export schemas
-export const listBucketsSchema = {
+export const listBucketsSchema = z.object({
   region: regionSchema,
   S3Args: listBucketsBaseSchema,
-};
+});
 
-export const createBucketSchema = {
+export const createBucketSchema = z.object({
   region: regionSchema,
   S3Args: createBucketBaseSchema,
-};
+});
 
-export const deleteBucketSchema = {
+export const deleteBucketSchema = z.object({
   region: regionSchema,
   S3Args: deleteBucketBaseSchema,
-};
+});
 
 // Export types for the schemas
-export type ListBucketsArgs = z.infer<
-  ReturnType<typeof z.object<typeof listBucketsSchema>>
->;
+export type ListBucketsArgs = z.infer<typeof listBucketsSchema>;
 
-export type CreateBucketArgs = z.infer<
-  ReturnType<typeof z.object<typeof createBucketSchema>>
->;
+export type CreateBucketArgs = z.infer<typeof createBucketSchema>;
 
-export type DeleteBucketArgs = z.infer<
-  ReturnType<typeof z.object<typeof deleteBucketSchema>>
->;
+export type DeleteBucketArgs = z.infer<typeof deleteBucketSchema>;

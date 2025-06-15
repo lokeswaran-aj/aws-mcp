@@ -3,47 +3,47 @@ import {
   deleteBucketSchema,
   listBucketsSchema,
 } from "@/schema/s3";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { server } from "@/server";
 import { createBucket, deleteBucket, listAllBuckets } from "./handler";
 
-export const registerS3Tools = async (server: McpServer): Promise<void> => {
-  server.tool(
-    "list-buckets",
-    "List all the S3 buckets in the given region",
-    listBucketsSchema,
-    {
+export const registerS3Tools = (): void => {
+  server.addTool({
+    name: "list-buckets",
+    description: "List all the S3 buckets in the given region",
+    parameters: listBucketsSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: true,
       idempotentHint: true,
       title: "List all the S3 buckets",
     },
-    async (args) => await listAllBuckets(args)
-  );
-  server.tool(
-    "create-bucket",
-    "Create a new S3 bucket in the given region",
-    createBucketSchema,
-    {
+    execute: async (args, context) => await listAllBuckets(args, context),
+  });
+  server.addTool({
+    name: "create-bucket",
+    description: "Create a new S3 bucket in the given region",
+    parameters: createBucketSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Create a new S3 bucket",
     },
-    async (args) => await createBucket(args)
-  );
-  server.tool(
-    "delete-bucket",
-    "Delete an S3 bucket in the given region",
-    deleteBucketSchema,
-    {
+    execute: async (args, context) => await createBucket(args, context),
+  });
+  server.addTool({
+    name: "delete-bucket",
+    description: "Delete an S3 bucket in the given region",
+    parameters: deleteBucketSchema,
+    annotations: {
       destructiveHint: true,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Delete an S3 bucket",
     },
-    async (args) => await deleteBucket(args)
-  );
+    execute: async (args, context) => await deleteBucket(args, context),
+  });
 };
