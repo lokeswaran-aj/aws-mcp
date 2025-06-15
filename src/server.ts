@@ -33,6 +33,12 @@ export const server = new FastMCP({
       credentials,
     };
   },
+  health: {
+    enabled: true,
+    path: "/",
+    message: "OK",
+    status: 200,
+  },
 });
 
 // Register all tools
