@@ -58,30 +58,24 @@ const deleteAmiBaseSchema = z.object({
 }) satisfies z.ZodType<DeregisterImageCommandInput>;
 
 // Export the schemas
-export const listAmisSchema = {
+export const listAmisSchema = z.object({
   region: regionSchema,
   AmiArgs: listAmisBaseSchema,
-};
+});
 
-export const createAmiSchema = {
+export const createAmiSchema = z.object({
   region: regionSchema,
   AmiArgs: createAmiBaseSchema,
-};
+});
 
-export const deleteAmiSchema = {
+export const deleteAmiSchema = z.object({
   region: regionSchema,
   AmiArgs: deleteAmiBaseSchema,
-};
+});
 
 // Export the types
-export type ListAmisArgs = z.infer<
-  ReturnType<typeof z.object<typeof listAmisSchema>>
->;
+export type ListAmisArgs = z.infer<typeof listAmisSchema>;
 
-export type CreateAmiArgs = z.infer<
-  ReturnType<typeof z.object<typeof createAmiSchema>>
->;
+export type CreateAmiArgs = z.infer<typeof createAmiSchema>;
 
-export type DeleteAmiArgs = z.infer<
-  ReturnType<typeof z.object<typeof deleteAmiSchema>>
->;
+export type DeleteAmiArgs = z.infer<typeof deleteAmiSchema>;
