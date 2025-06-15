@@ -52,48 +52,48 @@ const detachInternetGatewayBaseSchema = z.object({
 }) satisfies z.ZodType<DetachInternetGatewayCommandInput>;
 
 // Export the schemas
-export const listInternetGatewaysSchema = {
+export const listInternetGatewaysSchema = z.object({
   region: regionSchema,
   InternetGatewayArgs: listInternetGatewaysBaseSchema,
-};
+});
 
-export const createInternetGatewaySchema = {
+export const createInternetGatewaySchema = z.object({
   region: regionSchema,
   InternetGatewayArgs: createInternetGatewayBaseSchema,
-};
+});
 
-export const deleteInternetGatewaySchema = {
+export const deleteInternetGatewaySchema = z.object({
   region: regionSchema,
   InternetGatewayArgs: deleteInternetGatewayBaseSchema,
-};
+});
 
-export const attachInternetGatewaySchema = {
+export const attachInternetGatewaySchema = z.object({
   region: regionSchema,
   InternetGatewayArgs: attachInternetGatewayBaseSchema,
-};
+});
 
-export const detachInternetGatewaySchema = {
+export const detachInternetGatewaySchema = z.object({
   region: regionSchema,
   InternetGatewayArgs: detachInternetGatewayBaseSchema,
-};
+});
 
 // Export the types
 export type ListInternetGatewaysArgs = z.infer<
-  ReturnType<typeof z.object<typeof listInternetGatewaysSchema>>
+  typeof listInternetGatewaysSchema
 >;
 
 export type CreateInternetGatewayArgs = z.infer<
-  ReturnType<typeof z.object<typeof createInternetGatewaySchema>>
+  typeof createInternetGatewaySchema
 >;
 
 export type DeleteInternetGatewayArgs = z.infer<
-  ReturnType<typeof z.object<typeof deleteInternetGatewaySchema>>
+  typeof deleteInternetGatewaySchema
 >;
 
 export type AttachInternetGatewayArgs = z.infer<
-  ReturnType<typeof z.object<typeof attachInternetGatewaySchema>>
+  typeof attachInternetGatewaySchema
 >;
 
 export type DetachInternetGatewayArgs = z.infer<
-  ReturnType<typeof z.object<typeof detachInternetGatewaySchema>>
+  typeof detachInternetGatewaySchema
 >;

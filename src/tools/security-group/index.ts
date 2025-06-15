@@ -11,7 +11,7 @@ import {
   updateSecurityGroupRuleDescriptionsEgressSchema,
   updateSecurityGroupRuleDescriptionsIngressSchema,
 } from "@/schema/security-group";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
+import { server } from "@/server";
 import {
   authorizeSecurityGroupEgress,
   authorizeSecurityGroupIngress,
@@ -26,158 +26,168 @@ import {
   updateSecurityGroupRuleDescriptionsIngress,
 } from "./handler";
 
-export const registerSecurityGroupTools = (server: McpServer): void => {
-  server.tool(
-    "list-security-groups",
-    "List all security groups in the given region",
-    listSecurityGroupsSchema,
-    {
+export const registerSecurityGroupTools = (): void => {
+  server.addTool({
+    name: "list-security-groups",
+    description: "List all security groups in the given region",
+    parameters: listSecurityGroupsSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: true,
       idempotentHint: true,
       title: "List Security Groups",
     },
-    async (args) => await listSecurityGroups(args)
-  );
+    execute: async (args, context) => await listSecurityGroups(args, context),
+  });
 
-  server.tool(
-    "list-security-group-rules",
-    "List all security group rules in the given region",
-    listSecurityGroupRulesSchema,
-    {
+  server.addTool({
+    name: "list-security-group-rules",
+    description: "List all security group rules in the given region",
+    parameters: listSecurityGroupRulesSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: true,
       idempotentHint: true,
       title: "List Security Group Rules",
     },
-    async (args) => await listSecurityGroupRules(args)
-  );
+    execute: async (args, context) =>
+      await listSecurityGroupRules(args, context),
+  });
 
-  server.tool(
-    "create-security-group",
-    "Create a security group in the given region",
-    createSecurityGroupSchema,
-    {
+  server.addTool({
+    name: "create-security-group",
+    description: "Create a security group in the given region",
+    parameters: createSecurityGroupSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: false,
       title: "Create Security Group",
     },
-    async (args) => await createSecurityGroup(args)
-  );
+    execute: async (args, context) => await createSecurityGroup(args, context),
+  });
 
-  server.tool(
-    "authorize-security-group-ingress",
-    "Authorize a security group ingress in the given region",
-    authorizeSecurityGroupIngressSchema,
-    {
+  server.addTool({
+    name: "authorize-security-group-ingress",
+    description: "Authorize a security group ingress in the given region",
+    parameters: authorizeSecurityGroupIngressSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: false,
       title: "Authorize Security Group Ingress",
     },
-    async (args) => await authorizeSecurityGroupIngress(args)
-  );
+    execute: async (args, context) =>
+      await authorizeSecurityGroupIngress(args, context),
+  });
 
-  server.tool(
-    "authorize-security-group-egress",
-    "Authorize a security group egress in the given region",
-    authorizeSecurityGroupEgressSchema,
-    {
+  server.addTool({
+    name: "authorize-security-group-egress",
+    description: "Authorize a security group egress in the given region",
+    parameters: authorizeSecurityGroupEgressSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: false,
       title: "Authorize Security Group Egress",
     },
-    async (args) => await authorizeSecurityGroupEgress(args)
-  );
+    execute: async (args, context) =>
+      await authorizeSecurityGroupEgress(args, context),
+  });
 
-  server.tool(
-    "modify-security-group-rules",
-    "Modify a security group rule in the given region",
-    modifySecurityGroupRulesSchema,
-    {
+  server.addTool({
+    name: "modify-security-group-rules",
+    description: "Modify a security group rule in the given region",
+    parameters: modifySecurityGroupRulesSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Modify Security Group Rules",
     },
-    async (args) => await modifySecurityGroupRules(args)
-  );
+    execute: async (args, context) =>
+      await modifySecurityGroupRules(args, context),
+  });
 
-  server.tool(
-    "update-security-group-rule-descriptions-ingress",
-    "Update the description of a security group rule ingress in the given region",
-    updateSecurityGroupRuleDescriptionsIngressSchema,
-    {
+  server.addTool({
+    name: "update-security-group-rule-descriptions-ingress",
+    description:
+      "Update the description of a security group rule ingress in the given region",
+    parameters: updateSecurityGroupRuleDescriptionsIngressSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Update Security Group Rule Descriptions Ingress",
     },
-    async (args) => await updateSecurityGroupRuleDescriptionsIngress(args)
-  );
+    execute: async (args, context) =>
+      await updateSecurityGroupRuleDescriptionsIngress(args, context),
+  });
 
-  server.tool(
-    "update-security-group-rule-descriptions-egress",
-    "Update the description of a security group rule egress in the given region",
-    updateSecurityGroupRuleDescriptionsEgressSchema,
-    {
+  server.addTool({
+    name: "update-security-group-rule-descriptions-egress",
+    description:
+      "Update the description of a security group rule egress in the given region",
+    parameters: updateSecurityGroupRuleDescriptionsEgressSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Update Security Group Rule Descriptions Egress",
     },
-    async (args) => await updateSecurityGroupRuleDescriptionsEgress(args)
-  );
+    execute: async (args, context) =>
+      await updateSecurityGroupRuleDescriptionsEgress(args, context),
+  });
 
-  server.tool(
-    "revoke-security-group-ingress",
-    "Revoke a security group ingress in the given region",
-    revokeSecurityGroupIngressSchema,
-    {
+  server.addTool({
+    name: "revoke-security-group-ingress",
+    description: "Revoke a security group ingress in the given region",
+    parameters: revokeSecurityGroupIngressSchema,
+    annotations: {
       destructiveHint: true,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Revoke Security Group Ingress",
     },
-    async (args) => await revokeSecurityGroupIngress(args)
-  );
+    execute: async (args, context) =>
+      await revokeSecurityGroupIngress(args, context),
+  });
 
-  server.tool(
-    "revoke-security-group-egress",
-    "Revoke a security group egress in the given region",
-    revokeSecurityGroupEgressSchema,
-    {
+  server.addTool({
+    name: "revoke-security-group-egress",
+    description: "Revoke a security group egress in the given region",
+    parameters: revokeSecurityGroupEgressSchema,
+    annotations: {
       destructiveHint: true,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Revoke Security Group Egress",
     },
-    async (args) => await revokeSecurityGroupEgress(args)
-  );
+    execute: async (args, context) =>
+      await revokeSecurityGroupEgress(args, context),
+  });
 
-  server.tool(
-    "delete-security-group",
-    "Delete a security group in the given region",
-    deleteSecurityGroupSchema,
-    {
+  server.addTool({
+    name: "delete-security-group",
+    description: "Delete a security group in the given region",
+    parameters: deleteSecurityGroupSchema,
+    annotations: {
       destructiveHint: true,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Delete Security Group",
     },
-    async (args) => await deleteSecurityGroup(args)
-  );
+    execute: async (args, context) => await deleteSecurityGroup(args, context),
+  });
 };

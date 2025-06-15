@@ -28,7 +28,7 @@ Currently supports
 10. Instance Tag
 11. AMI
 
-More AWS services (like EC2, Lambda, etc.) coming soon! Contributions welcome 🚀
+More AWS services (like Lambda, API Gateway, etc.) coming soon! Contributions welcome 🚀
 
 ---
 
@@ -49,17 +49,9 @@ git clone https://github.com/lokeswaran-aj/aws-mcp.git
 cd aws-mcp
 ```
 
-### 2. Set up environment variables
+> ❗️Currently, the server reads credentials from MCP configuration headers. In future versions, we'll support AWS Role ARN.
 
-```bash
-cp .env.example .env
-```
-
-Then update your AWS credentials inside `.env`. Make sure you've created an IAM user with appropriate permissions.
-
-> ❗️Currently, the server reads credentials from environment variables. In future versions, we'll support secure credential injection or AWS SSO.
-
-### 3. Install dependencies
+### 2. Install dependencies
 
 ```bash
 pnpm install
@@ -71,32 +63,38 @@ pnpm install
 > npm install -g pnpm
 > ```
 
-### 4. Run the dev server
+### 3. Run the dev server
 
 ```bash
 pnpm dev
 ```
 
-The server will start on the port specified in your `.env` file (default is `8080`).
-
-MCP SSE endpoint:
-[`http://localhost:8080/sse`](http://localhost:8080/sse)
-
 ---
 
 ## 🧪 Example: Windsurf Configuration
 
-To use this server with [Windsurf IDE](https://windsurf.com), add the following to your `~/.codeium/windsurf/mcp_config.json`:
+To use this server with [Cursor](https://cursor.com), add the following to your `~/.cursor/mcp.json`:
 
 ```json
 {
   "mcpServers": {
     "aws": {
-      "serverUrl": "http://localhost:8080/sse"
+      "serverUrl": "http://localhost:8080/mcp",
+      "headers": {
+        "AWS_ACCESS_KEY_ID": "YOUR_AWS_ACCESS_KEY_ID",
+        "AWS_SECRET_ACCESS_KEY": "YOUR_AWS_SECRET_ACCESS_KEY",
+        "AWS_SESSION_TOKEN": "YOUR_AWS_SESSION_TOKEN"
+      }
     }
   }
 }
 ```
+
+> ❗️ Use `http://localhost:8080/mcp` if your client supports HTTP streamable(For eg: Cursor). Use `http://localhost:8080/sse` if your client supports only SSE(For eg: Windsurf).
+
+MCP HTTP streamable endpoint: [http://localhost:8080/mcp](http://localhost:8080/mcp)
+
+MCP SSE endpoint: [http://localhost:8080/sse](http://localhost:8080/sse)
 
 ---
 
@@ -105,16 +103,22 @@ To use this server with [Windsurf IDE](https://windsurf.com), add the following 
 ```bash
 .
 ├── src/
-│   ├── index.ts              # Entry point
-│   ├── server.ts             # AWS MCP server setup
+│   ├── server.ts             # AWS MCP server setup - Entry point
 │   ├── aws-clients.ts        # AWS SDK client setup
 │   ├── config/               # App configuration
-│   ├── controllers/          # MCP request handlers
-│   ├── routes/               # API endpoints
 │   ├── tools/                # Tools definitions
-│   │   └── rds/              # RDS operations (create, list, delete, update)
+│   │   ├── rds/              # RDS operations
+│   │   ├── s3/               # S3 operations
+│   │   ├── ec2/              # EC2 operations
+│   │   ├── vpc/              # VPC operations
+│   │   ├── subnet/           # Subnet operations
+│   │   ├── internet-gateway/ # Internet Gateway operations
+│   │   ├── route-table/      # Route Table operations
+│   │   ├── security-group/   # Security Group operations
+│   │   ├── key-pair/         # Key Pair operations
+│   │   ├── instance-tag/     # Instance Tag operations
+│   │   ├── ami/              # AMI operations
 │   ├── schema/               # Tool input schemas
-│   ├── services/             # Transport handler
 │   ├── types/                # TypeScript definitions
 │   └── utils/                # Helper functions
 ├── package.json              # Dependencies and scripts
@@ -130,6 +134,7 @@ To use this server with [Windsurf IDE](https://windsurf.com), add the following 
 - [x] Add Network tools
 - [x] Add EC2 tools
 - [ ] Add Lambda tools
+- [ ] Add API Gateway tools
 - [ ] Add IAM tools
 - [ ] Add ECS tools
 
@@ -156,4 +161,5 @@ MIT — do what you want, just give credit where it's due. ✌️
 ## ⚡ Powered by
 
 - [Model Context Protocol](https://modelcontextprotocol.io/introduction)
+- [FastMCP](https://github.com/fastmcp/fastmcp)
 - [AWS SDK for JS (v3)](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/)

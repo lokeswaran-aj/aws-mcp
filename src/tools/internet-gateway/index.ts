@@ -5,7 +5,7 @@ import {
   detachInternetGatewaySchema,
   listInternetGatewaysSchema,
 } from "@/schema/internet-gateway";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { server } from "@/server";
 import {
   attachInternetGateway,
   createInternetGateway,
@@ -14,74 +14,78 @@ import {
   listInternetGateways,
 } from "./handler";
 
-export const registerInternetGatewayTools = (server: McpServer): void => {
-  server.tool(
-    "list-internet-gateways",
-    "List all internet gateways in the given region",
-    listInternetGatewaysSchema,
-    {
+export const registerInternetGatewayTools = (): void => {
+  server.addTool({
+    name: "list-internet-gateways",
+    description: "List all internet gateways in the given region",
+    parameters: listInternetGatewaysSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: true,
       idempotentHint: true,
       title: "List all internet gateways",
     },
-    async (args) => await listInternetGateways(args)
-  );
+    execute: async (args, context) => await listInternetGateways(args, context),
+  });
 
-  server.tool(
-    "create-internet-gateway",
-    "Create a new internet gateway in the given region",
-    createInternetGatewaySchema,
-    {
+  server.addTool({
+    name: "create-internet-gateway",
+    description: "Create a new internet gateway in the given region",
+    parameters: createInternetGatewaySchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: false,
       title: "Create a new internet gateway",
     },
-    async (args) => await createInternetGateway(args)
-  );
+    execute: async (args, context) =>
+      await createInternetGateway(args, context),
+  });
 
-  server.tool(
-    "delete-internet-gateway",
-    "Delete an internet gateway by ID in the given region",
-    deleteInternetGatewaySchema,
-    {
+  server.addTool({
+    name: "delete-internet-gateway",
+    description: "Delete an internet gateway by ID in the given region",
+    parameters: deleteInternetGatewaySchema,
+    annotations: {
       destructiveHint: true,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Delete an internet gateway",
     },
-    async (args) => await deleteInternetGateway(args)
-  );
+    execute: async (args, context) =>
+      await deleteInternetGateway(args, context),
+  });
 
-  server.tool(
-    "attach-internet-gateway",
-    "Attach an internet gateway to a VPC",
-    attachInternetGatewaySchema,
-    {
+  server.addTool({
+    name: "attach-internet-gateway",
+    description: "Attach an internet gateway to a VPC",
+    parameters: attachInternetGatewaySchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Attach an internet gateway to a VPC",
     },
-    async (args) => await attachInternetGateway(args)
-  );
+    execute: async (args, context) =>
+      await attachInternetGateway(args, context),
+  });
 
-  server.tool(
-    "detach-internet-gateway",
-    "Detach an internet gateway from a VPC",
-    detachInternetGatewaySchema,
-    {
+  server.addTool({
+    name: "detach-internet-gateway",
+    description: "Detach an internet gateway from a VPC",
+    parameters: detachInternetGatewaySchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Detach an internet gateway from a VPC",
     },
-    async (args) => await detachInternetGateway(args)
-  );
+    execute: async (args, context) =>
+      await detachInternetGateway(args, context),
+  });
 };

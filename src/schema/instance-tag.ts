@@ -37,30 +37,24 @@ const deleteInstanceTagBaseSchema = z.object({
 }) satisfies z.ZodType<DeleteTagsCommandInput>;
 
 // Export the schemas
-export const listInstanceTagsSchema = {
+export const listInstanceTagsSchema = z.object({
   region: regionSchema,
   InstanceArgs: listInstanceTagsBaseSchema,
-};
+});
 
-export const createInstanceTagSchema = {
+export const createInstanceTagSchema = z.object({
   region: regionSchema,
   InstanceArgs: createInstanceTagBaseSchema,
-};
+});
 
-export const deleteInstanceTagSchema = {
+export const deleteInstanceTagSchema = z.object({
   region: regionSchema,
   InstanceArgs: deleteInstanceTagBaseSchema,
-};
+});
 
 // Export the types
-export type ListInstanceTagsArgs = z.infer<
-  ReturnType<typeof z.object<typeof listInstanceTagsSchema>>
->;
+export type ListInstanceTagsArgs = z.infer<typeof listInstanceTagsSchema>;
 
-export type CreateInstanceTagArgs = z.infer<
-  ReturnType<typeof z.object<typeof createInstanceTagSchema>>
->;
+export type CreateInstanceTagArgs = z.infer<typeof createInstanceTagSchema>;
 
-export type DeleteInstanceTagArgs = z.infer<
-  ReturnType<typeof z.object<typeof deleteInstanceTagSchema>>
->;
+export type DeleteInstanceTagArgs = z.infer<typeof deleteInstanceTagSchema>;

@@ -6,7 +6,7 @@ import {
   stopEc2InstanceSchema,
   terminateEc2InstanceSchema,
 } from "@/schema/ec2";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
+import { server } from "@/server";
 import {
   launchEc2Instance,
   listEc2Instances,
@@ -16,81 +16,81 @@ import {
   terminateEc2Instance,
 } from "./handler";
 
-export const registerEc2Tools = (server: McpServer): void => {
-  server.tool(
-    "list-ec2-instances",
-    "List EC2 instances in a given region",
-    listEc2InstancesSchema,
-    {
+export const registerEc2Tools = (): void => {
+  server.addTool({
+    name: "list-ec2-instances",
+    description: "List EC2 instances in a given region",
+    parameters: listEc2InstancesSchema,
+    annotations: {
       destructiveHint: false,
       readOnlyHint: true,
       idempotentHint: true,
       openWorldHint: true,
       title: "List EC2 instances",
     },
-    async (args) => listEc2Instances(args)
-  );
+    execute: async (args, context) => await listEc2Instances(args, context),
+  });
 
-  server.tool(
-    "launch-ec2-instance",
-    "Launch an EC2 instance in a given region",
-    launchEc2InstanceSchema,
-    {
+  server.addTool({
+    name: "launch-ec2-instance",
+    description: "Launch an EC2 instance in a given region",
+    parameters: launchEc2InstanceSchema,
+    annotations: {
       destructiveHint: false,
       title: "Launch EC2 instance",
     },
-    async (args) => launchEc2Instance(args)
-  );
+    execute: async (args, context) => await launchEc2Instance(args, context),
+  });
 
-  server.tool(
-    "stop-ec2-instance",
-    "Stop an EC2 instance in a given region",
-    stopEc2InstanceSchema,
-    {
+  server.addTool({
+    name: "stop-ec2-instance",
+    description: "Stop an EC2 instance in a given region",
+    parameters: stopEc2InstanceSchema,
+    annotations: {
       title: "Stop EC2 instance",
       destructiveHint: false,
       idempotentHint: true,
       readOnlyHint: false,
     },
-    async (args) => stopEc2Instance(args)
-  );
+    execute: async (args, context) => await stopEc2Instance(args, context),
+  });
 
-  server.tool(
-    "start-ec2-instance",
-    "Start an EC2 instance in a given region",
-    startEc2InstanceSchema,
-    {
+  server.addTool({
+    name: "start-ec2-instance",
+    description: "Start an EC2 instance in a given region",
+    parameters: startEc2InstanceSchema,
+    annotations: {
       title: "Start EC2 instance",
       destructiveHint: false,
       idempotentHint: true,
       readOnlyHint: false,
     },
-    async (args) => startEc2Instance(args)
-  );
+    execute: async (args, context) => await startEc2Instance(args, context),
+  });
 
-  server.tool(
-    "reboot-ec2-instance",
-    "Reboot an EC2 instance in a given region",
-    rebootEc2InstanceSchema,
-    {
+  server.addTool({
+    name: "reboot-ec2-instance",
+    description: "Reboot an EC2 instance in a given region",
+    parameters: rebootEc2InstanceSchema,
+    annotations: {
       title: "Reboot EC2 instance",
       destructiveHint: false,
       idempotentHint: true,
       readOnlyHint: false,
     },
-    async (args) => rebootEc2Instance(args)
-  );
+    execute: async (args, context) => await rebootEc2Instance(args, context),
+  });
 
-  server.tool(
-    "terminate-ec2-instance",
-    "Terminate an EC2 instance in a given region",
-    terminateEc2InstanceSchema,
-    {
+  server.addTool({
+    name: "terminate-ec2-instance",
+    description: "Terminate an EC2 instance in a given region",
+    parameters: terminateEc2InstanceSchema,
+    annotations: {
       title: "Terminate EC2 instance",
       destructiveHint: true,
       idempotentHint: true,
       readOnlyHint: false,
     },
-    async (args) => terminateEc2Instance(args)
-  );
+    execute: async (args, context) => await terminateEc2Instance(args, context),
+  });
 };

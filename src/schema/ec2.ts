@@ -159,57 +159,47 @@ const terminateEc2InstanceBaseSchema = z.object({
 }) satisfies z.ZodType<TerminateInstancesCommandInput>;
 
 // Export the schemas
-export const listEc2InstancesSchema = {
+export const listEc2InstancesSchema = z.object({
   region: regionSchema,
   Ec2Args: listEc2InstancesBaseSchema,
-};
+});
 
-export const launchEc2InstanceSchema = {
+export const launchEc2InstanceSchema = z.object({
   region: regionSchema,
   Ec2Args: launchEc2InstanceBaseSchema,
-};
+});
 
-export const stopEc2InstanceSchema = {
+export const stopEc2InstanceSchema = z.object({
   region: regionSchema,
   Ec2Args: stopEc2InstanceBaseSchema,
-};
+});
 
-export const startEc2InstanceSchema = {
+export const startEc2InstanceSchema = z.object({
   region: regionSchema,
   Ec2Args: startEc2InstanceBaseSchema,
-};
+});
 
-export const rebootEc2InstanceSchema = {
+export const rebootEc2InstanceSchema = z.object({
   region: regionSchema,
   Ec2Args: rebootEc2InstanceBaseSchema,
-};
+});
 
-export const terminateEc2InstanceSchema = {
+export const terminateEc2InstanceSchema = z.object({
   region: regionSchema,
   Ec2Args: terminateEc2InstanceBaseSchema,
-};
+});
 
 // Export the types
-export type ListEc2InstancesArgs = z.infer<
-  ReturnType<typeof z.object<typeof listEc2InstancesSchema>>
->;
+export type ListEc2InstancesArgs = z.infer<typeof listEc2InstancesSchema>;
 
-export type LaunchEc2InstanceArgs = z.infer<
-  ReturnType<typeof z.object<typeof launchEc2InstanceSchema>>
->;
+export type LaunchEc2InstanceArgs = z.infer<typeof launchEc2InstanceSchema>;
 
-export type StopEc2InstanceArgs = z.infer<
-  ReturnType<typeof z.object<typeof stopEc2InstanceSchema>>
->;
+export type StopEc2InstanceArgs = z.infer<typeof stopEc2InstanceSchema>;
 
-export type StartEc2InstanceArgs = z.infer<
-  ReturnType<typeof z.object<typeof startEc2InstanceSchema>>
->;
+export type StartEc2InstanceArgs = z.infer<typeof startEc2InstanceSchema>;
 
-export type RebootEc2InstanceArgs = z.infer<
-  ReturnType<typeof z.object<typeof rebootEc2InstanceSchema>>
->;
+export type RebootEc2InstanceArgs = z.infer<typeof rebootEc2InstanceSchema>;
 
 export type TerminateEc2InstanceArgs = z.infer<
-  ReturnType<typeof z.object<typeof terminateEc2InstanceSchema>>
+  typeof terminateEc2InstanceSchema
 >;

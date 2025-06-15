@@ -6,7 +6,7 @@ import {
   listRouteTablesSchema,
   replaceRouteTableAssociationSchema,
 } from "@/schema/route-table";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { server } from "@/server";
 import {
   associateRouteTable,
   createRouteTable,
@@ -16,88 +16,93 @@ import {
   replaceRouteTableAssociation,
 } from "./handler";
 
-export const registerRouteTableTools = (server: McpServer): void => {
-  server.tool(
-    "list-route-tables",
-    "List route tables in the given region",
-    listRouteTablesSchema,
-    {
+export const registerRouteTableTools = (): void => {
+  server.addTool({
+    name: "list-route-tables",
+    description: "List route tables in the given region",
+    parameters: listRouteTablesSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: true,
       idempotentHint: true,
       title: "List route tables",
     },
-    async (args) => await listRouteTables(args)
-  );
+    execute: async (args, context) => await listRouteTables(args, context),
+  });
 
-  server.tool(
-    "create-route-table",
-    "Create a route table in the given region",
-    createRouteTableSchema,
-    {
+  server.addTool({
+    name: "create-route-table",
+    description: "Create a route table in the given region",
+    parameters: createRouteTableSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: false,
       title: "Create a route table",
     },
-    async (args) => await createRouteTable(args)
-  );
+    execute: async (args, context) => await createRouteTable(args, context),
+  });
 
-  server.tool(
-    "associate-route-table",
-    "Associate a route table with a subnet or internet gateway or virtual private gateway",
-    associateRouteTableSchema,
-    {
+  server.addTool({
+    name: "associate-route-table",
+    description:
+      "Associate a route table with a subnet or internet gateway or virtual private gateway",
+    parameters: associateRouteTableSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Associate a route table with a subnet or gateway",
     },
-    async (args) => await associateRouteTable(args)
-  );
+    execute: async (args, context) => await associateRouteTable(args, context),
+  });
 
-  server.tool(
-    "disassociate-route-table",
-    "Disassociate a route table from a subnet or internet gateway or virtual private gateway",
-    disassociateRouteTableSchema,
-    {
+  server.addTool({
+    name: "disassociate-route-table",
+    description:
+      "Disassociate a route table from a subnet or internet gateway or virtual private gateway",
+    parameters: disassociateRouteTableSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Disassociate a route table from a subnet or gateway",
     },
-    async (args) => await disassociateRouteTable(args)
-  );
+    execute: async (args, context) =>
+      await disassociateRouteTable(args, context),
+  });
 
-  server.tool(
-    "replace-route-table-association",
-    "Replace the route table association for a subnet or internet gateway or virtual private gateway",
-    replaceRouteTableAssociationSchema,
-    {
+  server.addTool({
+    name: "replace-route-table-association",
+    description:
+      "Replace the route table association for a subnet or internet gateway or virtual private gateway",
+    parameters: replaceRouteTableAssociationSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Replace the route table association for a subnet or gateway",
     },
-    async (args) => await replaceRouteTableAssociation(args)
-  );
+    execute: async (args, context) =>
+      await replaceRouteTableAssociation(args, context),
+  });
 
-  server.tool(
-    "delete-route-table",
-    "Delete a route table in the given region",
-    deleteRouteTableSchema,
-    {
+  server.addTool({
+    name: "delete-route-table",
+    description: "Delete a route table in the given region",
+    parameters: deleteRouteTableSchema,
+    annotations: {
       destructiveHint: true,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Delete a route table",
     },
-    async (args) => await deleteRouteTable(args)
-  );
+    execute: async (args, context) => await deleteRouteTable(args, context),
+  });
 };

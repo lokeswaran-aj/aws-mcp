@@ -244,37 +244,29 @@ const updateDBInstanceBaseSchema = dbInstanceCommonSchema.extend({
     ),
 }) satisfies z.ZodType<ModifyDBInstanceCommandInput>;
 
-// Export types for the schemas
-export type ListDBInstancesArgs = z.infer<
-  ReturnType<typeof z.object<typeof listDBInstancesSchema>>
->;
-export type CreateDBInstanceArgs = z.infer<
-  ReturnType<typeof z.object<typeof createDBInstanceSchema>>
->;
-export type DeleteDBInstanceArgs = z.infer<
-  ReturnType<typeof z.object<typeof deleteDBInstanceSchema>>
->;
-export type UpdateDBInstanceArgs = z.infer<
-  ReturnType<typeof z.object<typeof updateDBInstanceSchema>>
->;
-
 // Export schemas
-export const listDBInstancesSchema = {
+export const listDBInstancesSchema = z.object({
   region: regionSchema,
   DBInstanceArgs: describeDBInstancesBaseSchema,
-};
+});
 
-export const createDBInstanceSchema = {
+export const createDBInstanceSchema = z.object({
   region: regionSchema,
   DBInstanceArgs: createDBInstanceBaseSchema,
-};
+});
 
-export const deleteDBInstanceSchema = {
+export const deleteDBInstanceSchema = z.object({
   region: regionSchema,
   DBInstanceArgs: deleteDBInstanceBaseSchema,
-};
+});
 
-export const updateDBInstanceSchema = {
+export const updateDBInstanceSchema = z.object({
   region: regionSchema,
   DBInstanceArgs: updateDBInstanceBaseSchema,
-};
+});
+
+// Export types for the schemas
+export type ListDBInstancesArgs = z.infer<typeof listDBInstancesSchema>;
+export type CreateDBInstanceArgs = z.infer<typeof createDBInstanceSchema>;
+export type DeleteDBInstanceArgs = z.infer<typeof deleteDBInstanceSchema>;
+export type UpdateDBInstanceArgs = z.infer<typeof updateDBInstanceSchema>;

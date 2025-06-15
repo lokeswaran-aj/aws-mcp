@@ -4,68 +4,68 @@ import {
   listDBInstancesSchema,
   updateDBInstanceSchema,
 } from "@/schema/rds";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { server } from "@/server";
 import {
   createDbInstance,
   deleteDbInstance,
   listAllDbInstances,
   updateDbInstance,
-} from "./handlers";
+} from "./handler";
 
-export const registerRdsTools = (server: McpServer): void => {
-  server.tool(
-    "list-db-instances",
-    "List all the RDS DB instances in the given region",
-    listDBInstancesSchema,
-    {
+export const registerRdsTools = (): void => {
+  server.addTool({
+    name: "list-db-instances",
+    description: "List all the RDS DB instances in the given region",
+    parameters: listDBInstancesSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: true,
       idempotentHint: true,
       title: "List all the RDS DB instances",
     },
-    async (args) => await listAllDbInstances(args)
-  );
+    execute: async (args, context) => await listAllDbInstances(args, context),
+  });
 
-  server.tool(
-    "create-db-instance",
-    "Create a new RDS DB instance in the given region",
-    createDBInstanceSchema,
-    {
+  server.addTool({
+    name: "create-db-instance",
+    description: "Create a new RDS DB instance in the given region",
+    parameters: createDBInstanceSchema,
+    annotations: {
       destructiveHint: true,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: false,
       title: "Create a new RDS DB instance",
     },
-    async (args) => await createDbInstance(args)
-  );
+    execute: async (args, context) => await createDbInstance(args, context),
+  });
 
-  server.tool(
-    "delete-db-instance",
-    "Delete a given RDS DB instance in the given region",
-    deleteDBInstanceSchema,
-    {
+  server.addTool({
+    name: "delete-db-instance",
+    description: "Delete a given RDS DB instance in the given region",
+    parameters: deleteDBInstanceSchema,
+    annotations: {
       destructiveHint: true,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: false,
       title: "Delete a given RDS DB instance",
     },
-    async (args) => await deleteDbInstance(args)
-  );
+    execute: async (args, context) => await deleteDbInstance(args, context),
+  });
 
-  server.tool(
-    "update-db-instance",
-    "Update a given RDS DB instance in the given region",
-    updateDBInstanceSchema,
-    {
+  server.addTool({
+    name: "update-db-instance",
+    description: "Update a given RDS DB instance in the given region",
+    parameters: updateDBInstanceSchema,
+    annotations: {
       destructiveHint: true,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: false,
       title: "Update a given RDS DB instance",
     },
-    async (args) => await updateDbInstance(args)
-  );
+    execute: async (args, context) => await updateDbInstance(args, context),
+  });
 };

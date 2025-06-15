@@ -261,106 +261,96 @@ const deleteSecurityGroupBaseSchema = z.object({
 }) satisfies z.ZodType<DeleteSecurityGroupCommandInput>;
 
 // Export the schemas
-export const listSecurityGroupsSchema = {
+export const listSecurityGroupsSchema = z.object({
   region: regionSchema,
   SecurityGroupArgs: listSecurityGroupsBaseSchema,
-};
+});
 
-export const listSecurityGroupRulesSchema = {
+export const listSecurityGroupRulesSchema = z.object({
   region: regionSchema,
   SecurityGroupRuleArgs: listSecurityGroupRulesBaseSchema,
-};
+});
 
-export const createSecurityGroupSchema = {
+export const createSecurityGroupSchema = z.object({
   region: regionSchema,
   SecurityGroupArgs: createSecurityGroupBaseSchema,
-};
+});
 
-export const authorizeSecurityGroupIngressSchema = {
+export const authorizeSecurityGroupIngressSchema = z.object({
   region: regionSchema,
   SecurityGroupArgs: authorizeSecurityGroupIngressBaseSchema,
-};
+});
 
-export const authorizeSecurityGroupEgressSchema = {
+export const authorizeSecurityGroupEgressSchema = z.object({
   region: regionSchema,
   SecurityGroupArgs: authorizeSecurityGroupEgressBaseSchema,
-};
+});
 
-export const modifySecurityGroupRulesSchema = {
+export const modifySecurityGroupRulesSchema = z.object({
   region: regionSchema,
   SecurityGroupArgs: modifySecurityGroupRulesBaseSchema,
-};
+});
 
-export const updateSecurityGroupRuleDescriptionsIngressSchema = {
+export const updateSecurityGroupRuleDescriptionsIngressSchema = z.object({
   region: regionSchema,
   SecurityGroupArgs: updateSecurityGroupRuleDescriptionsIngressBaseSchema,
-};
+});
 
-export const updateSecurityGroupRuleDescriptionsEgressSchema = {
+export const updateSecurityGroupRuleDescriptionsEgressSchema = z.object({
   region: regionSchema,
   SecurityGroupArgs: updateSecurityGroupRuleDescriptionsEgressBaseSchema,
-};
+});
 
-export const revokeSecurityGroupIngressSchema = {
+export const revokeSecurityGroupIngressSchema = z.object({
   region: regionSchema,
   SecurityGroupArgs: revokeSecurityGroupIngressBaseSchema,
-};
+});
 
-export const revokeSecurityGroupEgressSchema = {
+export const revokeSecurityGroupEgressSchema = z.object({
   region: regionSchema,
   SecurityGroupArgs: revokeSecurityGroupEgressBaseSchema,
-};
+});
 
-export const deleteSecurityGroupSchema = {
+export const deleteSecurityGroupSchema = z.object({
   region: regionSchema,
   SecurityGroupArgs: deleteSecurityGroupBaseSchema,
-};
+});
 
 // Export the types
-export type ListSecurityGroupsArgs = z.infer<
-  ReturnType<typeof z.object<typeof listSecurityGroupsSchema>>
->;
+export type ListSecurityGroupsArgs = z.infer<typeof listSecurityGroupsSchema>;
 
 export type ListSecurityGroupRulesArgs = z.infer<
-  ReturnType<typeof z.object<typeof listSecurityGroupRulesSchema>>
+  typeof listSecurityGroupRulesSchema
 >;
 
-export type CreateSecurityGroupArgs = z.infer<
-  ReturnType<typeof z.object<typeof createSecurityGroupSchema>>
->;
+export type CreateSecurityGroupArgs = z.infer<typeof createSecurityGroupSchema>;
 
 export type AuthorizeSecurityGroupIngressArgs = z.infer<
-  ReturnType<typeof z.object<typeof authorizeSecurityGroupIngressSchema>>
+  typeof authorizeSecurityGroupIngressSchema
 >;
 
 export type AuthorizeSecurityGroupEgressArgs = z.infer<
-  ReturnType<typeof z.object<typeof authorizeSecurityGroupEgressSchema>>
+  typeof authorizeSecurityGroupEgressSchema
 >;
 
 export type ModifySecurityGroupRulesArgs = z.infer<
-  ReturnType<typeof z.object<typeof modifySecurityGroupRulesSchema>>
+  typeof modifySecurityGroupRulesSchema
 >;
 
 export type UpdateSecurityGroupRuleDescriptionsIngressArgs = z.infer<
-  ReturnType<
-    typeof z.object<typeof updateSecurityGroupRuleDescriptionsIngressSchema>
-  >
+  typeof updateSecurityGroupRuleDescriptionsIngressSchema
 >;
 
 export type UpdateSecurityGroupRuleDescriptionsEgressArgs = z.infer<
-  ReturnType<
-    typeof z.object<typeof updateSecurityGroupRuleDescriptionsEgressSchema>
-  >
+  typeof updateSecurityGroupRuleDescriptionsEgressSchema
 >;
 
 export type RevokeSecurityGroupIngressArgs = z.infer<
-  ReturnType<typeof z.object<typeof revokeSecurityGroupIngressSchema>>
+  typeof revokeSecurityGroupIngressSchema
 >;
 
 export type RevokeSecurityGroupEgressArgs = z.infer<
-  ReturnType<typeof z.object<typeof revokeSecurityGroupEgressSchema>>
+  typeof revokeSecurityGroupEgressSchema
 >;
 
-export type DeleteSecurityGroupArgs = z.infer<
-  ReturnType<typeof z.object<typeof deleteSecurityGroupSchema>>
->;
+export type DeleteSecurityGroupArgs = z.infer<typeof deleteSecurityGroupSchema>;

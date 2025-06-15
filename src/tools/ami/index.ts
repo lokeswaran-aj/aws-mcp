@@ -1,44 +1,44 @@
 import { createAmiSchema, deleteAmiSchema, listAmisSchema } from "@/schema/ami";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
+import { server } from "@/server";
 import { createAmi, deleteAmi, listAmis } from "./handler";
 
-export const registerAmiTools = (server: McpServer): void => {
-  server.tool(
-    "list-amis",
-    "List AMIs",
-    listAmisSchema,
-    {
+export const registerAmiTools = (): void => {
+  server.addTool({
+    name: "list-amis",
+    description: "List AMIs",
+    parameters: listAmisSchema,
+    annotations: {
       title: "List AMIs",
       destructiveHint: false,
       idempotentHint: true,
       readOnlyHint: true,
     },
-    async (args) => listAmis(args)
-  );
+    execute: async (args, context) => await listAmis(args, context),
+  });
 
-  server.tool(
-    "create-ami",
-    "Create an AMI",
-    createAmiSchema,
-    {
+  server.addTool({
+    name: "create-ami",
+    description: "Create an AMI",
+    parameters: createAmiSchema,
+    annotations: {
       title: "Create AMI",
       destructiveHint: false,
       idempotentHint: false,
       readOnlyHint: false,
     },
-    async (args) => createAmi(args)
-  );
+    execute: async (args, context) => await createAmi(args, context),
+  });
 
-  server.tool(
-    "delete-ami",
-    "Delete an AMI",
-    deleteAmiSchema,
-    {
+  server.addTool({
+    name: "delete-ami",
+    description: "Delete an AMI",
+    parameters: deleteAmiSchema,
+    annotations: {
       title: "Delete AMI",
       destructiveHint: true,
       idempotentHint: true,
       readOnlyHint: false,
     },
-    async (args) => deleteAmi(args)
-  );
+    execute: async (args, context) => await deleteAmi(args, context),
+  });
 };

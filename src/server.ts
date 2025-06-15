@@ -1,4 +1,4 @@
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { FastMCP } from "fastmcp";
 import { registerAmiTools } from "./tools/ami";
 import { registerEc2Tools } from "./tools/ec2";
 import { registerInstanceTagTools } from "./tools/instance-tag";
@@ -11,28 +11,47 @@ import { registerSecurityGroupTools } from "./tools/security-group";
 import { registerSubnetTools } from "./tools/subnet";
 import { registerVpcTools } from "./tools/vpc";
 
-export const server = new McpServer(
-  {
-    name: "aws",
-    version: "0.0.1",
-    description: "AWS MCP Server",
+export interface SessionData {
+  credentials: {
+    accessKeyId: string;
+    secretAccessKey: string;
+    sessionToken?: string;
+  };
+  [key: string]: unknown;
+}
+
+export const server = new FastMCP({
+  name: "aws",
+  version: "0.0.2",
+  authenticate: async (request): Promise<SessionData> => {
+    const credentials = {
+      accessKeyId: request.headers["aws_access_key_id"] as string,
+      secretAccessKey: request.headers["aws_secret_access_key"] as string,
+      sessionToken: request.headers["aws_session_token"] as string,
+    };
+    return {
+      credentials,
+    };
   },
-  {
-    capabilities: {
-      tools: {},
-    },
-  }
-);
+});
 
 // Register all tools
-void registerRdsTools(server);
-void registerS3Tools(server);
-void registerVpcTools(server);
-void registerSubnetTools(server);
-void registerInternetGatewayTools(server);
-void registerRouteTableTools(server);
-void registerSecurityGroupTools(server);
-void registerKeyPairTools(server);
-void registerEc2Tools(server);
-void registerAmiTools(server);
-void registerInstanceTagTools(server);
+registerVpcTools();
+registerRdsTools();
+registerS3Tools();
+registerSubnetTools();
+registerInternetGatewayTools();
+registerRouteTableTools();
+registerSecurityGroupTools();
+registerKeyPairTools();
+registerEc2Tools();
+registerAmiTools();
+registerInstanceTagTools();
+
+server.start({
+  httpStream: {
+    port: 8080,
+    endpoint: "/mcp",
+  },
+  transportType: "httpStream",
+});
