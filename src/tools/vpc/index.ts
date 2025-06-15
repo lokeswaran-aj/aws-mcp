@@ -26,7 +26,7 @@ export const registerVpcTools = async (): Promise<void> => {
       idempotentHint: true,
       title: "List all the VPCs",
     },
-    execute: async (args) => await listVpcs(args),
+    execute: async (args, context) => await listVpcs(args, context),
   });
   server.addTool({
     name: "create-vpc",
@@ -39,7 +39,7 @@ export const registerVpcTools = async (): Promise<void> => {
       idempotentHint: true,
       title: "Create a new VPC",
     },
-    execute: async (args) => await createVpc(args),
+    execute: async (args, context) => await createVpc(args, context),
   });
   server.addTool({
     name: "delete-vpc",
@@ -52,7 +52,7 @@ export const registerVpcTools = async (): Promise<void> => {
       idempotentHint: true,
       title: "Delete a VPC",
     },
-    execute: async (args) => await deleteVpc(args),
+    execute: async (args, context) => await deleteVpc(args, context),
   });
   server.addTool({
     name: "update-vpc-attribute",
@@ -66,7 +66,7 @@ export const registerVpcTools = async (): Promise<void> => {
       idempotentHint: true,
       title: "Update a VPC attribute",
     },
-    execute: async (args) => await updateVpcAttribute(args),
+    execute: async (args, context) => await updateVpcAttribute(args, context),
   });
   server.addTool({
     name: "update-vpc-endpoint",
@@ -80,6 +80,6 @@ export const registerVpcTools = async (): Promise<void> => {
       idempotentHint: true,
       title: "Update a VPC endpoint",
     },
-    execute: async (args) => await updateVpcEndpoint(args),
+    execute: async (args, context) => await updateVpcEndpoint(args, context),
   });
 };

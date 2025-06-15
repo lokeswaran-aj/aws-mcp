@@ -6,6 +6,7 @@ import {
   UpdateVpcAttributeArgs,
   UpdateVpcEndpointArgs,
 } from "@/schema/vpc";
+import { SessionData } from "@/server";
 import { HandlerReturnType } from "@/types/common";
 import { formatResponse } from "@/utils/format-response";
 import {
@@ -15,47 +16,73 @@ import {
   ModifyVpcAttributeCommand,
   ModifyVpcEndpointCommand,
 } from "@aws-sdk/client-ec2";
+import { Context } from "fastmcp";
 
 export const listVpcs = async (
-  input: ListVpcsArgs
+  input: ListVpcsArgs,
+  context: Context<SessionData>
 ): Promise<HandlerReturnType> => {
-  const ec2Client = getEC2Client({ region: input.region });
+  const ec2Client = getEC2Client({
+    region: input.region,
+    credentials: context.session?.credentials,
+  });
+
   const command = new DescribeVpcsCommand(input.VpcArgs);
   const response = await ec2Client.send(command);
   return formatResponse(response);
 };
 
 export const createVpc = async (
-  input: CreateVpcArgs
+  input: CreateVpcArgs,
+  context: Context<SessionData>
 ): Promise<HandlerReturnType> => {
-  const ec2Client = getEC2Client({ region: input.region });
+  const ec2Client = getEC2Client({
+    region: input.region,
+    credentials: context.session?.credentials,
+  });
+
   const command = new CreateVpcCommand(input.VpcArgs);
   const response = await ec2Client.send(command);
   return formatResponse(response);
 };
 
 export const deleteVpc = async (
-  input: DeleteVpcArgs
+  input: DeleteVpcArgs,
+  context: Context<SessionData>
 ): Promise<HandlerReturnType> => {
-  const ec2Client = getEC2Client({ region: input.region });
+  const ec2Client = getEC2Client({
+    region: input.region,
+    credentials: context.session?.credentials,
+  });
+
   const command = new DeleteVpcCommand(input.VpcArgs);
   const response = await ec2Client.send(command);
   return formatResponse(response);
 };
 
 export const updateVpcAttribute = async (
-  input: UpdateVpcAttributeArgs
+  input: UpdateVpcAttributeArgs,
+  context: Context<SessionData>
 ): Promise<HandlerReturnType> => {
-  const ec2Client = getEC2Client({ region: input.region });
+  const ec2Client = getEC2Client({
+    region: input.region,
+    credentials: context.session?.credentials,
+  });
+
   const command = new ModifyVpcAttributeCommand(input.VpcArgs);
   const response = await ec2Client.send(command);
   return formatResponse(response);
 };
 
 export const updateVpcEndpoint = async (
-  input: UpdateVpcEndpointArgs
+  input: UpdateVpcEndpointArgs,
+  context: Context<SessionData>
 ): Promise<HandlerReturnType> => {
-  const ec2Client = getEC2Client({ region: input.region });
+  const ec2Client = getEC2Client({
+    region: input.region,
+    credentials: context.session?.credentials,
+  });
+
   const command = new ModifyVpcEndpointCommand(input.VpcArgs);
   const response = await ec2Client.send(command);
   return formatResponse(response);

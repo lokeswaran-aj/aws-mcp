@@ -1,10 +1,10 @@
-import { DEFAULT_CONFIG } from "@/config/defaults";
+import { CONSTANTS } from "@/config/constants";
 import { ResourceType, VolumeType } from "@aws-sdk/client-ec2";
 import { z } from "zod";
 
 export const regionSchema = z
   .string()
-  .default(DEFAULT_CONFIG.REGION)
+  .default(CONSTANTS.REGION)
   .describe("The AWS region");
 
 export const paginationSchema = {
