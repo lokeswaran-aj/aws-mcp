@@ -63,39 +63,31 @@ const deleteKeyPairBaseSchema = z.object({
 }) satisfies z.ZodType<DeleteKeyPairCommandInput>;
 
 // Export Schemas
-export const listKeyPairsSchema = {
+export const listKeyPairsSchema = z.object({
   region: regionSchema,
   KeyPairArgs: listKeyPairsBaseSchema,
-};
+});
 
-export const createKeyPairSchema = {
+export const createKeyPairSchema = z.object({
   region: regionSchema,
   KeyPairArgs: createKeyPairBaseSchema,
-};
+});
 
-export const importKeyPairSchema = {
+export const importKeyPairSchema = z.object({
   region: regionSchema,
   KeyPairArgs: importKeyPairBaseSchema,
-};
+});
 
-export const deleteKeyPairSchema = {
+export const deleteKeyPairSchema = z.object({
   region: regionSchema,
   KeyPairArgs: deleteKeyPairBaseSchema,
-};
+});
 
 // Export Types
-export type ListKeyPairsArgs = z.infer<
-  ReturnType<typeof z.object<typeof listKeyPairsSchema>>
->;
+export type ListKeyPairsArgs = z.infer<typeof listKeyPairsSchema>;
 
-export type CreateKeyPairArgs = z.infer<
-  ReturnType<typeof z.object<typeof createKeyPairSchema>>
->;
+export type CreateKeyPairArgs = z.infer<typeof createKeyPairSchema>;
 
-export type ImportKeyPairArgs = z.infer<
-  ReturnType<typeof z.object<typeof importKeyPairSchema>>
->;
+export type ImportKeyPairArgs = z.infer<typeof importKeyPairSchema>;
 
-export type DeleteKeyPairArgs = z.infer<
-  ReturnType<typeof z.object<typeof deleteKeyPairSchema>>
->;
+export type DeleteKeyPairArgs = z.infer<typeof deleteKeyPairSchema>;

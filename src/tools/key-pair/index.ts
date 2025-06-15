@@ -4,7 +4,7 @@ import {
   importKeyPairSchema,
   listKeyPairsSchema,
 } from "@/schema/key-pair";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
+import { server } from "@/server";
 import {
   createKeyPair,
   deleteKeyPair,
@@ -12,60 +12,60 @@ import {
   listKeyPairs,
 } from "./handler";
 
-export const registerKeyPairTools = (server: McpServer): void => {
-  server.tool(
-    "list-key-pairs",
-    "List key pairs in the given region",
-    listKeyPairsSchema,
-    {
+export const registerKeyPairTools = (): void => {
+  server.addTool({
+    name: "list-key-pairs",
+    description: "List key pairs in the given region",
+    parameters: listKeyPairsSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: true,
       idempotentHint: true,
       title: "List Key Pairs",
     },
-    async (args) => await listKeyPairs(args)
-  );
+    execute: async (args, context) => await listKeyPairs(args, context),
+  });
 
-  server.tool(
-    "create-key-pair",
-    "Create a key pair in the given region",
-    createKeyPairSchema,
-    {
+  server.addTool({
+    name: "create-key-pair",
+    description: "Create a key pair in the given region",
+    parameters: createKeyPairSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: false,
       title: "Create Key Pair",
     },
-    async (args) => await createKeyPair(args)
-  );
+    execute: async (args, context) => await createKeyPair(args, context),
+  });
 
-  server.tool(
-    "import-key-pair",
-    "Import a key pair in the given region",
-    importKeyPairSchema,
-    {
+  server.addTool({
+    name: "import-key-pair",
+    description: "Import a key pair in the given region",
+    parameters: importKeyPairSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: false,
       title: "Import Key Pair",
     },
-    async (args) => await importKeyPair(args)
-  );
+    execute: async (args, context) => await importKeyPair(args, context),
+  });
 
-  server.tool(
-    "delete-key-pair",
-    "Delete a key pair in the given region",
-    deleteKeyPairSchema,
-    {
+  server.addTool({
+    name: "delete-key-pair",
+    description: "Delete a key pair in the given region",
+    parameters: deleteKeyPairSchema,
+    annotations: {
       destructiveHint: true,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Delete Key Pair",
     },
-    async (args) => await deleteKeyPair(args)
-  );
+    execute: async (args, context) => await deleteKeyPair(args, context),
+  });
 };
