@@ -261,48 +261,38 @@ const updateVpcEndpointBaseSchema = z.object({
     .describe("The subnet configurations for the endpoint"),
 }) satisfies z.ZodType<ModifyVpcEndpointCommandInput>;
 // Schemas
-export const listVpcsSchema = {
+export const listVpcsSchema = z.object({
   region: regionSchema,
   VpcArgs: listVpcsBaseSchema,
-};
+});
 
-export const createVpcSchema = {
+export const createVpcSchema = z.object({
   region: regionSchema,
   VpcArgs: createVpcBaseSchema,
-};
+});
 
-export const deleteVpcSchema = {
+export const deleteVpcSchema = z.object({
   region: regionSchema,
   VpcArgs: deleteVpcBaseSchema,
-};
+});
 
-export const updateVpcAttributeSchema = {
+export const updateVpcAttributeSchema = z.object({
   region: regionSchema,
   VpcArgs: updateVpcAttributeBaseSchema,
-};
+});
 
-export const updateVpcEndpointSchema = {
+export const updateVpcEndpointSchema = z.object({
   region: regionSchema,
   VpcArgs: updateVpcEndpointBaseSchema,
-};
+});
 
 // Types
-export type ListVpcsArgs = z.infer<
-  ReturnType<typeof z.object<typeof listVpcsSchema>>
->;
+export type ListVpcsArgs = z.infer<typeof listVpcsSchema>;
 
-export type CreateVpcArgs = z.infer<
-  ReturnType<typeof z.object<typeof createVpcSchema>>
->;
+export type CreateVpcArgs = z.infer<typeof createVpcSchema>;
 
-export type DeleteVpcArgs = z.infer<
-  ReturnType<typeof z.object<typeof deleteVpcSchema>>
->;
+export type DeleteVpcArgs = z.infer<typeof deleteVpcSchema>;
 
-export type UpdateVpcAttributeArgs = z.infer<
-  ReturnType<typeof z.object<typeof updateVpcAttributeSchema>>
->;
+export type UpdateVpcAttributeArgs = z.infer<typeof updateVpcAttributeSchema>;
 
-export type UpdateVpcEndpointArgs = z.infer<
-  ReturnType<typeof z.object<typeof updateVpcEndpointSchema>>
->;
+export type UpdateVpcEndpointArgs = z.infer<typeof updateVpcEndpointSchema>;

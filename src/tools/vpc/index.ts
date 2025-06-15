@@ -5,7 +5,7 @@ import {
   updateVpcAttributeSchema,
   updateVpcEndpointSchema,
 } from "@/schema/vpc";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { server } from "@/server";
 import {
   createVpc,
   deleteVpc,
@@ -14,70 +14,72 @@ import {
   updateVpcEndpoint,
 } from "./handler";
 
-export const registerVpcTools = async (server: McpServer): Promise<void> => {
-  server.tool(
-    "list-vpcs",
-    "List all the VPCs in the given region",
-    listVpcsSchema,
-    {
+export const registerVpcTools = async (): Promise<void> => {
+  server.addTool({
+    name: "list-vpcs",
+    description: "List all the VPCs in the given region",
+    parameters: listVpcsSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: true,
       idempotentHint: true,
       title: "List all the VPCs",
     },
-    async (args) => await listVpcs(args)
-  );
-  server.tool(
-    "create-vpc",
-    "Create a new VPC in the given region",
-    createVpcSchema,
-    {
+    execute: async (args) => await listVpcs(args),
+  });
+  server.addTool({
+    name: "create-vpc",
+    description: "Create a new VPC in the given region",
+    parameters: createVpcSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Create a new VPC",
     },
-    async (args) => await createVpc(args)
-  );
-  server.tool(
-    "delete-vpc",
-    "Delete a VPC by VPC ID in the given region",
-    deleteVpcSchema,
-    {
+    execute: async (args) => await createVpc(args),
+  });
+  server.addTool({
+    name: "delete-vpc",
+    description: "Delete a VPC by VPC ID in the given region",
+    parameters: deleteVpcSchema,
+    annotations: {
       destructiveHint: true,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Delete a VPC",
     },
-    async (args) => await deleteVpc(args)
-  );
-  server.tool(
-    "update-vpc-attribute",
-    "Update a VPC attribute(EnableDnsHostnames, EnableDnsSupport, EnableNetworkAddressUsageMetrics) by VPC ID in the given region",
-    updateVpcAttributeSchema,
-    {
+    execute: async (args) => await deleteVpc(args),
+  });
+  server.addTool({
+    name: "update-vpc-attribute",
+    description:
+      "Update a VPC attribute(EnableDnsHostnames, EnableDnsSupport, EnableNetworkAddressUsageMetrics) by VPC ID in the given region",
+    parameters: updateVpcAttributeSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Update a VPC attribute",
     },
-    async (args) => await updateVpcAttribute(args)
-  );
-  server.tool(
-    "update-vpc-endpoint",
-    "Update a VPC endpoint(Gateway endpoint, Interface endpoint) by VPC endpoint ID in the given region",
-    updateVpcEndpointSchema,
-    {
+    execute: async (args) => await updateVpcAttribute(args),
+  });
+  server.addTool({
+    name: "update-vpc-endpoint",
+    description:
+      "Update a VPC endpoint(Gateway endpoint, Interface endpoint) by VPC endpoint ID in the given region",
+    parameters: updateVpcEndpointSchema,
+    annotations: {
       destructiveHint: false,
       openWorldHint: true,
       readOnlyHint: false,
       idempotentHint: true,
       title: "Update a VPC endpoint",
     },
-    async (args) => await updateVpcEndpoint(args)
-  );
+    execute: async (args) => await updateVpcEndpoint(args),
+  });
 };
