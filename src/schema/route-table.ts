@@ -68,57 +68,49 @@ const deleteRouteTableBaseSchema = z.object({
 }) satisfies z.ZodType<DeleteRouteTableCommandInput>;
 
 // Export the schemas
-export const listRouteTablesSchema = {
+export const listRouteTablesSchema = z.object({
   region: regionSchema,
   RouteTableArgs: listRouteTablesBaseSchema,
-};
+});
 
-export const createRouteTableSchema = {
+export const createRouteTableSchema = z.object({
   region: regionSchema,
   RouteTableArgs: createRouteTableBaseSchema,
-};
+});
 
-export const associateRouteTableSchema = {
+export const associateRouteTableSchema = z.object({
   region: regionSchema,
   RouteTableArgs: associateRouteTableBaseSchema,
-};
+});
 
-export const disassociateRouteTableSchema = {
+export const disassociateRouteTableSchema = z.object({
   region: regionSchema,
   RouteTableArgs: disassociateRouteTableBaseSchema,
-};
+});
 
-export const replaceRouteTableAssociationSchema = {
+export const replaceRouteTableAssociationSchema = z.object({
   region: regionSchema,
   RouteTableArgs: replaceRouteTableAssociationBaseSchema,
-};
+});
 
-export const deleteRouteTableSchema = {
+export const deleteRouteTableSchema = z.object({
   region: regionSchema,
   RouteTableArgs: deleteRouteTableBaseSchema,
-};
+});
 
 // Export the types
-export type ListRouteTablesArgs = z.infer<
-  ReturnType<typeof z.object<typeof listRouteTablesSchema>>
->;
+export type ListRouteTablesArgs = z.infer<typeof listRouteTablesSchema>;
 
-export type CreateRouteTablesArgs = z.infer<
-  ReturnType<typeof z.object<typeof createRouteTableSchema>>
->;
+export type CreateRouteTableArgs = z.infer<typeof createRouteTableSchema>;
 
-export type AssociateRouteTableArgs = z.infer<
-  ReturnType<typeof z.object<typeof associateRouteTableSchema>>
->;
+export type AssociateRouteTableArgs = z.infer<typeof associateRouteTableSchema>;
 
 export type DisassociateRouteTableArgs = z.infer<
-  ReturnType<typeof z.object<typeof disassociateRouteTableSchema>>
+  typeof disassociateRouteTableSchema
 >;
 
 export type ReplaceRouteTableAssociationArgs = z.infer<
-  ReturnType<typeof z.object<typeof replaceRouteTableAssociationSchema>>
+  typeof replaceRouteTableAssociationSchema
 >;
 
-export type DeleteRouteTableArgs = z.infer<
-  ReturnType<typeof z.object<typeof deleteRouteTableSchema>>
->;
+export type DeleteRouteTableArgs = z.infer<typeof deleteRouteTableSchema>;
