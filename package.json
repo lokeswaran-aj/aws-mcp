@@ -4,7 +4,7 @@
   "description": "AWS MCP Server",
   "scripts": {
     "build": "tsc --build --verbose tsconfig.build.json && tsc-alias -p tsconfig.json",
-    "start": "node ./dist/index.js",
+    "start": "node ./dist/server.js",
     "dev": "ts-node-dev --project tsconfig.dev.json -r tsconfig-paths/register --transpile-only --respawn --exit-child src/server.ts",
     "clean": "rm -rf dist",
     "lint": "eslint . --ext .ts --fix",
