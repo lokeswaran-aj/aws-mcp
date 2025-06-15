@@ -1,4 +1,14 @@
 import { FastMCP } from "fastmcp";
+import { registerAmiTools } from "./tools/ami";
+import { registerEc2Tools } from "./tools/ec2";
+import { registerInstanceTagTools } from "./tools/instance-tag";
+import { registerInternetGatewayTools } from "./tools/internet-gateway";
+import { registerKeyPairTools } from "./tools/key-pair";
+import { registerRdsTools } from "./tools/rds";
+import { registerRouteTableTools } from "./tools/route-table";
+import { registerS3Tools } from "./tools/s3";
+import { registerSecurityGroupTools } from "./tools/security-group";
+import { registerSubnetTools } from "./tools/subnet";
 import { registerVpcTools } from "./tools/vpc";
 
 export interface SessionData {
@@ -27,16 +37,16 @@ export const server = new FastMCP({
 
 // Register all tools
 registerVpcTools();
-// void registerRdsTools(server);
-// void registerS3Tools(server);
-// void registerSubnetTools(server);
-// void registerInternetGatewayTools(server);
-// void registerRouteTableTools(server);
-// void registerSecurityGroupTools(server);
-// void registerKeyPairTools(server);
-// void registerEc2Tools(server);
-// void registerAmiTools(server);
-// void registerInstanceTagTools(server);
+registerRdsTools();
+registerS3Tools();
+registerSubnetTools();
+registerInternetGatewayTools();
+registerRouteTableTools();
+registerSecurityGroupTools();
+registerKeyPairTools();
+registerEc2Tools();
+registerAmiTools();
+registerInstanceTagTools();
 
 server.start({
   httpStream: {
