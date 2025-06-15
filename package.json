@@ -1,6 +1,6 @@
 {
   "name": "aws-mcp",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "AWS MCP Server",
   "scripts": {
     "build": "tsc --build --verbose tsconfig.build.json && tsc-alias -p tsconfig.json",

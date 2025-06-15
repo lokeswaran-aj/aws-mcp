@@ -22,7 +22,7 @@ export interface SessionData {
 
 export const server = new FastMCP({
   name: "aws",
-  version: "0.0.1",
+  version: "0.0.2",
   authenticate: async (request): Promise<SessionData> => {
     const credentials = {
       accessKeyId: request.headers["aws_access_key_id"] as string,
