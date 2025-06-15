@@ -3,50 +3,50 @@ import {
   deleteInstanceTagSchema,
   listInstanceTagsSchema,
 } from "@/schema/instance-tag";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
+import { server } from "@/server";
 import {
   createInstanceTag,
   deleteInstanceTag,
   listInstanceTags,
 } from "./handler";
 
-export const registerInstanceTagTools = (server: McpServer): void => {
-  server.tool(
-    "list-instance-tags",
-    "List instance tags",
-    listInstanceTagsSchema,
-    {
+export const registerInstanceTagTools = (): void => {
+  server.addTool({
+    name: "list-instance-tags",
+    description: "List instance tags",
+    parameters: listInstanceTagsSchema,
+    annotations: {
       title: "List instance tags",
       destructiveHint: false,
       idempotentHint: true,
       readOnlyHint: true,
     },
-    async (args) => listInstanceTags(args)
-  );
+    execute: async (args, context) => await listInstanceTags(args, context),
+  });
 
-  server.tool(
-    "create-instance-tag",
-    "Create instance tag",
-    createInstanceTagSchema,
-    {
+  server.addTool({
+    name: "create-instance-tag",
+    description: "Create instance tag",
+    parameters: createInstanceTagSchema,
+    annotations: {
       title: "Create instance tag",
       destructiveHint: false,
       idempotentHint: false,
       readOnlyHint: false,
     },
-    async (args) => createInstanceTag(args)
-  );
+    execute: async (args, context) => await createInstanceTag(args, context),
+  });
 
-  server.tool(
-    "delete-instance-tag",
-    "Delete instance tag",
-    deleteInstanceTagSchema,
-    {
+  server.addTool({
+    name: "delete-instance-tag",
+    description: "Delete instance tag",
+    parameters: deleteInstanceTagSchema,
+    annotations: {
       title: "Delete instance tag",
       destructiveHint: true,
       idempotentHint: true,
       readOnlyHint: false,
     },
-    async (args) => deleteInstanceTag(args)
-  );
+    execute: async (args, context) => await deleteInstanceTag(args, context),
+  });
 };
