@@ -191,39 +191,33 @@ const deleteSubnetBaseSchema = z.object({
 }) satisfies z.ZodType<DeleteSubnetCommandInput>;
 
 // Schemas
-export const listSubnetsSchema = {
+export const listSubnetsSchema = z.object({
   region: regionSchema,
   SubnetArgs: listSubnetsBaseSchema,
-};
+});
 
-export const createSubnetSchema = {
+export const createSubnetSchema = z.object({
   region: regionSchema,
   SubnetArgs: createSubnetBaseSchema,
-};
+});
 
-export const updateSubnetAttributeSchema = {
+export const updateSubnetAttributeSchema = z.object({
   region: regionSchema,
   SubnetArgs: updateSubnetAttributeBaseSchema,
-};
+});
 
-export const deleteSubnetSchema = {
+export const deleteSubnetSchema = z.object({
   region: regionSchema,
   SubnetArgs: deleteSubnetBaseSchema,
-};
+});
 
 // Types
-export type ListSubnetsArgs = z.infer<
-  ReturnType<typeof z.object<typeof listSubnetsSchema>>
->;
+export type ListSubnetsArgs = z.infer<typeof listSubnetsSchema>;
 
-export type CreateSubnetArgs = z.infer<
-  ReturnType<typeof z.object<typeof createSubnetSchema>>
->;
+export type CreateSubnetArgs = z.infer<typeof createSubnetSchema>;
 
 export type UpdateSubnetAttributeArgs = z.infer<
-  ReturnType<typeof z.object<typeof updateSubnetAttributeSchema>>
+  typeof updateSubnetAttributeSchema
 >;
 
-export type DeleteSubnetArgs = z.infer<
-  ReturnType<typeof z.object<typeof deleteSubnetSchema>>
->;
+export type DeleteSubnetArgs = z.infer<typeof deleteSubnetSchema>;

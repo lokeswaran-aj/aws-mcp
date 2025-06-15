@@ -5,6 +5,7 @@ import {
   ListSubnetsArgs,
   UpdateSubnetAttributeArgs,
 } from "@/schema/subnet";
+import { SessionData } from "@/server";
 import { HandlerReturnType } from "@/types/common";
 import { formatResponse } from "@/utils/format-response";
 import {
@@ -13,39 +14,56 @@ import {
   DescribeSubnetsCommand,
   ModifySubnetAttributeCommand,
 } from "@aws-sdk/client-ec2";
+import { Context } from "fastmcp";
 
 export const listSubnets = async (
-  input: ListSubnetsArgs
+  args: ListSubnetsArgs,
+  context: Context<SessionData>
 ): Promise<HandlerReturnType> => {
-  const ec2Client = getEC2Client({ region: input.region });
-  const command = new DescribeSubnetsCommand(input.SubnetArgs);
+  const ec2Client = getEC2Client({
+    region: args.region,
+    credentials: context.session?.credentials,
+  });
+  const command = new DescribeSubnetsCommand(args.SubnetArgs);
   const response = await ec2Client.send(command);
   return formatResponse(response);
 };
 
 export const createSubnet = async (
-  input: CreateSubnetArgs
+  args: CreateSubnetArgs,
+  context: Context<SessionData>
 ): Promise<HandlerReturnType> => {
-  const ec2Client = getEC2Client({ region: input.region });
-  const command = new CreateSubnetCommand(input.SubnetArgs);
+  const ec2Client = getEC2Client({
+    region: args.region,
+    credentials: context.session?.credentials,
+  });
+  const command = new CreateSubnetCommand(args.SubnetArgs);
   const response = await ec2Client.send(command);
   return formatResponse(response);
 };
 
 export const updateSubnetAttribute = async (
-  input: UpdateSubnetAttributeArgs
+  args: UpdateSubnetAttributeArgs,
+  context: Context<SessionData>
 ): Promise<HandlerReturnType> => {
-  const ec2Client = getEC2Client({ region: input.region });
-  const command = new ModifySubnetAttributeCommand(input.SubnetArgs);
+  const ec2Client = getEC2Client({
+    region: args.region,
+    credentials: context.session?.credentials,
+  });
+  const command = new ModifySubnetAttributeCommand(args.SubnetArgs);
   const response = await ec2Client.send(command);
   return formatResponse(response);
 };
 
 export const deleteSubnet = async (
-  input: DeleteSubnetArgs
+  args: DeleteSubnetArgs,
+  context: Context<SessionData>
 ): Promise<HandlerReturnType> => {
-  const ec2Client = getEC2Client({ region: input.region });
-  const command = new DeleteSubnetCommand(input.SubnetArgs);
+  const ec2Client = getEC2Client({
+    region: args.region,
+    credentials: context.session?.credentials,
+  });
+  const command = new DeleteSubnetCommand(args.SubnetArgs);
   const response = await ec2Client.send(command);
   return formatResponse(response);
 };
