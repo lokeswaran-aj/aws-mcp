@@ -34,9 +34,18 @@ More AWS services (like Lambda, API Gateway, etc.) coming soon! Contributions we
 
 ## 📋 Prerequisites
 
+**For Development:**
+
 - **Node.js** >= 18.0.0
 - **pnpm** >= 10.0.0
-- **AWS Account** with AWS credentials(Access Key ID and Secret Access Key)
+
+**For Docker Deployment:**
+
+- **Docker** and **Docker Compose**
+
+**For Both:**
+
+- **AWS Account** with AWS credentials (Access Key ID and Secret Access Key)
 
 ---
 
@@ -71,7 +80,52 @@ pnpm dev
 
 ---
 
-## 🧪 Example: Windsurf Configuration
+## 🐳 Docker Deployment
+
+### Quick Start with Docker
+
+**Option 1: Using Docker Compose (Recommended)**
+
+```bash
+docker-compose up -d
+```
+
+**Option 2: Using Docker directly**
+
+```bash
+# Build the image
+docker build -t aws-mcp .
+
+# Run with port mapping
+docker run -d --name aws-mcp-server -p 8080:8080 aws-mcp
+```
+
+The server will be available at:
+
+- MCP HTTP Stream: `http://localhost:8080/mcp`
+- MCP SSE: `http://localhost:8080/sse`
+
+### Managing Docker Containers
+
+```bash
+# View logs
+docker-compose logs -f
+
+# Stop container
+docker-compose down
+
+# Rebuild and restart
+docker-compose build --no-cache && docker-compose up -d
+
+# Stop aws-mcp-server and remove container
+docker stop aws-mcp-server && docker rm aws-mcp-server
+```
+
+> 💡 AWS credentials are still passed via HTTP headers (same as development setup). No container configuration needed.
+
+---
+
+## 🧪 Example: Cursor Configuration
 
 To use this server with [Cursor](https://cursor.com), add the following to your `~/.cursor/mcp.json`:
 
